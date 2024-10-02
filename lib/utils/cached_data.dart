@@ -36,7 +36,9 @@ class CachedData{
 
   static Future<String> getUserName() async {
     final sharedPref= await SharedPreferences.getInstance();
-    return sharedPref.getString("name")!;
+    print(sharedPref.getString("name")!);
+    String value=sharedPref.getString("name")!;
+    return value;
   }
 
 }

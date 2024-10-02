@@ -22,7 +22,7 @@ List<BottomNavData> bottomMenu=[
 
 final List homeScreens = [
   const HomeScreen(),
-  const ExploreScreen(),
+  ExploreScreen(),
    AccountScreen(),
   const CartScreen(),
 ];

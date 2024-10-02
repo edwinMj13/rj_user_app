@@ -38,7 +38,7 @@ class AccountScreen extends StatelessWidget {
             sizedH20,
             _recentlyViewedItems(),
             sizedH20,
-            ButtonGreen(label: "Log Out",callback:() => showDialogToSignOut(context),color: Colors.green,),
+            ButtonGreen(label: "Log Out",callback:() => showDialogToSignOut(context),color: Colors.green,backgroundColor:Colors.green[50],),
           ],
         ),
       ),
@@ -89,7 +89,7 @@ class AccountScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Image.asset(
-                              productsList[index].images!,
+                              productsList[index].imagesList[0],
                               fit: BoxFit.cover,
                               width: 130,
                             ),

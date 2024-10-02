@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:rj/features/presentation/screens/main_screen/widgets/home_screen_appbar.dart';
+import 'package:rj/features/presentation/screens/main_screen/widgets/explore_screen_appbar.dart';
 
 import '../../../../../utils/common.dart';
 import '../../../../../utils/styles.dart';
 
-class MainScreenAppBar extends StatelessWidget {
+class MainAppBar extends StatelessWidget {
   final int currentNavIndex;
   final String username;
-  const MainScreenAppBar({
+  const MainAppBar({
     super.key,
     required this.currentNavIndex,
     required this.username,
@@ -16,9 +18,8 @@ class MainScreenAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: _getContent(),
-
-      actions: [
+      title: _selectContent(),
+     /* actions: [
         PopupMenuButton(
           menuPadding: EdgeInsets.zero,
           itemBuilder: (context) => [
@@ -33,15 +34,15 @@ class MainScreenAppBar extends StatelessWidget {
             }
           },
         )
-      ],
+      ],*/
     );
   }
-  _getContent() {
+  _selectContent() {
     switch(currentNavIndex){
       case 0:
-        return ;
+        return const HomeScreenAppbar();
       case 1:
-        return ;
+        return const ExploreScreenAppBar();
       case 2:
         return _greetings();
       case 3:
@@ -72,5 +73,7 @@ class MainScreenAppBar extends StatelessWidget {
       ],
     );
   }
+
+
 
 }

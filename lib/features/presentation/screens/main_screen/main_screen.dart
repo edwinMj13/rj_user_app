@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/config/colors.dart';
 import 'package:rj/config/routes/route_names.dart';
 import 'package:rj/features/data/data_sources/bottom_navigation_data.dart';
-import 'package:rj/features/presentation/screens/main_screen/widgets/main_screen_appbar.dart';
+import 'package:rj/features/presentation/screens/main_screen/widgets/main_appbar.dart';
 import 'package:rj/features/services/main_services.dart';
 import 'package:rj/utils/cached_data.dart';
 import 'package:rj/utils/common.dart';
@@ -24,7 +24,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int currentNavIndex = 0;
-  late final String? userName;
   MainServices mainServices = MainServices();
 
   updateIndex(int index) {
@@ -34,18 +33,23 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    mainServices.getUser();
-    userName = mainServices.userName;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    //Future<String>? myFuture = CachedData.getUserName();
     return Scaffold(
-      appBar:  PreferredSize(preferredSize: Size.fromHeight(60),
-      child: MainScreenAppBar(currentNavIndex:currentNavIndex,username:userName!)),
+      appBar: PreferredSize(preferredSize: const Size.fromHeight(60),
+          child: FutureBuilder<String>(
+            future: CachedData.getUserName(),
+            builder: (context, snapshot) {
+              if(snapshot.data!=null) {
+                return MainAppBar(
+                    currentNavIndex: currentNavIndex, username: snapshot
+                    .data!.split(' ')
+                    .first);
+              }else{
+                return SizedBox();
+              }
+            },
+          )),
       body: homeScreens[currentNavIndex],
       bottomNavigationBar: _bottomNavigation(),
     );
@@ -56,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
     return BottomNavigationBar(
       items: List.generate(
         bottomMenu.length,
-        (index) {
+            (index) {
           return BottomNavigationBarItem(
               icon: Icon(bottomMenu[index].icon),
               label: bottomMenu[index].title);
@@ -70,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
       selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
       showUnselectedLabels: true,
       unselectedLabelStyle:
-          const TextStyle(fontWeight: FontWeight.normal, color: Colors.grey),
+      const TextStyle(fontWeight: FontWeight.normal, color: Colors.grey),
     );
   }
 }

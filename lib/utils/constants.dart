@@ -10,3 +10,5 @@ const sizedW30=SizedBox(width: 30,);
 const sizedW40=SizedBox(width: 40,);
 
 String appName="RJ";
+
+const rupeeSymbol = "₹";

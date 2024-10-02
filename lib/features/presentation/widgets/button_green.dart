@@ -7,8 +7,9 @@ class ButtonGreen extends StatelessWidget {
   final String label;
   final VoidCallback callback;
   final Color color;
+  final Color? backgroundColor;
 
-  const ButtonGreen({super.key, required this.label, required this.callback,required this.color});
+  const ButtonGreen({super.key,required this.backgroundColor, required this.label, required this.callback,required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class ButtonGreen extends StatelessWidget {
         callback();
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green[50],
+        backgroundColor: backgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
         ),
