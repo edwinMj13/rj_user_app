@@ -24,5 +24,5 @@ final List homeScreens = [
   const HomeScreen(),
   ExploreScreen(),
    AccountScreen(),
-  const CartScreen(),
+  CartScreen(),
 ];

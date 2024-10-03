@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:rj/features/data/models/category_model.dart';
 import 'package:rj/features/services/fetch_services.dart';
 
-class FilterGetData {
+class FilterGetDataUseCase {
   FetchServices fetchServices = FetchServices();
 
   Future<List<String>> getBrands() async {

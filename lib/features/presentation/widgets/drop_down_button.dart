@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rj/features/data/repository/filter_get_data.dart';
+import 'package:rj/features/domain/use_cases/filter_get_use_cases.dart';
 
 import 'blocs/bottom_sheet/sub_category_bottomsheet_bloc/sub_categoey_bottomsheet_bloc.dart';
 
@@ -15,7 +15,7 @@ class DropDownButtonWidget extends StatelessWidget {
   String? selectedSubItem;
   final String? label;
   List<String>? dataList;
-  FilterGetData filterGetData = FilterGetData();
+  FilterGetDataUseCase filterGetDataUseCase = FilterGetDataUseCase();
 
   @override
   Widget build(BuildContext context) {

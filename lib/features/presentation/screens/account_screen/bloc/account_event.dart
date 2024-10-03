@@ -7,3 +7,7 @@ sealed class AccountEvent {}
   final VoidCallback callback;
   SignOutEvent( this.callback);
 }
+
+class RecentViewedEvent extends AccountEvent{
+
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rj/features/data/repository/filter_get_data.dart';
+import 'package:rj/features/domain/use_cases/filter_get_use_cases.dart';
 import 'package:rj/features/presentation/widgets/button_green.dart';
 import 'package:rj/features/presentation/widgets/slider_design.dart';
 import 'package:rj/utils/constants.dart';
@@ -18,7 +18,6 @@ class FilterBottomSheetContent extends StatefulWidget {
 
 class _FilterBottomSheetContentState extends State<FilterBottomSheetContent> {
   String? selectedItem;
-  FilterGetData filterGetData = FilterGetData();
   List<String> brandList = [];
   List<String> categoryList = [];
 

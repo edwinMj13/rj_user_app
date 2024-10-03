@@ -25,11 +25,19 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int currentNavIndex = 0;
   MainServices mainServices = MainServices();
+  CachedData cachedData = CachedData();
 
   updateIndex(int index) {
     setState(() {
       currentNavIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    cachedData.getSetUser();
+    super.initState();
   }
 
   @override

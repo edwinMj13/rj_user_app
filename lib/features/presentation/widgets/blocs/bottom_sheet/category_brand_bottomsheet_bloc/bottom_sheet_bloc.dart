@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:rj/features/data/repository/filter_get_data.dart';
+import 'package:rj/features/domain/use_cases/filter_get_use_cases.dart';
 
 part 'bottom_sheet_event.dart';
 part 'bottom_sheet_state.dart';
@@ -13,9 +13,9 @@ class BottomSheetBloc extends Bloc<BottomSheetEvent, BottomSheetState> {
   }
 
    categoryBrandEvent(CategoryBrandEvent event, Emitter<BottomSheetState> emit) async {
-    FilterGetData filterGetData = FilterGetData();
-    final brandList = await filterGetData.getBrands();
-    final categoryList = await filterGetData.getCategoryNames();
+    FilterGetDataUseCase filterGetDataUseCase = FilterGetDataUseCase();
+    final brandList = await filterGetDataUseCase.getBrands();
+    final categoryList = await filterGetDataUseCase.getCategoryNames();
     emit(CategoryBrandSuccessState(categoryList: categoryList, brandList: brandList));
   }
 }

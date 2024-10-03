@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../../utils/cached_data.dart';
 import '../models/user_profile_model.dart';
 
 class FirebaseMethods {
@@ -17,8 +18,9 @@ class FirebaseMethods {
         shippingAddress: userProfile.shippingAddress,
         billingAddress: userProfile.billingAddress,
       );
+      CachedData.saveUserNode(value.id,userProfile.shippingAddress!,userProfile.billingAddress!);
       firebase.collection("Users").doc(value.id).update(model.toMap());
-      print("User Added Success - ${value}");
+      //print("User Added Success - ${value}");
     }).catchError((e) {
       print("USser Added Catch Error - ${e.toString()}");
     });

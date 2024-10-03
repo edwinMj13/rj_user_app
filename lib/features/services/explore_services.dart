@@ -15,6 +15,7 @@ class ExploreServices {
             itemName: model["itemName"],
             category: model["category"],
             firebaseNodeId: model["firebaseNodeId"],
+            productId:model["firebaseNodeId"],
             status: model["status"],
             imagesList: model["imagesList"],
             description: model["description"],

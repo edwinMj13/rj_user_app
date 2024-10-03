@@ -9,6 +9,7 @@ class ProductsModel {
   final String? price;
   final String sellingPrize;
   final String firebaseNodeId;
+  final String productId;
   final String status;
   final List<dynamic> imagesList;
 
@@ -16,6 +17,7 @@ class ProductsModel {
       {required this.itemName,
       required this.category,
       required this.firebaseNodeId,
+      required this.productId,
       required this.status,
       required this.imagesList,
       this.subCategory,
@@ -37,6 +39,7 @@ class ProductsModel {
       "subCategory":subCategory,
       "stock":stock,
       "description":description,
+      "productId":productId,
       "mainImage":mainImage,
       "itemBrand":itemBrand,
       "price":price,
@@ -44,50 +47,3 @@ class ProductsModel {
     };
   }
 }
-
-List<ProductsModel> productsList = [
-  ProductsModel(
-    itemName: "Screws 1\'",
-    category: "Hardware",
-    imagesList: ["assets/starscrews.jpg"],
-    description: "oiuhjndei hebfsehfb jifbjsknfsufbhn jknuisef",
-    itemBrand: "Gj",
-    sellingPrize: "125",
-    mainImage: "125",
-    firebaseNodeId: '',
-    status: '',
-  ),
-  ProductsModel(
-    itemName: "Supreme Pipe 110''\'",
-    category: "Plumbing",
-    imagesList: ["assets/supreme_imaeg.jpg"],
-    description: "oiuhjndei hebfsehfb jifbjsknfsufbhn jknuisef",
-    itemBrand: "Supreme",
-    mainImage: "125",
-    sellingPrize: "125",
-    firebaseNodeId: '',
-    status: '',
-  ),
-  ProductsModel(
-    itemName: "Screws 1\'",
-    category: "Hardware",
-    imagesList: ["assets/starscrews.jpg"],
-    mainImage: "125",
-    description: "oiuhjndei hebfsehfb jifbjsknfsufbhn jknuisef",
-    itemBrand: "Gj",
-    sellingPrize: "125",
-    firebaseNodeId: '',
-    status: '',
-  ),
-  ProductsModel(
-    itemName: "Supreme Pipe 110''\'",
-    category: "Plumbing",
-    imagesList: ["assets/supreme_imaeg.jpg"],
-    description: "oiuhjndei hebfsehfb jifbjsknfsufbhn jknuisef",
-    itemBrand: "Supreme",
-    mainImage: "125",
-    sellingPrize: "125",
-    firebaseNodeId: '',
-    status: '',
-  ),
-];

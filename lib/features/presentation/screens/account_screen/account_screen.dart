@@ -5,6 +5,7 @@ import 'package:rj/features/data/models/products_model.dart';
 import 'package:rj/features/presentation/screens/account_screen/widgets/account_card_widgets.dart';
 import 'package:rj/features/presentation/screens/account_screen/widgets/icon_text_icon_widget.dart';
 import 'package:rj/features/services/accounts_screen_services.dart';
+import 'package:rj/features/services/show_loading_services.dart';
 import 'package:rj/utils/cached_data.dart';
 import 'package:rj/utils/constants.dart';
 import 'package:rj/utils/styles.dart';
@@ -20,32 +21,44 @@ class AccountScreen extends StatelessWidget {
 
   late BuildContext contextsProgress;
   AccountsScreenServices accountsScreenServices=AccountsScreenServices();
+  LoadingServices loadingServices = LoadingServices();
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            //_greetings(context),
-            _accountsCardSection(),
-            const IconTextIconWidgets(
-                iconStart: CupertinoIcons.person, label: "Edit Profile"),
-            const IconTextIconWidgets(
-                iconStart: Icons.location_on_outlined, label: "Edit Address"),
-            sizedH20,
-            _recentlyViewedItems(),
-            sizedH20,
-            ButtonGreen(label: "Log Out",callback:() => showDialogToSignOut(context),color: Colors.green,backgroundColor:Colors.green[50],),
-          ],
+    context.read<AccountBloc>().add(RecentViewedEvent());
+    return BlocBuilder<AccountBloc, AccountState>(
+  builder: (context, state) {
+    if(state is RecentItemsSuccessState) {
+      return SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              //_greetings(context),
+              _accountsCardSection(),
+              const IconTextIconWidgets(
+                  iconStart: CupertinoIcons.person, label: "Edit Profile"),
+              const IconTextIconWidgets(
+                  iconStart: Icons.location_on_outlined, label: "Edit Address"),
+              sizedH20,
+              _recentlyViewedItems(state.listRecent),
+              sizedH20,
+              ButtonGreen(label: "Log Out",
+                callback: () => showDialogToSignOut(context),
+                color: Colors.green,
+                backgroundColor: Colors.green[50],),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
+    return SizedBox();
+  },
+);
   }
 
-  SizedBox _recentlyViewedItems() {
+  SizedBox _recentlyViewedItems(List<ProductsModel> listRecent) {
     return SizedBox(
             width: double.infinity,
             child: Column(
@@ -88,17 +101,17 @@ class AccountScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Image.asset(
-                              productsList[index].imagesList[0],
+                            Image.network(
+                              listRecent[index].mainImage,
                               fit: BoxFit.cover,
                               width: 130,
                             ),
-                            Text(productsList[index].itemName),
+                            Text(listRecent[index].itemName),
                           ],
                         ),
                       );
                     },
-                    itemCount: productsList.length,
+                    itemCount: listRecent.length,
                   ),
                 ),
               ],
@@ -169,9 +182,9 @@ class AccountScreen extends StatelessWidget {
                   child: const Text("Yes"),
                   onPressed: () {
                     Navigator.pop(context);
-                    showLoading(context);
+                    loadingServices.showLoading(context,"Loading...");
                     context.read<AccountBloc>().add(
-                        SignOutEvent(() => accountsScreenServices.signOutToLoginScreen(contextMain,contextsProgress)));
+                        SignOutEvent(() => accountsScreenServices.signOutToLoginScreen(contextMain,()=>loadingServices.cancelLoading())));
                   }),
             ],
             actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -179,30 +192,4 @@ class AccountScreen extends StatelessWidget {
         });
   }
 
-  void showLoading(BuildContext context) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (contextProgressInner) {
-          contextsProgress = contextProgressInner;
-          return const PopScope(
-            canPop: false,
-            child: Dialog(
-              child: Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Row(
-                  children: [
-                    CircularProgressIndicator(),
-                    sizedW20,
-                    Text(
-                      "Loading...",
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-  }
 }

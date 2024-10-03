@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/config/routes/route_names.dart';
 import 'package:rj/config/routes/routes.dart';
 import 'package:rj/features/presentation/screens/account_screen/bloc/account_bloc.dart';
+import 'package:rj/features/presentation/screens/cart_screen/bloc/cart_bloc.dart';
 import 'package:rj/features/presentation/screens/explore_screen/bloc/explore_bloc.dart';
 import 'package:rj/features/presentation/screens/home_screen/bloc/home_bloc.dart';
 import 'package:rj/features/presentation/screens/main_screen/bloc/main_bloc.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SubCategoeyBottomsheetBloc()),
         BlocProvider(create: (context) => HomeBloc()),
         BlocProvider(create: (context) => ProductDetailsBloc()),
+        BlocProvider(create: (context) => CartBloc()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

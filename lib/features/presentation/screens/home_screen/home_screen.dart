@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rj/config/colors.dart';
+import 'package:rj/utils/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'bloc/home_bloc.dart';
@@ -14,7 +16,7 @@ class HomeScreen extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Chip(label: Text("Latest Arrivals")),
@@ -22,32 +24,16 @@ class HomeScreen extends StatelessWidget {
               Chip(label: Text("Price Dropped")),
             ],
           ),
+        sizedH10,
           CarouselSlider(
             items: [
-              Shimmer.fromColors(
-                  child: Container(
-                    width: double.infinity,
-                    height: 100,
-                  ),
-                  baseColor: Colors.black,
-                  highlightColor: Colors.red),
-              Shimmer.fromColors(
-                  child: Container(
-                    width: double.infinity,
-                    height: 100,
-                  ),
-                  baseColor: Colors.transparent,
-                  highlightColor: Colors.red),
-              Shimmer.fromColors(
-                  child: Container(
-                    width: double.infinity,
-                    height: 100,
-                  ),
-                  baseColor: Colors.black,
-                  highlightColor: Colors.red),
+              Image.asset("assets/dummy_banner.jpg"),
+              Image.asset("assets/dummy_banner.jpg"),
+              Image.asset("assets/dummy_banner.jpg"),
             ],
             options: CarouselOptions(
               autoPlay: true,
+                viewportFraction: 1
             ),
           ),
           Expanded(
@@ -77,9 +63,10 @@ class HomeScreen extends StatelessWidget {
                               child: SizedBox(
                                 height: 70,
                                 width: 70,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: Image.network(state.categoryList[index].image),
+                                child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: accentListColors[index],
+                                  child: Image.network(state.categoryList[index].image,fit: BoxFit.fill,),
                                 ),
                               ),
                             ),

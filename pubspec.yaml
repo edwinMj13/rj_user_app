@@ -47,6 +47,7 @@ dependencies:
   shared_preferences: ^2.3.2
   carousel_slider: ^5.0.0
   shimmer: ^3.0.0
+  dotted_line: ^3.2.2
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,7 @@ flutter:
     - assets/app_icon.jpg
     - assets/starscrews.jpg
     - assets/supreme_imaeg.jpg
+    - assets/dummy_banner.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
