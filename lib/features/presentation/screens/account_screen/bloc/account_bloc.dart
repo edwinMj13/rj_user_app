@@ -5,11 +5,13 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:rj/features/data/models/products_model.dart';
-import 'package:rj/features/services/explore_services.dart';
-import 'package:rj/utils/cached_data.dart';
+import 'package:rj/features/domain/use_cases/accounts_screen_usecases.dart';
+import 'package:rj/features/data/data_sources/cached_data.dart';
 
-import '../../../../../utils/lc.dart';
+import '../../../../../utils/dependencyLocation.dart';
 import '../../../../data/repository/auth_repository.dart';
+import '../../../../data/repository/explore_repo.dart';
+import '../../../../domain/use_cases/show_loading_case.dart';
 import '../../main_screen/bloc/main_bloc.dart';
 
 part 'account_event.dart';
@@ -20,17 +22,20 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     on<SignOutEvent>(signOutEvent);
     on<RecentViewedEvent>(recentViewedEvent);
   }
+  ShowLoadingCase showLoadingCase = ShowLoadingCase();
+
+  AccountScreenUsecases accountScreenUsecases = AccountScreenUsecases();
 
   Future<void> signOutEvent(SignOutEvent event, Emitter<AccountState> emit) async {
-    emit(SignOutLoadingState());
-    await locator<AuthRepository>().googleSignOut( () => event.callback());
+    showLoadingCase.showLoading(event.context,"Logging Out...");
+    await locator<AuthRepository>().googleSignOut();
+    accountScreenUsecases.signOutToLoginScreen(event.context,()=>showLoadingCase.cancelLoading());
     emit(SignOutSuccessState());
   }
 
 
   Future<void> recentViewedEvent(RecentViewedEvent event, Emitter<AccountState> emit) async {
-    ExploreServices exploreServices = ExploreServices();
-    final recentProducts = await exploreServices.getAllProducts();
+    final recentProducts = await locator<ExploreRepo>().getAllProducts();
     emit(RecentItemsSuccessState(listRecent: recentProducts));
   }
 }

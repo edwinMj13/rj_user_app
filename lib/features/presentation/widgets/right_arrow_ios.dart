@@ -14,7 +14,7 @@ class RightArrowIOS extends StatelessWidget {
       child: Container(
         height: 50,
         width: 50,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white70,
@@ -26,7 +26,7 @@ class RightArrowIOS extends StatelessWidget {
               )
             ]
         ),
-        child: Icon(
+        child: const Icon(
           Icons.arrow_forward_ios,
           size: 20,
         ),

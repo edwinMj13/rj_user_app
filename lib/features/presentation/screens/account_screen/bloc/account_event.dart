@@ -4,8 +4,8 @@ part of 'account_bloc.dart';
 sealed class AccountEvent {}
 
  class SignOutEvent extends AccountEvent{
-  final VoidCallback callback;
-  SignOutEvent( this.callback);
+  final BuildContext context;
+  SignOutEvent( {required this.context});
 }
 
 class RecentViewedEvent extends AccountEvent{

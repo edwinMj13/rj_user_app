@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rj/utils/cached_data.dart';
 
-import '../../config/routes/route_names.dart';
+import '../../../config/routes/route_names.dart';
+import '../../data/data_sources/cached_data.dart';
 
-class AccountsScreenServices {
+class AccountScreenUsecases{
   signOutToLoginScreen(BuildContext contextMain,VoidCallback callback) async {
     await Future.delayed(const Duration(seconds: 1));
     CachedData.clearSharedPrefData();

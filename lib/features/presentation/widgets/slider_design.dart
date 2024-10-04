@@ -21,14 +21,7 @@ class SliderDesign extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
                Text("Price Range",style: style(fontSize: 14,weight: FontWeight.normal,color: Colors.black),),
-              RangeSlider(
-                min: 0,
-                max: 20000,
-                values: RangeValues(startVal, endVal),
-                onChanged: (val) {
-                  updateSlider(val.start,val.end);
-                },
-              ),
+              _rangeSider(startVal, endVal),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -40,5 +33,16 @@ class SliderDesign extends StatelessWidget {
           );
       },
     );
+  }
+
+  RangeSlider _rangeSider(double startVal, double endVal) {
+    return RangeSlider(
+              min: 0,
+              max: 20000,
+              values: RangeValues(startVal, endVal),
+              onChanged: (val) {
+                updateSlider(val.start,val.end);
+              },
+            );
   }
 }

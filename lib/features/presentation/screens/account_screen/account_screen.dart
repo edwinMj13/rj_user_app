@@ -4,14 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/data/models/products_model.dart';
 import 'package:rj/features/presentation/screens/account_screen/widgets/account_card_widgets.dart';
 import 'package:rj/features/presentation/screens/account_screen/widgets/icon_text_icon_widget.dart';
-import 'package:rj/features/services/accounts_screen_services.dart';
-import 'package:rj/features/services/show_loading_services.dart';
-import 'package:rj/utils/cached_data.dart';
+import 'package:rj/features/data/data_sources/cached_data.dart';
 import 'package:rj/utils/constants.dart';
 import 'package:rj/utils/styles.dart';
 
 import '../../../../config/colors.dart';
 import '../../../../config/routes/route_names.dart';
+import '../../../domain/use_cases/show_loading_case.dart';
 import '../../widgets/button_green.dart';
 import '../main_screen/bloc/main_bloc.dart';
 import 'bloc/account_bloc.dart';
@@ -20,8 +19,6 @@ class AccountScreen extends StatelessWidget {
   AccountScreen({super.key});
 
   late BuildContext contextsProgress;
-  AccountsScreenServices accountsScreenServices=AccountsScreenServices();
-  LoadingServices loadingServices = LoadingServices();
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +41,7 @@ class AccountScreen extends StatelessWidget {
               sizedH20,
               _recentlyViewedItems(state.listRecent),
               sizedH20,
-              ButtonGreen(label: "Log Out",
-                callback: () => showDialogToSignOut(context),
-                color: Colors.green,
-                backgroundColor: Colors.green[50],),
+              _logoutButtonSection(context),
             ],
           ),
         ),
@@ -56,6 +50,13 @@ class AccountScreen extends StatelessWidget {
     return SizedBox();
   },
 );
+  }
+
+  ButtonGreen _logoutButtonSection(BuildContext context) {
+    return ButtonGreen(label: "Log Out",
+              callback: () => showDialogToSignOut(context),
+              color: Colors.green,
+              backgroundColor: Colors.green[50],);
   }
 
   SizedBox _recentlyViewedItems(List<ProductsModel> listRecent) {
@@ -182,9 +183,8 @@ class AccountScreen extends StatelessWidget {
                   child: const Text("Yes"),
                   onPressed: () {
                     Navigator.pop(context);
-                    loadingServices.showLoading(context,"Loading...");
                     context.read<AccountBloc>().add(
-                        SignOutEvent(() => accountsScreenServices.signOutToLoginScreen(contextMain,()=>loadingServices.cancelLoading())));
+                        SignOutEvent(context: contextMain));
                   }),
             ],
             actionsAlignment: MainAxisAlignment.spaceBetween,

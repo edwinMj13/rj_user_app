@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../config/routes/route_names.dart';
-import '../../utils/lc.dart';
-import '../data/repository/auth_repository.dart';
+import '../../../config/routes/route_names.dart';
+import '../../../utils/dependencyLocation.dart';
+import '../../data/repository/auth_repository.dart';
 
-class SplashServices {
-
-  static isLogin(BuildContext context)async{
+class SplashUseCases {
+  static ifLoggedIn(BuildContext context)async{
     final isLogged = await locator<AuthRepository>().isLoggedIn();
     print("delay $isLogged");
     Future.delayed(const Duration(seconds: 2)).then((_){

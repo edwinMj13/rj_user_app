@@ -4,15 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/presentation/screens/cart_screen/bloc/cart_bloc.dart';
 import 'package:rj/features/presentation/widgets/address_change_widget.dart';
 import 'package:rj/features/presentation/widgets/button_green.dart';
-import 'package:rj/features/services/show_loading_services.dart';
 import 'package:rj/utils/constants.dart';
 
 import '../../../../utils/styles.dart';
 import '../../../../utils/text_controllers.dart';
+import '../../../domain/use_cases/show_loading_case.dart';
 
 class CartScreen extends StatelessWidget {
   CartScreen({super.key});
-  LoadingServices loadingServices = LoadingServices();
 
   @override
   Widget build(BuildContext context) {

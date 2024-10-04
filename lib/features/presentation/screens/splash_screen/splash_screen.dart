@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rj/config/routes/route_names.dart';
-import 'package:rj/features/services/splash_services.dart';
-import 'package:rj/utils/lc.dart';
+import 'package:rj/features/domain/use_cases/splash_use_cases.dart';
+import 'package:rj/utils/dependencyLocation.dart';
 
 import '../../../data/repository/auth_repository.dart';
 
@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState;
     super.initState();
-    SplashServices.isLogin(context);
+    SplashUseCases.ifLoggedIn(context);
   }
 
   @override

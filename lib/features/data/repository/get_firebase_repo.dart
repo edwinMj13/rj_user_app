@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rj/features/data/models/brand_model.dart';
 import 'package:rj/features/data/models/category_model.dart';
 
-class FetchServices {
+class GetFromFirebaseRepository {
   final firebase = FirebaseFirestore.instance;
 
   Future<List<CategoryModel>> getCategories() async {

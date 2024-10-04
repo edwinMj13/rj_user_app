@@ -1,19 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/config/colors.dart';
-import 'package:rj/config/routes/route_names.dart';
 import 'package:rj/features/data/data_sources/bottom_navigation_data.dart';
+import 'package:rj/features/domain/use_cases/main_screen_use_cases.dart';
 import 'package:rj/features/presentation/screens/main_screen/widgets/main_appbar.dart';
-import 'package:rj/features/services/main_services.dart';
-import 'package:rj/utils/cached_data.dart';
-import 'package:rj/utils/common.dart';
-import 'package:rj/utils/constants.dart';
-import 'package:rj/utils/lc.dart';
-
-import '../../../../utils/styles.dart';
-import '../../../data/repository/auth_repository.dart';
-import 'bloc/main_bloc.dart';
+import 'package:rj/features/data/data_sources/cached_data.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -24,7 +14,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int currentNavIndex = 0;
-  MainServices mainServices = MainServices();
   CachedData cachedData = CachedData();
 
   updateIndex(int index) {
@@ -44,25 +33,26 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     //Future<String>? myFuture = CachedData.getUserName();
     return Scaffold(
-      appBar: PreferredSize(preferredSize: const Size.fromHeight(60),
-          child: FutureBuilder<String>(
-            future: CachedData.getUserName(),
-            builder: (context, snapshot) {
-              if(snapshot.data!=null) {
-                return MainAppBar(
-                    currentNavIndex: currentNavIndex, username: snapshot
-                    .data!.split(' ')
-                    .first);
-              }else{
-                return SizedBox();
-              }
-            },
-          )),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child:
+        FutureBuilder<String>(
+          future: CachedData.getUserName(),
+          builder: (context, snapshot) {
+            if (snapshot.data != null) {
+              return MainAppBar(
+                  currentNavIndex: currentNavIndex,
+                  username: snapshot.data!.split(' ').first);
+            } else {
+              return const SizedBox();
+            }
+          },
+        ),
+      ),
       body: homeScreens[currentNavIndex],
       bottomNavigationBar: _bottomNavigation(),
     );
   }
-
 
   BottomNavigationBar _bottomNavigation() {
     return BottomNavigationBar(
@@ -86,4 +76,3 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
-

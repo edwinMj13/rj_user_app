@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/constants.dart';
+import '../../../utils/constants.dart';
 
-class LoadingServices{
+class ShowLoadingCase{
   BuildContext? contextsProgress;
   void showLoading(BuildContext context, String label) {
     showDialog(
@@ -30,7 +30,7 @@ class LoadingServices{
           );
         });
   }
-cancelLoading(){
-  Navigator.of(contextsProgress!).pop();
-}
+  cancelLoading(){
+    Navigator.of(contextsProgress!).pop();
+  }
 }

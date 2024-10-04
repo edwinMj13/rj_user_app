@@ -17,17 +17,21 @@ class ButtonGreen extends StatelessWidget {
       onPressed: () {
         callback();
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        side: const BorderSide(
-          width: 1,
-          color: Colors.green,
-        ),
-      ),
+      style: _buttonStyle(),
       child: Text(label,style: TextStyle(color: color),),
+    );
+  }
+
+  ButtonStyle _buttonStyle() {
+    return ElevatedButton.styleFrom(
+      backgroundColor: backgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      side: const BorderSide(
+        width: 1,
+        color: Colors.green,
+      ),
     );
   }
 }

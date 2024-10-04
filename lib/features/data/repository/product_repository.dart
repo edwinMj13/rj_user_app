@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rj/features/data/models/category_model.dart';
 import 'package:rj/features/data/models/products_model.dart';
 
-import '../../../utils/cached_data.dart';
+import '../data_sources/cached_data.dart';
 
 class ProductRepo {
   final firebase = FirebaseFirestore.instance;
@@ -63,17 +63,11 @@ class ProductRepo {
     }
   }
 
-  checkIfProductInCart(String prodId, String nodeID) async {
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getProductsInCart(String prodId, String nodeID) async {
     final data =
         await firebase.collection("Users").doc(nodeID).collection("Cart").get();
     final mapData = data.docs;
-    final r =
-        mapData.where((test) => test["productId"].toString().contains(prodId));
-    if (r.isNotEmpty ) {
-      return true;
-    } else {
-      return false;
-    }
+    return mapData;
    // print(r);
   }
 }

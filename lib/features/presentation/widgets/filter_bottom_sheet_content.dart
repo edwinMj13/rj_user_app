@@ -47,31 +47,7 @@ class _FilterBottomSheetContentState extends State<FilterBottomSheetContent> {
               },
               icon: Icon(Icons.keyboard_arrow_down_outlined)),
           sizedH30,
-          BlocBuilder<BottomSheetBloc, BottomSheetState>(
-            builder: (context, state) {
-              if (state is CategoryBrandSuccessState) {
-                print(state.categoryList);
-                return Row(
-                  children: [
-                    Expanded(
-                      child: DropDownButtonWidget(
-                        label: "Brand",
-                        dataList: state.brandList,
-                      ),
-                    ),
-                    sizedW10,
-                    Expanded(
-                      child: DropDownButtonWidget(
-                        label: 'Category',
-                        dataList: state.categoryList,
-                      ),
-                    ),
-                  ],
-                );
-              }
-              return SizedBox();
-            },
-          ),
+          _brand_Category(),
           sizedH30,
           DropDownButtonWidget(
             label: 'Sub-Category',
@@ -79,24 +55,56 @@ class _FilterBottomSheetContentState extends State<FilterBottomSheetContent> {
           sizedH20,
           SliderDesign(),
           sizedH30,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ButtonGreen(
-                  backgroundColor: Colors.green[50],
-                  label: "Cancel",
-                  callback: callback,
-                  color: Colors.green),
-              ButtonGreen(
-                  backgroundColor: Colors.green,
-                  label: "Show Results",
-                  callback: callback,
-                  color: Colors.white),
-            ],
-          ),
+          __actionButton(),
         ],
       ),
     );
+  }
+
+  Row __actionButton() {
+    return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ButtonGreen(
+                backgroundColor: Colors.green[50],
+                label: "Cancel",
+                callback: callback,
+                color: Colors.green),
+            ButtonGreen(
+                backgroundColor: Colors.green,
+                label: "Show Results",
+                callback: callback,
+                color: Colors.white),
+          ],
+        );
+  }
+
+  BlocBuilder<BottomSheetBloc, BottomSheetState> _brand_Category() {
+    return BlocBuilder<BottomSheetBloc, BottomSheetState>(
+          builder: (context, state) {
+            if (state is CategoryBrandSuccessState) {
+              print(state.categoryList);
+              return Row(
+                children: [
+                  Expanded(
+                    child: DropDownButtonWidget(
+                      label: "Brand",
+                      dataList: state.brandList,
+                    ),
+                  ),
+                  sizedW10,
+                  Expanded(
+                    child: DropDownButtonWidget(
+                      label: 'Category',
+                      dataList: state.categoryList,
+                    ),
+                  ),
+                ],
+              );
+            }
+            return SizedBox();
+          },
+        );
   }
 
   void callback() {}

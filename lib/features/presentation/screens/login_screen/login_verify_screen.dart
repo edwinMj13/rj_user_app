@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/config/routes/route_names.dart';
-import 'package:rj/features/services/login_services.dart';
-import 'package:rj/utils/cached_data.dart';
+import 'package:rj/features/domain/use_cases/login_case.dart';
+import 'package:rj/features/data/data_sources/cached_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/constants.dart';
@@ -22,7 +22,7 @@ class LoginVerifyScreen extends StatelessWidget {
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) async {
             if (state is AuthSuccessState) {
-              LoginServices.passDataNavigateToAddress(state, context);
+              LoginCase.passDataNavigateToAddress(state, context);
             }
           },
           child: Container(

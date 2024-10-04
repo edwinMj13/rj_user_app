@@ -53,7 +53,7 @@ class AuthRepository {
     return user;
   }
 
-  Future<void> googleSignOut(VoidCallback callback) async {
+  Future<void> googleSignOut() async {
     print("SignOut Clicked");
     // Future.delayed(Duration(seconds: 3)).then((q){
     //   callback();
@@ -63,7 +63,6 @@ class AuthRepository {
       if (isSignedIn) {
         try {
           await google.signOut().then((v){
-            callback();
           });
         }catch(e){
           print("Google SignOut Error  ${e.toString()}");

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../utils/cached_data.dart';
+import '../data_sources/cached_data.dart';
 import '../models/user_profile_model.dart';
 
-class FirebaseMethods {
+class AddScreenRepo {
   final firebase = FirebaseFirestore.instance;
 
   Future<void> addUser(UserProfileModel userProfile) async {

@@ -1,7 +1,7 @@
 import 'package:rj/features/data/models/user_profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../features/presentation/screens/login_screen/bloc/auth_bloc.dart';
+import '../../presentation/screens/login_screen/bloc/auth_bloc.dart';
 
 class CachedData {
   String? _name;

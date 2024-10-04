@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../config/routes/route_names.dart';
-import '../../utils/cached_data.dart';
-import '../data/models/user_profile_model.dart';
-import '../presentation/screens/login_screen/bloc/auth_bloc.dart';
+import '../../../config/routes/route_names.dart';
+import '../../data/data_sources/cached_data.dart';
+import '../../data/models/user_profile_model.dart';
+import '../../presentation/screens/login_screen/bloc/auth_bloc.dart';
 
-class LoginServices {
+class LoginCase {
   static passDataNavigateToAddress(AuthSuccessState stateData, BuildContext context) async {
     final userData = UserProfileModel(
       nodeID: "",

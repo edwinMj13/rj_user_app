@@ -16,73 +16,85 @@ class HomeScreen extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Chip(label: Text("Latest Arrivals")),
-              Chip(label: Text("Top Offers")),
-              Chip(label: Text("Price Dropped")),
-            ],
-          ),
+          _topChips(),
         sizedH10,
-          CarouselSlider(
-            items: [
-              Image.asset("assets/dummy_banner.jpg"),
-              Image.asset("assets/dummy_banner.jpg"),
-              Image.asset("assets/dummy_banner.jpg"),
-            ],
-            options: CarouselOptions(
-              autoPlay: true,
-                viewportFraction: 1
-            ),
-          ),
-          Expanded(
-            child: BlocBuilder<HomeBloc, HomeState>(
-              builder: (context, state) {
-                if(state is FetchDataHomeSuccessState){
-                  return ListView.builder(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 5, vertical: 5),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: state.categoryList.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: SizedBox(
-                                height: 70,
-                                width: 70,
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: accentListColors[index],
-                                  child: Image.network(state.categoryList[index].image,fit: BoxFit.fill,),
-                                ),
-                              ),
-                            ),
-                            Text(state.categoryList[index].categoryName),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                }
-                return SizedBox();
-              },
-            ),
-          )
+          _banner(),
+          _contents()
         ],
       ),
     );
+  }
+
+  Expanded _contents() {
+    return Expanded(
+          child: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              if(state is FetchDataHomeSuccessState){
+                return ListView.builder(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 5, vertical: 5),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: state.categoryList.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 80,
+                            width: 80,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: SizedBox(
+                              height: 70,
+                              width: 70,
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: accentListColors[index],
+                                child: Image.network(state.categoryList[index].image,fit: BoxFit.fill,),
+                              ),
+                            ),
+                          ),
+                          Text(state.categoryList[index].categoryName),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }
+              return SizedBox();
+            },
+          ),
+        );
+  }
+
+  CarouselSlider _banner() {
+    return CarouselSlider(
+          items: [
+            Image.asset("assets/dummy_banner.jpg"),
+            Image.asset("assets/dummy_banner.jpg"),
+            Image.asset("assets/dummy_banner.jpg"),
+          ],
+          options: CarouselOptions(
+            autoPlay: true,
+              viewportFraction: 1
+          ),
+        );
+  }
+
+  Row _topChips() {
+    return const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Chip(label: Text("Latest Arrivals")),
+            Chip(label: Text("Top Offers")),
+            Chip(label: Text("Price Dropped")),
+          ],
+        );
   }
 }

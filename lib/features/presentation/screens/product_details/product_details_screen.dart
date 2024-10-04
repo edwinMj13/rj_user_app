@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/data/models/products_model.dart';
 import 'package:rj/features/data/models/storage_image_model.dart';
+import 'package:rj/features/domain/use_cases/show_loading_case.dart';
 import 'package:rj/features/presentation/screens/product_details/bloc/product_details_bloc.dart';
 import 'package:rj/features/presentation/widgets/address_change_widget.dart';
 import 'package:rj/features/presentation/widgets/button_green.dart';
 import 'package:rj/features/presentation/widgets/search_mic_widget.dart';
-import 'package:rj/features/services/show_loading_services.dart';
-import 'package:rj/utils/cached_data.dart';
+import 'package:rj/features/data/data_sources/cached_data.dart';
 import 'package:rj/utils/common.dart';
 import 'package:rj/utils/constants.dart';
 import 'package:rj/utils/styles.dart';
@@ -18,7 +18,7 @@ class ProductDetailsScreen extends StatelessWidget {
   ProductDetailsScreen({super.key});
 
   String? nodeId;
-  LoadingServices loadingServices = LoadingServices();
+  ShowLoadingCase showLoadingCase = ShowLoadingCase();
 
   @override
   Widget build(BuildContext context) {
@@ -31,22 +31,11 @@ class ProductDetailsScreen extends StatelessWidget {
       builder: (context, state) {
         print("STATE ProductDetails ${state.runtimeType}");
         if (state is FetchProductDetailsSuccessState) {
-
-          List<StorageImageModel> images = getImageList(state.productModal.imagesList);
+          List<StorageImageModel> images =
+              getImageList(state.productModal.imagesList);
           final data = state.productModal;
           return Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: Icon(Icons.arrow_back)),
-                  SearchMicWidget(),
-                ],
-              ),
-            ),
+            appBar: _appBar(context),
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
@@ -54,53 +43,27 @@ class ProductDetailsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(),
-                          IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.favorite_border)),
-                        ],
-                      ),
+                      _favoriteSection(),
                       _imagesSection(images),
                       sizedH20,
-                      Text(
-                        data.itemName,
-                        style: style(
-                            fontSize: 20,
-                            color: Colors.black,
-                            weight: FontWeight.bold),
-                      ),
+                      _nameSection(data),
                       sizedH10,
-                      Text(
-                        data.description,
-                        style: TextStyle(color: Colors.grey),
-                      ),
+                      _description(data),
                       sizedH20,
-                      Text(
-                        "$rupeeSymbol ${data.sellingPrize}",
-                        style: style(
-                            fontSize: 19,
-                            color: Colors.green,
-                            weight: FontWeight.bold),
-                      ),
+                      _amountSection(data),
                       sizedH20,
-                      const Text("Deliver to : ",
+                      /*const Text("Deliver to : ",
                           style: TextStyle(color: Colors.grey)),
                       sizedH10,
-                      AddressChangeWidget(callback:()=> callback,userModal: state.userProfileModel,),
+                      AddressChangeWidget(
+                        callback: () => callback,
+                        userModal: state.userProfileModel,
+                      ),*/
                       sizedH20,
-                      Center(
-                          child: Text(
-                        "Free Delivery by Dec 29, Monday",
-                        style: style(
-                            fontSize: 20,
-                            color: Colors.black,
-                            weight: FontWeight.bold),
-                      )),
+                      _deliveryDate(),
                       sizedH20,
-                      _addCartBuyNow(context, state.productModal, state),
+                      _addCartBuyNow(
+                          context, state.productModal, state.isInCart),
                     ],
                   ),
                 ),
@@ -113,30 +76,95 @@ class ProductDetailsScreen extends StatelessWidget {
     );
   }
 
-  Container _addCartBuyNow(BuildContext context, ProductsModel productModal,
-      FetchProductDetailsSuccessState state) {
+  Center _deliveryDate() {
+    return Center(
+                        child: Text(
+                      "Free Delivery by Dec 29, Monday",
+                      style: style(
+                          fontSize: 20,
+                          color: Colors.black,
+                          weight: FontWeight.bold),
+                    ));
+  }
+
+  Text _amountSection(ProductsModel data) {
+    return Text(
+                      "$rupeeSymbol ${data.sellingPrize}",
+                      style: style(
+                          fontSize: 19,
+                          color: Colors.green,
+                          weight: FontWeight.bold),
+                    );
+  }
+
+  Text _description(ProductsModel data) {
+    return Text(
+                      data.description,
+                      style: TextStyle(color: Colors.grey),
+                    );
+  }
+
+  Text _nameSection(ProductsModel data) {
+    return Text(
+                      data.itemName,
+                      style: style(
+                          fontSize: 20,
+                          color: Colors.black,
+                          weight: FontWeight.bold),
+                    );
+  }
+
+  Row _favoriteSection() {
+    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(),
+                        IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.favorite_border)),
+                      ],
+                    );
+  }
+
+  AppBar _appBar(BuildContext context) {
+    return AppBar(
+            automaticallyImplyLeading: false,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: Icon(Icons.arrow_back)),
+                SearchMicWidget(),
+              ],
+            ),
+          );
+  }
+
+  Container _addCartBuyNow(
+      BuildContext context, ProductsModel productModal, String isInCart) {
     return Container(
       padding: EdgeInsets.all(10.0),
       color: Colors.white,
-      child: _cartTextIfAddedOrNot(context, productModal, state),
+      child: _cartTextIfAddedOrNot(context, productModal, isInCart),
     );
   }
 
-  Row _cartTextIfAddedOrNot(BuildContext context, ProductsModel productModal,
-      FetchProductDetailsSuccessState state) {
-    return state.isInCart == "false"
+  Row _cartTextIfAddedOrNot(
+      BuildContext context, ProductsModel productModal, String isInCart) {
+    return isInCart == "false"
         ? Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextButton(
                   onPressed: () async {
-                    loadingServices.showLoading(context, "Adding to cart...");
+                    showLoadingCase.showLoading(context, "Adding to cart...");
                     final userData = await CachedData.getUserDetails();
                     context.read<ProductDetailsBloc>().add(
                         AddToCartEventPrDtEvent(
                             model: productModal,
                             nodeId: userData.nodeID,
-                            callback: () => loadingServices.cancelLoading()));
+                            callback: () => showLoadingCase.cancelLoading()));
                   },
                   child: const Row(
                     children: [
