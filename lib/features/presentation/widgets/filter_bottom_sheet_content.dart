@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/domain/use_cases/filter_get_use_cases.dart';
 import 'package:rj/features/presentation/widgets/button_green.dart';
+import 'package:rj/features/presentation/widgets/slide_up_animation_widget.dart';
 import 'package:rj/features/presentation/widgets/slider_design.dart';
 import 'package:rj/utils/constants.dart';
 
@@ -16,16 +19,28 @@ class FilterBottomSheetContent extends StatefulWidget {
       _FilterBottomSheetContentState();
 }
 
-class _FilterBottomSheetContentState extends State<FilterBottomSheetContent> {
+class _FilterBottomSheetContentState extends State<FilterBottomSheetContent>
+    with SingleTickerProviderStateMixin {
   String? selectedItem;
   List<String> brandList = [];
   List<String> categoryList = [];
+  late AnimationController animationController;
 
   @override
   void initState() {
     // TODO: implement initState
     context.read<BottomSheetBloc>().add(CategoryBrandEvent());
+    animationController = AnimationController(vsync: this,duration: const Duration(milliseconds: 200));
+    Timer(const Duration(milliseconds: 200),()=>animationController.forward());
+    animationController.forward();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -47,15 +62,25 @@ class _FilterBottomSheetContentState extends State<FilterBottomSheetContent> {
               },
               icon: Icon(Icons.keyboard_arrow_down_outlined)),
           sizedH30,
-          _brand_Category(),
+          SlideUPAnimatedWidget(
+            childWidget: _brand_Category(),
+            animationController: animationController,
+          ),
           sizedH30,
-          DropDownButtonWidget(
-            label: 'Sub-Category',
+          SlideUPAnimatedWidget(
+            animationController: animationController,
+            childWidget: DropDownButtonWidget(
+              label: 'Sub-Category',
+            ),
           ),
           sizedH20,
-          SliderDesign(),
+          SlideUPAnimatedWidget(
+            animationController: animationController,
+            childWidget: SliderDesign(),
+          ),
           sizedH30,
-          __actionButton(),
+          SlideUPAnimatedWidget(animationController: animationController,
+              childWidget: __actionButton()),
         ],
       ),
     );
@@ -63,48 +88,48 @@ class _FilterBottomSheetContentState extends State<FilterBottomSheetContent> {
 
   Row __actionButton() {
     return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ButtonGreen(
-                backgroundColor: Colors.green[50],
-                label: "Cancel",
-                callback: callback,
-                color: Colors.green),
-            ButtonGreen(
-                backgroundColor: Colors.green,
-                label: "Show Results",
-                callback: callback,
-                color: Colors.white),
-          ],
-        );
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ButtonGreen(
+            backgroundColor: Colors.green[50],
+            label: "Cancel",
+            callback: callback,
+            color: Colors.green),
+        ButtonGreen(
+            backgroundColor: Colors.green,
+            label: "Show Results",
+            callback: callback,
+            color: Colors.white),
+      ],
+    );
   }
 
   BlocBuilder<BottomSheetBloc, BottomSheetState> _brand_Category() {
     return BlocBuilder<BottomSheetBloc, BottomSheetState>(
-          builder: (context, state) {
-            if (state is CategoryBrandSuccessState) {
-              print(state.categoryList);
-              return Row(
-                children: [
-                  Expanded(
-                    child: DropDownButtonWidget(
-                      label: "Brand",
-                      dataList: state.brandList,
-                    ),
-                  ),
-                  sizedW10,
-                  Expanded(
-                    child: DropDownButtonWidget(
-                      label: 'Category',
-                      dataList: state.categoryList,
-                    ),
-                  ),
-                ],
-              );
-            }
-            return SizedBox();
-          },
-        );
+      builder: (context, state) {
+        if (state is CategoryBrandSuccessState) {
+          print(state.categoryList);
+          return Row(
+            children: [
+              Expanded(
+                child: DropDownButtonWidget(
+                  label: "Brand",
+                  dataList: state.brandList,
+                ),
+              ),
+              sizedW10,
+              Expanded(
+                child: DropDownButtonWidget(
+                  label: 'Category',
+                  dataList: state.categoryList,
+                ),
+              ),
+            ],
+          );
+        }
+        return SizedBox();
+      },
+    );
   }
 
   void callback() {}

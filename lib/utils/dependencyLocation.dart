@@ -12,10 +12,14 @@ import '../features/data/repository/auth_repository.dart';
 final locator =GetIt.instance;
 
 Future<void> initializeDependencies()async {
+
+  //  registerLazySingleton() -- loaded only when it is used and will be deleted when it is not in use.
+
   locator.registerLazySingleton(()=> AuthRepository());
   locator.registerLazySingleton(()=> AddScreenRepo());
   locator.registerLazySingleton(()=> CartRepository());
   locator.registerLazySingleton(()=> ExploreRepo());
   locator.registerLazySingleton(()=> GetFromFirebaseRepository());
   locator.registerLazySingleton(()=> ProductRepo());
+
 }

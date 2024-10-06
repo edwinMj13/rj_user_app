@@ -10,4 +10,3 @@ final shippingAddAddressController = TextEditingController();
 final searchAppBarController = TextEditingController();
 
 
-final cartQuantity = TextEditingController();

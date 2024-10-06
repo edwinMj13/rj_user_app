@@ -33,7 +33,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     emit(SignOutSuccessState());
   }
 
-
   Future<void> recentViewedEvent(RecentViewedEvent event, Emitter<AccountState> emit) async {
     final recentProducts = await locator<ExploreRepo>().getAllProducts();
     emit(RecentItemsSuccessState(listRecent: recentProducts));

@@ -5,4 +5,5 @@ class RouteNames{
   static const splashScreen= "splash_screen";
   static const addAddressScreen= "add_address_screen";
   static const productDetailsScreen= "product_details_screen";
+  static const categoryDetailsScreen= "category_details_screen";
 }

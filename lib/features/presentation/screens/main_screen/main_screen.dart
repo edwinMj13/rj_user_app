@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/config/colors.dart';
 import 'package:rj/features/data/data_sources/bottom_navigation_data.dart';
+import 'package:rj/features/data/repository/cart_repository.dart';
 import 'package:rj/features/domain/use_cases/main_screen_use_cases.dart';
+import 'package:rj/features/presentation/screens/main_screen/bloc/main_bloc.dart';
 import 'package:rj/features/presentation/screens/main_screen/widgets/main_appbar.dart';
 import 'package:rj/features/data/data_sources/cached_data.dart';
+import 'package:rj/utils/dependencyLocation.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,66 +17,127 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int currentNavIndex = 0;
-  CachedData cachedData = CachedData();
 
-  updateIndex(int index) {
-    setState(() {
-      currentNavIndex = index;
-    });
-  }
+  late int cartLength;
 
   @override
   void initState() {
     // TODO: implement initState
-    cachedData.getSetUser();
+    context
+        .read<MainBloc>()
+        .add(UpdateIndexCarBadgeEvent(index: 0));
+
     super.initState();
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    if(ModalRoute.of(context)!.settings.arguments!=null) {
+      cartLength =ModalRoute.of(context)!.settings.arguments as int;
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    //Future<String>? myFuture = CachedData.getUserName();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child:
-        FutureBuilder<String>(
-          future: CachedData.getUserName(),
-          builder: (context, snapshot) {
-            if (snapshot.data != null) {
-              return MainAppBar(
-                  currentNavIndex: currentNavIndex,
-                  username: snapshot.data!.split(' ').first);
-            } else {
-              return const SizedBox();
-            }
-          },
+        child: PopScope(
+          canPop: false,
+          child: BlocBuilder<MainBloc, MainState>(
+            builder: (context, state) {
+              return FutureBuilder(
+                future: CachedData.getUserName(),
+                builder: (context, snapshot) {
+                  if (snapshot.data != null) {
+                    //final stateData = MainScreenIndexBadgeState;
+                    return MainAppBar(
+                        currentNavIndex: state.index,
+                        username: snapshot.data!.split(' ').first);
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              );
+            },
+          ),
         ),
       ),
-      body: homeScreens[currentNavIndex],
+      body: BlocBuilder<MainBloc, MainState>(
+        builder: (context, state) {
+          return homeScreens(state.index);
+        },
+      ),
       bottomNavigationBar: _bottomNavigation(),
     );
   }
 
-  BottomNavigationBar _bottomNavigation() {
-    return BottomNavigationBar(
-      items: List.generate(
-        bottomMenu.length,
-            (index) {
-          return BottomNavigationBarItem(
-              icon: Icon(bottomMenu[index].icon),
-              label: bottomMenu[index].title);
-        },
-      ),
-      backgroundColor: Colors.black,
-      unselectedItemColor: Colors.grey,
-      selectedItemColor: primaryColor,
-      currentIndex: currentNavIndex,
-      onTap: updateIndex,
-      selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-      showUnselectedLabels: true,
-      unselectedLabelStyle:
-      const TextStyle(fontWeight: FontWeight.normal, color: Colors.grey),
+  Widget _bottomNavigation() {
+    return BlocBuilder<MainBloc, MainState>(
+      builder: (context, state) {
+        if (state is MainScreenIndexBadgeState) {
+          cartLength = state.cartLength!;
+          print("state.cartLength > 0  ${state.cartLength! > 0}\n"
+              " state.index == 3 ${state.index == 3}");
+          return BottomNavigationBar(
+            items: List.generate(
+              bottomMenu.length,
+                  (index) {
+                return BottomNavigationBarItem(
+                    icon: bottomMenu[index].title == "Cart" &&
+                        state.cartLength! > 0
+                        ? Badge(
+                      label: Text(cartLength.toString()),
+                      backgroundColor: Colors.red,
+                      child: Icon(
+                        bottomMenu[index].icon,
+                      ),
+                    )
+                        : Icon(bottomMenu[index].icon),
+                    label: bottomMenu[index].title);
+              },
+            ),
+            backgroundColor: Colors.black,
+            unselectedItemColor: Colors.grey,
+            selectedItemColor: primaryColor,
+            currentIndex: state.index!,
+            onTap: (value) =>
+                context
+                    .read<MainBloc>()
+                    .add(UpdateIndexCarBadgeEvent(index: value)),
+            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            showUnselectedLabels: true,
+            unselectedLabelStyle: const TextStyle(
+                fontWeight: FontWeight.normal, color: Colors.grey),
+          );
+        }else if(state is MainInitial){
+         return BottomNavigationBar(
+            items: List.generate(
+              bottomMenu.length,
+                  (index) {
+                return BottomNavigationBarItem(
+                    icon: Icon(bottomMenu[index].icon),
+                    label: bottomMenu[index].title);
+              },
+            ),
+            backgroundColor: Colors.black,
+            unselectedItemColor: Colors.grey,
+            selectedItemColor: primaryColor,
+            currentIndex: state.index,
+            onTap: (value) =>
+                context
+                    .read<MainBloc>()
+                    .add(UpdateIndexCarBadgeEvent(index: value)),
+            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            showUnselectedLabels: true,
+            unselectedLabelStyle: const TextStyle(
+                fontWeight: FontWeight.normal, color: Colors.grey),
+          );
+        }
+        return SizedBox();
+      },
     );
   }
 }

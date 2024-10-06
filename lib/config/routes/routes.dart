@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rj/features/presentation/screens/category_details_screen/category_details_screen.dart';
 import 'package:rj/features/presentation/screens/main_screen/main_screen.dart';
 import 'package:rj/features/presentation/screens/product_details/product_details_screen.dart';
 
@@ -10,18 +11,20 @@ class Routes {
 
 
   static Route<dynamic> generateRoutes(RouteSettings settings){
-    print(settings.arguments);
+    print("settings.arguments ${settings.arguments}");
     switch(settings.name){
       case "splash_screen":
         return MaterialPageRoute(builder: (context)=>const SplashScreen());
       case "main_screen":
-        return MaterialPageRoute(builder: (context)=> const MainScreen());
+        return MaterialPageRoute(builder: (context)=> const MainScreen(),settings: settings);
       case "login_screen":
         return MaterialPageRoute(builder: (context)=>const LoginVerifyScreen());
       case "add_address_screen":
         return MaterialPageRoute(builder: (context)=> AddDetailsScreen(),settings: settings);
       case "product_details_screen":
         return MaterialPageRoute(builder: (context)=> ProductDetailsScreen(),settings: settings);
+      case "category_details_screen":
+        return MaterialPageRoute(builder: (context)=> CategoryDetailsScreen(),settings: settings);
       default :
         return MaterialPageRoute(
           builder: (context)=>const Scaffold(

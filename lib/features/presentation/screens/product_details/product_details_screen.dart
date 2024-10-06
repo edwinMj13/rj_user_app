@@ -7,6 +7,7 @@ import 'package:rj/features/data/models/storage_image_model.dart';
 import 'package:rj/features/domain/use_cases/show_loading_case.dart';
 import 'package:rj/features/presentation/screens/product_details/bloc/product_details_bloc.dart';
 import 'package:rj/features/presentation/widgets/address_change_widget.dart';
+import 'package:rj/features/presentation/widgets/appbar_common.dart';
 import 'package:rj/features/presentation/widgets/button_green.dart';
 import 'package:rj/features/presentation/widgets/search_mic_widget.dart';
 import 'package:rj/features/data/data_sources/cached_data.dart';
@@ -18,7 +19,7 @@ class ProductDetailsScreen extends StatelessWidget {
   ProductDetailsScreen({super.key});
 
   String? nodeId;
-  ShowLoadingCase showLoadingCase = ShowLoadingCase();
+  final ShowLoadingCase showLoadingCase = ShowLoadingCase();
 
   @override
   Widget build(BuildContext context) {
@@ -27,118 +28,100 @@ class ProductDetailsScreen extends StatelessWidget {
     context
         .read<ProductDetailsBloc>()
         .add(FetchProductDetailsEvent(nodeId: nodeId!));
-    return BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
-      builder: (context, state) {
-        print("STATE ProductDetails ${state.runtimeType}");
-        if (state is FetchProductDetailsSuccessState) {
-          List<StorageImageModel> images =
-              getImageList(state.productModal.imagesList);
-          final data = state.productModal;
-          return Scaffold(
-            appBar: _appBar(context),
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _favoriteSection(),
-                      _imagesSection(images),
-                      sizedH20,
-                      _nameSection(data),
-                      sizedH10,
-                      _description(data),
-                      sizedH20,
-                      _amountSection(data),
-                      sizedH20,
-                      /*const Text("Deliver to : ",
-                          style: TextStyle(color: Colors.grey)),
-                      sizedH10,
-                      AddressChangeWidget(
-                        callback: () => callback,
-                        userModal: state.userProfileModel,
-                      ),*/
-                      sizedH20,
-                      _deliveryDate(),
-                      sizedH20,
-                      _addCartBuyNow(
-                          context, state.productModal, state.isInCart),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        }
-        return SizedBox();
-      },
+    return Scaffold(
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: AppbarCommon(),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
+            builder: (context, state) {
+              print("STATE ProductDetails ${state.runtimeType}");
+              switch (state.runtimeType) {
+                case FetchProductDetailsSuccessState:
+                  final stateData = state as FetchProductDetailsSuccessState;
+                  List<StorageImageModel> images =
+                      getImageList(stateData.productModal.imagesList);
+                  final data = stateData.productModal;
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _favoriteSection(),
+                        _imagesSection(images),
+                        sizedH20,
+                        _nameSection(data),
+                        sizedH10,
+                        _description(data),
+                        sizedH20,
+                        _amountSection(data),
+                        sizedH20,
+                        /*const Text("Deliver to : ",
+                            style: TextStyle(color: Colors.grey)),
+                        sizedH10,
+                        AddressChangeWidget(
+                          callback: () => callback,
+                          userModal: state.userProfileModel,
+                        ),*/
+                        sizedH20,
+                        _deliveryDate(),
+                        sizedH20,
+                        _addCartBuyNow(context, stateData.productModal,
+                            stateData.isInCart),
+                      ],
+                    ),
+                  );
+                case ProductDetailsInitial:
+                  return Center(child: CircularProgressIndicator());
+                default:
+                  return SizedBox();
+              }
+            },
+          ),
+        ),
+      ),
     );
   }
 
   Center _deliveryDate() {
     return Center(
-                        child: Text(
-                      "Free Delivery by Dec 29, Monday",
-                      style: style(
-                          fontSize: 20,
-                          color: Colors.black,
-                          weight: FontWeight.bold),
-                    ));
+        child: Text(
+      "Free Delivery by Dec 29, Monday",
+      style: style(fontSize: 20, color: Colors.black, weight: FontWeight.bold),
+    ));
   }
 
   Text _amountSection(ProductsModel data) {
     return Text(
-                      "$rupeeSymbol ${data.sellingPrize}",
-                      style: style(
-                          fontSize: 19,
-                          color: Colors.green,
-                          weight: FontWeight.bold),
-                    );
+      "$rupeeSymbol ${data.sellingPrize}",
+      style: style(fontSize: 19, color: Colors.green, weight: FontWeight.bold),
+    );
   }
 
   Text _description(ProductsModel data) {
     return Text(
-                      data.description,
-                      style: TextStyle(color: Colors.grey),
-                    );
+      data.description,
+      style: TextStyle(color: Colors.grey),
+    );
   }
 
   Text _nameSection(ProductsModel data) {
     return Text(
-                      data.itemName,
-                      style: style(
-                          fontSize: 20,
-                          color: Colors.black,
-                          weight: FontWeight.bold),
-                    );
+      data.itemName,
+      style: style(fontSize: 20, color: Colors.black, weight: FontWeight.bold),
+    );
   }
 
   Row _favoriteSection() {
     return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(),
-                        IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.favorite_border)),
-                      ],
-                    );
-  }
-
-  AppBar _appBar(BuildContext context) {
-    return AppBar(
-            automaticallyImplyLeading: false,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(Icons.arrow_back)),
-                SearchMicWidget(),
-              ],
-            ),
-          );
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(),
+        IconButton(onPressed: () {}, icon: Icon(Icons.favorite_border)),
+      ],
+    );
   }
 
   Container _addCartBuyNow(
@@ -164,7 +147,8 @@ class ProductDetailsScreen extends StatelessWidget {
                         AddToCartEventPrDtEvent(
                             model: productModal,
                             nodeId: userData.nodeID,
-                            callback: () => showLoadingCase.cancelLoading()));
+                            callback: () => showLoadingCase.cancelLoading(),
+                            context: context));
                   },
                   child: const Row(
                     children: [

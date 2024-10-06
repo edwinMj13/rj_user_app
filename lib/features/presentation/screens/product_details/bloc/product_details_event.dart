@@ -12,6 +12,7 @@ class AddToCartEventPrDtEvent extends ProductDetailsEvent{
   final ProductsModel model;
   final String nodeId;
   final VoidCallback callback;
+  final BuildContext context;
 
-  AddToCartEventPrDtEvent({required this.nodeId,required this.model,required this.callback});
+  AddToCartEventPrDtEvent({required this.nodeId,required this.model,required this.callback,required this.context});
 }

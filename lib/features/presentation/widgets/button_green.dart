@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/colors.dart';
+import '../../../utils/constants.dart';
 import '../../../utils/styles.dart';
-
 class ButtonGreen extends StatelessWidget {
   final String label;
   final VoidCallback callback;
   final Color color;
   final Color? backgroundColor;
+  Size buttonHeight;
 
-  const ButtonGreen({super.key,required this.backgroundColor, required this.label, required this.callback,required this.color});
+   ButtonGreen({this.buttonHeight=defaultButtonHeight,super.key,required this.backgroundColor, required this.label, required this.callback,required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class ButtonGreen extends StatelessWidget {
   ButtonStyle _buttonStyle() {
     return ElevatedButton.styleFrom(
       backgroundColor: backgroundColor,
+      fixedSize: buttonHeight,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0),
       ),

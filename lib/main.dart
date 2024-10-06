@@ -14,6 +14,7 @@ import 'package:rj/features/presentation/widgets/blocs/bottom_sheet/sub_category
 import 'package:rj/utils/dependencyLocation.dart';
 
 import 'features/presentation/screens/add_details_screen/bloc/add_details_bloc.dart';
+import 'features/presentation/screens/category_details_screen/bloc/category_details_bloc.dart';
 import 'features/presentation/screens/login_screen/bloc/auth_bloc.dart';
 import 'features/presentation/widgets/blocs/bottom_sheet/category_brand_bottomsheet_bloc/bottom_sheet_bloc.dart';
 import 'firebase_options.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AuthBloc(locator<AuthRepository>())),
+        BlocProvider(create: (context) => AuthBloc(authRepository: locator<AuthRepository>())),
         BlocProvider(create: (context) => MainBloc()),
         BlocProvider(create: (context) => AccountBloc()),
         BlocProvider(create: (context) => AddDetailsBloc()),
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => HomeBloc()),
         BlocProvider(create: (context) => ProductDetailsBloc()),
         BlocProvider(create: (context) => CartBloc()),
+        BlocProvider(create: (context) => CategoryDetailsBloc()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

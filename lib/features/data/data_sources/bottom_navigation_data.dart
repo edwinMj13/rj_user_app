@@ -10,19 +10,27 @@ class BottomNavData {
   final IconData icon;
 
   BottomNavData({required this.title, required this.icon});
-
 }
 
-List<BottomNavData> bottomMenu=[
+List<BottomNavData> bottomMenu = [
   BottomNavData(title: "Home", icon: Icons.home),
   BottomNavData(title: "Explore", icon: Icons.explore),
   BottomNavData(title: "Account", icon: Icons.person),
   BottomNavData(title: "Cart", icon: Icons.shopping_cart),
 ];
 
-final List homeScreens = [
-  const HomeScreen(),
-  ExploreScreen(),
-   AccountScreen(),
-  CartScreen(),
-];
+Widget homeScreens(int index) {
+  //print(index);
+  switch (index) {
+    case 0:
+      return HomeScreen();
+    case 1:
+      return ExploreScreen();
+    case 2:
+      return AccountScreen();
+    case 3:
+      return CartScreen();
+    default :
+      return SizedBox();
+  }
+}

@@ -27,47 +27,4 @@ class ProductRepo {
     );
     return model;
   }
-
-  Future<void> addToCart(ProductsModel model, String nodeId) async {
-    try {
-      await firebase
-          .collection("Users")
-          .doc(nodeId)
-          .collection("Cart")
-          .add(model.toMap())
-          .then((node) async {
-        final poducts = ProductsModel(
-          itemName: model.itemName,
-          category: model.category,
-          productId: model.firebaseNodeId,
-          firebaseNodeId: node.id,
-          status: model.status,
-          imagesList: model.imagesList,
-          description: model.description,
-          itemBrand: model.itemBrand,
-          mainImage: model.mainImage,
-          sellingPrize: model.sellingPrize,
-          stock: model.stock,
-          price: model.price,
-          subCategory: model.subCategory,
-        );
-        await firebase
-            .collection("Users")
-            .doc(nodeId)
-            .collection("Cart")
-            .doc(node.id)
-            .update(poducts.toMap());
-      });
-    } catch (e) {
-      print("Adding To Cart Exception - ${e.toString()}");
-    }
-  }
-
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getProductsInCart(String prodId, String nodeID) async {
-    final data =
-        await firebase.collection("Users").doc(nodeID).collection("Cart").get();
-    final mapData = data.docs;
-    return mapData;
-   // print(r);
-  }
 }

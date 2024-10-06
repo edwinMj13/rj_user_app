@@ -1,6 +1,9 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rj/features/data/models/cart_model.dart';
+import 'package:rj/features/data/models/products_model.dart';
+import 'package:rj/features/domain/use_cases/cart_use_cases.dart';
 import 'package:rj/features/presentation/screens/cart_screen/bloc/cart_bloc.dart';
 import 'package:rj/features/presentation/widgets/address_change_widget.dart';
 import 'package:rj/features/presentation/widgets/button_green.dart';
@@ -10,93 +13,137 @@ import '../../../../utils/styles.dart';
 import '../../../../utils/text_controllers.dart';
 import '../../../domain/use_cases/show_loading_case.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   CartScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    cartQuantity.text = "1";
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
     context.read<CartBloc>().add(FetchCartEvent());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return BlocConsumer<CartBloc, CartState>(
         listener: (context, state) {},
         builder: (context, state) {
+          print("State Cart Screen ${state.runtimeType}");
           if (state is FetchCartSuccess) {
-            int totals = 0;
-            final totalPrice =
-                state.cartList.map((e) => e.sellingPrize).toList();
-            for (var i in totalPrice) {
-              totals = totals + int.parse(i);
-            }
-            int lastAmt = totals - 120;
-            String? selectedQval;
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  sizedH20,
-                  Text(
-                    "Shipping Address",
-                    style: style(
-                        color: Colors.black,
-                        fontSize: 18,
-                        weight: FontWeight.bold),
-                  ),
-                  sizedH20,
-                  AddressChangeWidget(
-                      callback: () => callback(), userModal: state.userModel),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            padding: const EdgeInsets.all(10.0),
-                            margin: const EdgeInsets.symmetric(vertical: 10.0),
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                _imageName(state, index),
-                                sizedH10,
-                                _quantityPriceSection(
-                                    state.cartList[index].sellingPrize),
-                                sizedH20,
-                                const Row(
-                                  children: [
-                                    Text("Delivery by Aug 30, Wed"),
-                                    sizedW30,
-                                    Text(
-                                      "30rs",
-                                      style: TextStyle(
-                                          decoration:
-                                              TextDecoration.lineThrough),
-                                    ),
-                                    sizedW10,
-                                    Text(
-                                      "FREE",
-                                      style: TextStyle(color: Colors.green),
-                                    )
-                                  ],
-                                ),
-                                _removeFromCartButton(context, state, index)
-                              ],
-                            ),
-                          );
-                        },
-                        itemCount: state.cartList.length,
-                      ),
+            double cartTotal = CartUseCase.getCartTotal(state.cartList);
+            double discountAmt = CartUseCase.discountAmt(cartTotal, 12);
+            String lastPrice =
+                CartUseCase.getLastTotalAmount(cartTotal, discountAmt).toStringAsFixed(2);
+
+            return Stack(
+              children: [
+                /*sizedH20,
+                Text(
+                  "Shipping Address",
+                  style: style(
+                      color: Colors.black,
+                      fontSize: 18,
+                      weight: FontWeight.bold),
+                ),
+                sizedH20,
+                AddressChangeWidget(
+                    callback: () => callback(), userModal: state.userModel),*/
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        _cartItems(state, context),
+                        sizedH20,
+                        state.cartList.isNotEmpty
+                            ? _priceDetailsSection(
+                                state, cartTotal, lastPrice, discountAmt)
+                            : const SizedBox(),
+                        const SizedBox(height: 60,),
+                      ],
                     ),
                   ),
-                  state.cartList.isNotEmpty
-                      ? _priceDetailsSection(state, totals, lastAmt)
-                      : SizedBox()
-                ],
-              ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  //top: 1,
+                    child: _placeOrderButton(lastPrice),),
+              ],
             );
           }
-          return SizedBox();
+          return const Center(child: CircularProgressIndicator());
         });
+  }
+
+  Widget _placeOrderButton(String lastPrice) {
+    return Container(
+      height: 65,
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("$rupeeSymbol $lastPrice",style: style(fontSize: 18, color: Colors.green, weight: FontWeight.bold),),
+          ButtonGreen(
+              backgroundColor: Colors.yellow,
+              label: "Place Order",
+              callback: callback,
+              buttonHeight: Size.fromHeight(45),
+              color: Colors.black),
+        ],
+      ),
+    );
+  }
+
+  ListView _cartItems(FetchCartSuccess state, BuildContext context) {
+    return ListView.separated(
+      shrinkWrap: true,
+      separatorBuilder: (context, index) => const Divider(
+        height: 0.5,
+        color: Colors.black12,
+      ),
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return Container(
+          padding: const EdgeInsets.all(10.0),
+          color: Colors.white,
+          child: Column(
+            children: [
+              _imageName(state, index),
+              sizedH10,
+              _quantityPriceSection(state.cartList[index], context),
+              sizedH20,
+              const Row(
+                children: [
+                  Text("Delivery by Aug 30, Wed"),
+                  sizedW30,
+                  Text(
+                    "30rs",
+                    style: TextStyle(decoration: TextDecoration.lineThrough),
+                  ),
+                  sizedW10,
+                  Text(
+                    "FREE",
+                    style: TextStyle(color: Colors.green),
+                  )
+                ],
+              ),
+              _removeFromCartButton(context, state, index)
+            ],
+          ),
+        );
+      },
+      itemCount: state.cartList.length,
+    );
   }
 
   Container _removeFromCartButton(
@@ -105,15 +152,15 @@ class CartScreen extends StatelessWidget {
       decoration: BoxDecoration(),
       child: TextButton(
           onPressed: () {
-            context
-                .read<CartBloc>()
-                .add(RemoveFromCartEvent(cartModel: state.cartList[index],context: context));
+            context.read<CartBloc>().add(RemoveFromCartEvent(
+                cartModel: state.cartList[index], context: context));
           },
           child: Text("Remove")),
     );
   }
 
-  Column _priceDetailsSection(FetchCartSuccess state, int totals, int lastAmt) {
+  Column _priceDetailsSection(FetchCartSuccess state, double cartTotal,
+      String lastAmt, double discountAmt) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -124,18 +171,18 @@ class CartScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Price (${state.cartList.length}items)"),
-            Text("$rupeeSymbol  $totals"),
+            Text("$rupeeSymbol  $cartTotal"),
           ],
         ),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "Discount",
+            const Text(
+              "Discount ( 12% )",
               style: TextStyle(color: Colors.green),
             ),
             Text(
-              "$rupeeSymbol -120",
+              "$rupeeSymbol ${discountAmt.toString()}",
               style: TextStyle(color: Colors.green),
             ),
           ],
@@ -175,12 +222,6 @@ class CartScreen extends StatelessWidget {
                     color: Colors.green,
                     weight: FontWeight.bold))),
         sizedH10,
-        Center(
-            child: ButtonGreen(
-                backgroundColor: Colors.yellow,
-                label: "Place Order",
-                callback: callback,
-                color: Colors.black))
       ],
     );
   }
@@ -207,8 +248,8 @@ class CartScreen extends StatelessWidget {
       children: [
         Image.network(
           state.cartList[index].mainImage,
-          height: 70.0,
-          width: 70.0,
+          height: 100.0,
+          width: 100.0,
         ),
         sizedW20,
         Text(
@@ -220,45 +261,57 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Row _quantityPriceSection(String sellingPrize) {
-    return Row(
-      children: [
-        Container(
-          height: 40,
-          width: 70,
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 0.5,
-              color: Colors.grey,
-            ),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+  Widget _quantityPriceSection(CartModel productModel, BuildContext context) {
+    CartUseCase cartUseCase = CartUseCase();
+    return ValueListenableBuilder<int>(
+        valueListenable: CartUseCase.valQuantityNotifier,
+        builder: (context, snap, _) {
+          return Row(
             children: [
-              const Text("Qty: "),
-              Flexible(
-                child: TextField(
-                  controller: cartQuantity,
-                  maxLength: 1,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    counterText: "",
+              SizedBox(
+                width: 100,
+                child: Center(
+                  child: DropdownMenu(
+                    initialSelection: productModel.cartedQuantity,
+                    width: 80,
+                    // menuWidth: 50,
+                    // disabledHint: const Text("Qty", style: TextStyle(fontSize: 11),),
+                    // borderRadius: BorderRadius.circular(10.0),
+                    label: const Text(
+                      "Qty",
+                      style: TextStyle(fontSize: 11),
+                    ),
+                    trailingIcon: const Icon(
+                      Icons.arrow_drop_down,
+                      size: 15,
+                    ),
+                    dropdownMenuEntries: [1, 2, 3, 4, 5]
+                        .map(
+                          (item) => DropdownMenuEntry(
+                              value: item, label: item.toString()),
+                        )
+                        .toList(),
+                    onSelected: (value) {
+                      cartUseCase.updateQuantity(value!);
+                      if (productModel.cartedQuantity != value) {
+                        context.read<CartBloc>().add(CartUpdateEvent(
+                            value: value,
+                            cartModel: productModel,
+                            context: context));
+                      }
+                    },
                   ),
                 ),
+              ),
+              sizedW20,
+              Text(
+                "$rupeeSymbol ${productModel.totalAmount}",
+                style: style(
+                    fontSize: 20, color: Colors.black, weight: FontWeight.bold),
               )
             ],
-          ),
-        ),
-        sizedW20,
-        Text(
-          "$rupeeSymbol $sellingPrize",
-          style:
-              style(fontSize: 20, color: Colors.black, weight: FontWeight.bold),
-        )
-      ],
-    );
+          );
+        });
   }
 
   callback() {}
