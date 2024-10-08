@@ -12,6 +12,7 @@ import 'package:rj/utils/constants.dart';
 import 'package:rj/utils/styles.dart';
 
 import '../../../domain/use_cases/show_loading_with_out_text.dart';
+import '../../widgets/blocs/bottom_sheet/category_brand_bottomsheet_bloc/bottom_sheet_bloc.dart';
 import '../../widgets/product_layout.dart';
 import 'bloc/explore_bloc.dart';
 
@@ -108,11 +109,12 @@ class _ExploreScreenState extends State<ExploreScreen>
           ),
           IconButton(
               onPressed: () {
+                context.read<BottomSheetBloc>().add(CategoryBrandEvent());
                 showModalBottomSheet(
                     context: context,
                     enableDrag: true,
                     isDismissible: true,
-                    builder: (context) => FilterBottomSheetContent());
+                    builder: (context) => FilterBottomSheetContent(tag:"ExP",));
               },
               icon: const Icon(Icons.filter_alt_outlined)),
         ],

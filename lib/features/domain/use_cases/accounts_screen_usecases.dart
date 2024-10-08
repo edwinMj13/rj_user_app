@@ -11,4 +11,10 @@ class AccountScreenUsecases{
     callback();
     Navigator.pushNamed(contextMain, RouteNames.loginScreen);
   }
+  navigateToEditProfileScreen(BuildContext context){
+
+  }
+  navigateToAddAddressScreen(BuildContext context){
+
+  }
 }

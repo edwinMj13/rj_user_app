@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:rj/features/data/models/category_model.dart';
 import 'package:rj/features/data/repository/get_firebase_repo.dart';
 
@@ -19,13 +20,15 @@ class FilterGetDataUseCase {
     return locator<GetFromFirebaseRepository>().getCategoryNames();
   }
 
-  Future<List<String>> getSubCategories(String category) async {
+  static Future<List<String>> getSubCategories(String category) async {
     List<CategoryModel> categoryList =await locator<GetFromFirebaseRepository>().getCategories();
     CategoryModel listSub = categoryList
-        .where((model) => model.categoryName==category)
-        .first;
+        .where((model) => model.categoryName==category).single;
     print(listSub);
     List<String> stringList = listSub.subCategories!.cast<String>();
     return stringList;
+  }
+  static closeBottomSheet(BuildContext context){
+    Navigator.of(context).pop();
   }
 }

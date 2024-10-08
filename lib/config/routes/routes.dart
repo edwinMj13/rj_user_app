@@ -24,7 +24,8 @@ class Routes {
       case "product_details_screen":
         return MaterialPageRoute(builder: (context)=> ProductDetailsScreen(),settings: settings);
       case "category_details_screen":
-        return MaterialPageRoute(builder: (context)=> CategoryDetailsScreen(),settings: settings);
+        //String? categoryTitle = settings.arguments.toString();
+        return MaterialPageRoute(builder: (context)=> CategoryDetailsScreen(categoryName: settings.arguments.toString(),),settings: settings);
       default :
         return MaterialPageRoute(
           builder: (context)=>const Scaffold(

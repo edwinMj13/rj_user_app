@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/domain/use_cases/filter_get_use_cases.dart';
+import 'package:rj/features/presentation/widgets/blocs/bottom_sheet/category_brand_bottomsheet_bloc/bottom_sheet_bloc.dart';
 
-import 'blocs/bottom_sheet/sub_category_bottomsheet_bloc/sub_categoey_bottomsheet_bloc.dart';
 
 class DropDownButtonWidget extends StatelessWidget {
   DropDownButtonWidget({
@@ -13,18 +13,24 @@ class DropDownButtonWidget extends StatelessWidget {
 
   String? selectedItem;
   String? selectedSubItem;
-  final String? label;
+  final String label;
   List<String>? dataList;
   FilterGetDataUseCase filterGetDataUseCase = FilterGetDataUseCase();
+  final focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return label != "Sub-Category"
-        ? DropdownButtonFormField(
+        ? _ifBrandOrCategory(context)
+        : _ifSubCategory(context);
+  }
+
+  DropdownButtonFormField<String> _ifBrandOrCategory(BuildContext context) {
+    return DropdownButtonFormField(
       value: selectedItem,
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        label: Text(label!),
+        border: const OutlineInputBorder(),
+        label: Text(label),
       ),
       items: dataList!.map((e) {
         return DropdownMenuItem(
@@ -34,44 +40,54 @@ class DropDownButtonWidget extends StatelessWidget {
       }).toList(),
       onChanged: (value) {
         selectedItem = value!;
-        if (label == "Category") {
-          context.read<SubCategoeyBottomsheetBloc>().add(SubCateSheetEvent(selectedItem: selectedItem!));
-        }
+        //if (label == "Category") {
+          context
+              .read<BottomSheetBloc>()
+              .add(SubCategorySheetEvent(selectedItem: selectedItem!,tag: label));
+        // } else if (label == "Brand") {
+        //   context
+        //       .read<BottomSheetBloc>()
+        //       .add(SubCategorySheetEvent(selectedItem: selectedItem!));
+        // }
       },
-    )
-        : BlocBuilder<SubCategoeyBottomsheetBloc, SubCategoeyBottomsheetState>(
-      builder: (context, state) {
-        if(state is SubCategoeyBottomsheetSuccessState){
-          return DropdownButtonFormField(
+    );
+  }
+
+  _ifSubCategory(BuildContext context) {
+    return dataList != null
+        ? DropdownButtonFormField(
             value: selectedSubItem,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              label: Text(label!),
+              label: Text(label),
             ),
-            items: state.subList.map((e) {
+            items: dataList!.map((e) {
               return DropdownMenuItem(
                 value: e,
                 child: Text(e),
               );
             }).toList(),
             onChanged: (value) {
-              selectedSubItem = value!;
-              selectedSubItem=null;
+              selectedSubItem = value;
+              context
+                  .read<BottomSheetBloc>()
+                  .add(SubCategorySheetEvent(selectedItem: value!,tag: label));
             },
+          )
+        : DropdownButtonFormField(
+            value: selectedSubItem,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              label: Text(label!),
+            ),
+            items: const [
+              DropdownMenuItem(
+                value: "child",
+                child: Text("child"),
+              ),
+            ],
+            onChanged: null,
           );
-        }
-        return DropdownButtonFormField(
-          value: selectedSubItem,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            label: Text(label!),
-          ),
-          items: const [DropdownMenuItem(value: "child",child: Text("child"),)],
-          onChanged: null,
-        );
-      },
-    );
-    SizedBox();
   }
 }
 

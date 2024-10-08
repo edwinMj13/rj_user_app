@@ -10,7 +10,6 @@ import 'package:rj/features/presentation/screens/explore_screen/bloc/explore_blo
 import 'package:rj/features/presentation/screens/home_screen/bloc/home_bloc.dart';
 import 'package:rj/features/presentation/screens/main_screen/bloc/main_bloc.dart';
 import 'package:rj/features/presentation/screens/product_details/bloc/product_details_bloc.dart';
-import 'package:rj/features/presentation/widgets/blocs/bottom_sheet/sub_category_bottomsheet_bloc/sub_categoey_bottomsheet_bloc.dart';
 import 'package:rj/utils/dependencyLocation.dart';
 
 import 'features/presentation/screens/add_details_screen/bloc/add_details_bloc.dart';
@@ -42,7 +41,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AddDetailsBloc()),
         BlocProvider(create: (context) => ExploreBloc()),
         BlocProvider(create: (context) => BottomSheetBloc()),
-        BlocProvider(create: (context) => SubCategoeyBottomsheetBloc()),
         BlocProvider(create: (context) => HomeBloc()),
         BlocProvider(create: (context) => ProductDetailsBloc()),
         BlocProvider(create: (context) => CartBloc()),

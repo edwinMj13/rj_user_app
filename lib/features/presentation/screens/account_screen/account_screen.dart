@@ -34,10 +34,16 @@ class AccountScreen extends StatelessWidget {
             children: [
               //_greetings(context),
               _accountsCardSection(),
-              const IconTextIconWidgets(
-                  iconStart: CupertinoIcons.person, label: "Edit Profile"),
-              const IconTextIconWidgets(
-                  iconStart: Icons.location_on_outlined, label: "Edit Address"),
+              InkWell(
+                onTap:(){},
+                child: const IconTextIconWidgets(
+                    iconStart: CupertinoIcons.person, label: "Edit Profile"),
+              ),
+              InkWell(
+                onTap:(){},
+                child: const IconTextIconWidgets(
+                    iconStart: Icons.location_on_outlined, label: "Edit Address"),
+              ),
               sizedH20,
               _recentlyViewedItems(state.listRecent),
               sizedH20,

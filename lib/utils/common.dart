@@ -7,12 +7,17 @@ snackbar(BuildContext context, String s) {
 }
 
 ValueNotifier<Map<String, dynamic>> sliderNotifier = ValueNotifier({});
-
+double? _sliderStart=0.0;
+double? get sliderStart => _sliderStart;
+double? _sliderEnd=5000.0;
+double? get sliderEnd => _sliderEnd;
 updateSlider(double start, double end) {
   Map<String, dynamic> data = {
     "start": start,
     "end": end,
   };
+  _sliderStart=start;
+  _sliderEnd=end;
   sliderNotifier.value = data;
 }
 

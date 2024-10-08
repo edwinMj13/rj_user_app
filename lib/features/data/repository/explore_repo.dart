@@ -15,7 +15,7 @@ class ExploreRepo {
           itemName: model["itemName"],
           category: model["category"],
           firebaseNodeId: model["firebaseNodeId"],
-          productId:model["firebaseNodeId"],
+          productId: model["firebaseNodeId"],
           status: model["status"],
           imagesList: model["imagesList"],
           description: model["description"],
@@ -24,11 +24,15 @@ class ExploreRepo {
           sellingPrize: model["sellingPrize"],
           price: model["price"],
           stock: model["stock"],
-          subCategory: model["subCategory"],);}).toList();
+          subCategory: model["subCategory"],
+        );
+      }).toList();
       print("DATAAA $productList");
-    }catch (e){
+    } catch (e) {
       print("Products Read Exception ${e.toString()}");
     }
     return productList;
   }
+
+
 }
