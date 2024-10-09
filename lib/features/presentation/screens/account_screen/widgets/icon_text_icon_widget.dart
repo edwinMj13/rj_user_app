@@ -5,16 +5,18 @@ import 'package:rj/utils/styles.dart';
 class IconTextIconWidgets extends StatelessWidget {
   final IconData iconStart;
   final String label;
+  final VoidCallback callBack;
   const IconTextIconWidgets({
     super.key,
     required this.iconStart,
     required this.label,
+    required this.callBack,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){},
+      onTap: ()=>callBack(),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(

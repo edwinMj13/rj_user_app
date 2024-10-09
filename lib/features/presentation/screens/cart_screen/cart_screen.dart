@@ -42,17 +42,6 @@ class _CartScreenState extends State<CartScreen> {
 
             return Stack(
               children: [
-                /*sizedH20,
-                Text(
-                  "Shipping Address",
-                  style: style(
-                      color: Colors.black,
-                      fontSize: 18,
-                      weight: FontWeight.bold),
-                ),
-                sizedH20,
-                AddressChangeWidget(
-                    callback: () => callback(), userModal: state.userModel),*/
                 SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -69,12 +58,13 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                 ),
-                Positioned(
+                state.cartList.isNotEmpty ?Positioned(
                   bottom: 0,
                   left: 0,
                   right: 0,
                   //top: 1,
-                    child: _placeOrderButton(lastPrice),),
+                    child: _placeOrderButton(lastPrice),)
+                    :SizedBox(),
               ],
             );
           }

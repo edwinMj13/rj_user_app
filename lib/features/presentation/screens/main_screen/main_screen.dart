@@ -102,7 +102,7 @@ class _MainScreenState extends State<MainScreen> {
             backgroundColor: Colors.black,
             unselectedItemColor: Colors.grey,
             selectedItemColor: primaryColor,
-            currentIndex: state.index!,
+            currentIndex: state.index,
             onTap: (value) =>
                 context
                     .read<MainBloc>()

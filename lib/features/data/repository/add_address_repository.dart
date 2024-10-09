@@ -41,6 +41,26 @@ class AddAddressRepo {
             addressName: el.get("addressName"),
             addressPinCode: el.get("addressPinCode")))
         .toList();
+    print("AddressList - $addressList");
     return addressList;
+  }
+
+  Future<void> updateAddress(
+      String userNodeId, String addressNodeId, AddressModel model) async {
+    await firebase
+        .collection("Users")
+        .doc(userNodeId)
+        .collection("address")
+        .doc(addressNodeId)
+        .update(model.toMap());
+  }
+
+  Future<void> deleteAddress(String userNodeId, String addressNodeId) async {
+    await firebase
+        .collection("Users")
+        .doc(userNodeId)
+        .collection("address")
+        .doc(addressNodeId)
+        .delete();
   }
 }

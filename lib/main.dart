@@ -5,6 +5,7 @@ import 'package:rj/config/routes/route_names.dart';
 import 'package:rj/config/routes/routes.dart';
 import 'package:rj/features/data/repository/auth_repository.dart';
 import 'package:rj/features/presentation/screens/account_screen/bloc/account_bloc.dart';
+import 'package:rj/features/presentation/screens/add_address_screen/bloc/add_address_screen_bloc.dart';
 import 'package:rj/features/presentation/screens/cart_screen/bloc/cart_bloc.dart';
 import 'package:rj/features/presentation/screens/explore_screen/bloc/explore_bloc.dart';
 import 'package:rj/features/presentation/screens/home_screen/bloc/home_bloc.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ProductDetailsBloc()),
         BlocProvider(create: (context) => CartBloc()),
         BlocProvider(create: (context) => CategoryDetailsBloc()),
+        BlocProvider(create: (context) => AddAddressScreenBloc()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

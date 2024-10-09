@@ -9,4 +9,8 @@ final shippingAddAddressController = TextEditingController();
 
 final searchAppBarController = TextEditingController();
 
+final addAddressNameController = TextEditingController();
+final addAddressAddressController = TextEditingController();
+final addAddressPincodeController = TextEditingController();
+
 

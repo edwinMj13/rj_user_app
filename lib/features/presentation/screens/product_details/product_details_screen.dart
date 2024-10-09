@@ -15,19 +15,32 @@ import 'package:rj/utils/common.dart';
 import 'package:rj/utils/constants.dart';
 import 'package:rj/utils/styles.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
+class ProductDetailsScreen extends StatefulWidget {
   ProductDetailsScreen({super.key});
 
+  @override
+  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
+}
+
+class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   String? nodeId;
+
   final ShowLoadingCase showLoadingCase = ShowLoadingCase();
 
   @override
-  Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
     nodeId = ModalRoute.of(context)?.settings.arguments.toString();
     context
         .read<ProductDetailsBloc>()
         .add(FetchProductDetailsEvent(nodeId: nodeId!));
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),

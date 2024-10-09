@@ -17,7 +17,7 @@ class LoginCase {
       shippingAddress: "",
     );
     await CachedData.addProfileData(stateData);
-    Navigator.pushNamed(context, RouteNames.addAddressScreen,
+    Navigator.pushNamed(context, RouteNames.addDetailsScreen,
         arguments: userData);
   }
 }

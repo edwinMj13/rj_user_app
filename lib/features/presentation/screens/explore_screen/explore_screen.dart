@@ -57,7 +57,6 @@ class _ExploreScreenState extends State<ExploreScreen>
 
   Expanded _productsList(BuildContext context) {
     print("Explore Screen");
-    ShowLoadingWithOutCase showLoadingWithOutCase = ShowLoadingWithOutCase();
     return Expanded(
       child: BlocBuilder<ExploreBloc, ExploreState>(
         builder: (context, state) {

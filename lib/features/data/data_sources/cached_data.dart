@@ -73,10 +73,10 @@ class CachedData {
       name: sharedPref.getString("name")!,
       phoneNumber: sharedPref.getString("phoneNumber")!,
       email: sharedPref.getString("email")!,
-      nodeID: sharedPref.getString("nodeId")!,
+      nodeID: sharedPref.getString("nodeId") ?? "",
       uid: sharedPref.getString("uid")!,
-      shippingAddress: sharedPref.getString("shippingAddress")!,
-      billingAddress: sharedPref.getString("billingAddress")!,
+      shippingAddress: sharedPref.getString("shippingAddress") ?? "",
+      billingAddress: sharedPref.getString("billingAddress") ?? "",
     );
     return user;
   }
