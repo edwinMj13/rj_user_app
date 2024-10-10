@@ -5,6 +5,7 @@ import 'package:rj/config/routes/route_names.dart';
 import '../../../utils/text_controllers.dart';
 import '../../data/models/user_profile_model.dart';
 import '../../presentation/screens/add_details_screen/bloc/add_details_bloc.dart';
+import '../../presentation/screens/home_screen/bloc/home_bloc.dart';
 
 class AddDetailsUseCases{
 
@@ -37,6 +38,8 @@ class AddDetailsUseCases{
   }
 
   navigateToNext(BuildContext context) {
+    context.read<HomeBloc>().add(FetchDataHomeEvent());
+
     Navigator.pushNamed(context, RouteNames.mainScreen);
   }
 

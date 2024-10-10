@@ -67,7 +67,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       body: BlocBuilder<MainBloc, MainState>(
         builder: (context, state) {
-          return homeScreens(state.index);
+          return mainScreens(state.index);
         },
       ),
       bottomNavigationBar: _bottomNavigation(),

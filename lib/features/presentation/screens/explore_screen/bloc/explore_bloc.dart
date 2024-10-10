@@ -20,16 +20,21 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     on<ProductsFetchFilterEvent>(productsFetchFilterEvent);
   }
   Future<void> productsFetchAllEvent(ProductsFetchAllEvent event, Emitter<ExploreState> emit) async {
-    emit(ProductsLoadingExploreState());
-    List<ProductsModel> productsList = await locator<ExploreRepo>().getAllProducts();
-    emit(ProductsSuccessExploreState(productList: productsList));
+    emit(ExploreInitial());
+     await locator<ExploreRepo>().getAllProducts().then((list){
+       if(list.isNotEmpty) {
+         emit(ProductsSuccessExploreState(productList: list));
+       }else{
+         emit(ProductsSuccessNULLExploreState());
+       }
+     });
   }
 
   Future<void> productsFetchFilterEvent(ProductsFetchFilterEvent event, Emitter<ExploreState> emit) async {
-    emit(ProductsLoadingExploreState());
+    emit(ExploreInitial());
     await locator<FilterRepo>().getProductsFilter(
         event.brand, event.category, event.subCategory, event.sliderStart, event.sliderEnd).then((list){
-          FilterGetDataUseCase.closeBottomSheet(event.context);
+      FilterGetDataUseCase.clearFields(event.context);
       emit(ProductsSuccessExploreState(productList: list));
     });
   }

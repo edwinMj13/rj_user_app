@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../../utils/styles.dart';
+import '../../../widgets/nothing_text_widget.dart';
 
 class EmptyExploreWidget extends StatelessWidget {
   const EmptyExploreWidget({
@@ -17,22 +18,13 @@ class EmptyExploreWidget extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(100),
             child: Container(
-              child: SvgPicture.asset(
-                "assets/empty_icons/cart-cross-svgrepo-com.svg",
-                width: 150,
-                height: 150,
-              ),
+              child: Icon(Icons.dataset_outlined,size: 100,color: Colors.grey,),
             ),
           ),
-          Text(
-            "Cart Empty",
-            style: style(
-                fontSize: 20,
-                color: Colors.black,
-                weight: FontWeight.normal),
-          )
+          NothingTextWidget()
         ],
       ),
     );
   }
 }
+

@@ -28,7 +28,6 @@ class AddDetailsScreen extends StatefulWidget {
 }
 
 class _AddDetailsScreenState extends State<AddDetailsScreen> {
-
   AddDetailsUseCases addDetailsUseCases = AddDetailsUseCases();
 
   @override
@@ -76,60 +75,58 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
 
   Row _actionButton(BuildContext context) {
     return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox(),
-                      RightArrowIOS(
-                        pressFunction: () {
-                          final userModel = UserProfileModel(
-                            uid: CachedData.getDataFromSharedPref("uid")
-                                .toString(),
-                            nodeID: "",
-                            name: nameAddAddressController.text,
-                            phoneNumber: phoneAddAddressController.text,
-                            email: emailAddAddressController.text,
-                            billingAddress: billingAddAddressController.text,
-                            shippingAddress:
-                            shippingAddAddressController.text,
-                          );
-                          addDetailsUseCases.addAddress(context, userModel);
-                        },
-                      ),
-                    ],
-                  );
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const SizedBox(),
+        RightArrowIOS(
+          pressFunction: () {
+            final userModel = UserProfileModel(
+              uid: CachedData.getDataFromSharedPref("uid").toString(),
+              nodeID: "",
+              name: nameAddAddressController.text,
+              phoneNumber: phoneAddAddressController.text,
+              email: emailAddAddressController.text,
+              billingAddress: billingAddAddressController.text,
+              shippingAddress: shippingAddAddressController.text,
+            );
+            addDetailsUseCases.addAddress(context, userModel);
+          },
+        ),
+      ],
+    );
   }
 
   Column _textfieldSection() {
     return Column(
-                    children: [
-                      TextFormDetailsWidget(
-                        controller: nameAddAddressController,
-                        label: "Name",
-                        inputType: TextInputType.text,
-                      ),
-                      sizedH40,
-                      TextFormDetailsWidget(
-                        controller: emailAddAddressController,
-                        label: "E-mail Id",
-                        inputType: TextInputType.text,
-                      ),
-                      sizedH40,
-                      TextFormDetailsWidget(
-                        controller: phoneAddAddressController,
-                        label: "Phone Number",
-                        inputType: TextInputType.number,
-                      ),
-                      sizedH40,
-                      TextFormFieldAddressDetailsWidget(
-                        controller: billingAddAddressController,
-                        label: "Billing Address",
-                      ),
-                      sizedH40,
-                      TextFormFieldAddressDetailsWidget(
-                        controller: shippingAddAddressController,
-                        label: "Shipping Address",
-                      ),
-                    ],
-                  );
+      children: [
+        TextFormDetailsWidget(
+          controller: nameAddAddressController,
+          label: "Name",
+          inputType: TextInputType.text,
+        ),
+        sizedH40,
+        TextFormDetailsWidget(
+          controller: emailAddAddressController,
+          label: "E-mail Id",
+          inputType: TextInputType.text,
+        ),
+        sizedH40,
+        TextFormDetailsWidget(
+          controller: phoneAddAddressController,
+          label: "Phone Number",
+          inputType: TextInputType.number,
+        ),
+        sizedH40,
+        TextFormFieldAddressDetailsWidget(
+          controller: billingAddAddressController,
+          label: "Billing Address",
+        ),
+        sizedH40,
+        TextFormFieldAddressDetailsWidget(
+          controller: shippingAddAddressController,
+          label: "Shipping Address",
+        ),
+      ],
+    );
   }
 }

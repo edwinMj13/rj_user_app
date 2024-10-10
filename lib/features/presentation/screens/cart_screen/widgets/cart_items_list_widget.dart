@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rj/features/domain/use_cases/common_use_cases.dart';
 
 import '../../../../../utils/constants.dart';
 import '../../../../../utils/styles.dart';
@@ -66,6 +67,7 @@ class CartItemsListWidget extends StatelessWidget {
           state.cartList[index].mainImage,
           height: 100.0,
           width: 100.0,
+          loadingBuilder: (context,child,loadingProgress)=>CommonUseCases.checkIfImageLoadingPRODUCTPlaceholder(loadingProgress, child,100),
         ),
         sizedH10,
         InkWell(
@@ -163,7 +165,22 @@ class CartItemsListWidget extends StatelessWidget {
         return Dialog(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: List.generate(listDialog.length, (index) {
+            children: [
+               Padding(
+                 padding: const EdgeInsets.symmetric(vertical: 5.0),
+                 child: Text("Select Quantity",style:style(
+                    fontSize: 20,
+                    color: Colors.black,
+                    weight: FontWeight.normal)),
+               ),
+              Container(
+                height: 0.5,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+
+                ),
+              ),
+              ...List.generate(listDialog.length, (index) {
               return InkWell(
                 onTap: () {
                   if (listDialog[index] != "more") {
@@ -193,7 +210,7 @@ class CartItemsListWidget extends StatelessWidget {
                   ),
                 ),
               );
-            }).toList(),
+            }).toList(),],
           ),
         );
       },

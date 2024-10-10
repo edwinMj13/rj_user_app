@@ -5,15 +5,21 @@ final accentListColors = [
   Colors.pinkAccent,
   Colors.purpleAccent,
   Colors.lightBlueAccent,
-  Colors.lightGreenAccent,
-  Colors.amberAccent,
-  Colors.blueAccent,
-  Colors.cyanAccent,
-  Colors.greenAccent,
-  Colors.indigoAccent,
-  Colors.redAccent,
-  Colors.limeAccent,
-  Colors.orangeAccent,
+];
+final colorsNormalCategoryList = [
+  Colors.orange,
+  Colors.pink,
+  Colors.purple,
+  Colors.blue,
+  Colors.green,
+  Colors.amber,
+  Colors.teal,
+  Colors.cyan,
+  Colors.red,
+  Colors.indigo,
+  Colors.lime,
+  Colors.brown,
+  Colors.yellow,
 ];
 
 const primaryColor=Colors.green;

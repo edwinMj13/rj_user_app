@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/config/routes/route_names.dart';
 import 'package:rj/features/data/models/storage_image_model.dart';
 import 'package:rj/features/domain/use_cases/explore_page_usecase.dart';
+import 'package:rj/features/presentation/screens/explore_screen/widgets/empty_explore_widget.dart';
 import 'package:rj/features/presentation/widgets/slide_up_animation_widget.dart';
 import 'package:rj/features/presentation/widgets/filter_bottom_sheet_content.dart';
 import 'package:rj/features/presentation/widgets/slide_to_right_animation_widget.dart';
@@ -33,7 +34,8 @@ class _ExploreScreenState extends State<ExploreScreen>
     context.read<ExploreBloc>().add(ProductsFetchAllEvent());
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200));
-    Timer(const Duration(milliseconds: 200),()=>_animationController.forward());
+    Timer(const Duration(milliseconds: 200),
+        () => _animationController.forward());
     super.initState();
   }
 
@@ -60,34 +62,33 @@ class _ExploreScreenState extends State<ExploreScreen>
     return Expanded(
       child: BlocBuilder<ExploreBloc, ExploreState>(
         builder: (context, state) {
-          switch (state.runtimeType) {
-            case ProductsSuccessExploreState:
-              final stateData = state as ProductsSuccessExploreState;
-              return GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, crossAxisSpacing: 5,mainAxisSpacing: 5),
-                itemBuilder: (context, index) {
-                  return _exploreItemsContent(context, stateData, index);
-                },
-                itemCount: stateData.productList.length,
-              );
-            default:
-              return const Center(child: CircularProgressIndicator());
+          if (state is ProductsSuccessExploreState) {
+            return GridView.builder(
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, crossAxisSpacing: 5, mainAxisSpacing: 5),
+              itemBuilder: (context, index) {
+                return _exploreItemsContent(context, state, index);
+              },
+              itemCount: state.productList.length,
+            );
+          }else if(state is ProductsSuccessNULLExploreState){
+            return const EmptyExploreWidget();
           }
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );
   }
 
-  Widget _exploreItemsContent(BuildContext context,
-      ProductsSuccessExploreState stateData, int index) {
+  Widget _exploreItemsContent(
+      BuildContext context, ProductsSuccessExploreState stateData, int index) {
     return SlideUPAnimatedWidget(
       animationController: _animationController,
       childWidget: ProductLayout(
-       // imageUrl: stateData.productList[index].mainImage,
+        // imageUrl: stateData.productList[index].mainImage,
         productsModel: stateData.productList[index],
-       // index: index,
+        // index: index,
       ),
     );
   }
@@ -108,12 +109,14 @@ class _ExploreScreenState extends State<ExploreScreen>
           ),
           IconButton(
               onPressed: () {
-                context.read<BottomSheetBloc>().add(CategoryBrandEvent());
+                //context.read<BottomSheetBloc>().add(CategoryBrandEvent());
                 showModalBottomSheet(
                     context: context,
                     enableDrag: true,
                     isDismissible: true,
-                    builder: (context) => FilterBottomSheetContent(tag:"ExP",));
+                    builder: (context) => FilterBottomSheetContent(
+                          tag: "ExP",
+                        ));
               },
               icon: const Icon(Icons.filter_alt_outlined)),
         ],

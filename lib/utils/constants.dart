@@ -15,3 +15,6 @@ const defaultButtonHeight = Size.fromHeight(40);
 String appName="RJ";
 
 const rupeeSymbol = "₹";
+
+const categoryPlaceholder = "assets/category_items_placeholder.svg";
+const selectAllFieldsText = "Please Select All Fields";

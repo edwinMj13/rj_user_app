@@ -6,6 +6,7 @@ import 'package:rj/features/data/repository/cart_repository.dart';
 import '../../../config/routes/route_names.dart';
 import '../../../utils/dependencyLocation.dart';
 import '../../data/repository/auth_repository.dart';
+import '../../presentation/screens/home_screen/bloc/home_bloc.dart';
 import '../../presentation/screens/main_screen/bloc/main_bloc.dart';
 
 class SplashUseCases {
@@ -16,7 +17,7 @@ class SplashUseCases {
     print("delay $isLogged");
     Future.delayed(const Duration(seconds: 2)).then((_){
       if( isLogged){
-        //context.read<MainBloc>().add(UpdateIndexCarBadgeEvent(index: 0));
+        context.read<HomeBloc>().add(FetchDataHomeEvent());
         Navigator.pushNamedAndRemoveUntil(context, RouteNames.mainScreen,arguments:cartLength.length, (route)=>false);
       }else{
         Navigator.pushNamedAndRemoveUntil(context, RouteNames.loginScreen,(route)=>false);

@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/data/models/products_model.dart';
 import 'package:rj/features/data/models/storage_image_model.dart';
+import 'package:rj/features/domain/use_cases/common_use_cases.dart';
 import 'package:rj/features/domain/use_cases/show_loading_case.dart';
 import 'package:rj/features/presentation/screens/product_details/bloc/product_details_bloc.dart';
-import 'package:rj/features/presentation/widgets/address_change_widget.dart';
 import 'package:rj/features/presentation/widgets/appbar_common.dart';
 import 'package:rj/features/presentation/widgets/button_green.dart';
-import 'package:rj/features/presentation/widgets/search_mic_widget.dart';
 import 'package:rj/features/data/data_sources/cached_data.dart';
 import 'package:rj/utils/common.dart';
 import 'package:rj/utils/constants.dart';
@@ -243,10 +242,12 @@ class ProductDetailsScreen extends StatelessWidget {
           return Image.network(
             images[index].downloadUrl,
             fit: BoxFit.cover,
+            loadingBuilder: (context,child,loadingProgress)=>CommonUseCases.checkIfImageLoadingPRODUCTPlaceholder(loadingProgress, child,120),
           );
         }),
         options: CarouselOptions(aspectRatio: 1, viewportFraction: 1));
   }
 
   callback() {}
+
 }

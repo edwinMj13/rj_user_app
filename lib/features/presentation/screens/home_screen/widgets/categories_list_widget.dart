@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rj/features/domain/use_cases/common_use_cases.dart';
 
 import '../../../../../config/colors.dart';
 import '../../../../../utils/styles.dart';
@@ -8,6 +9,7 @@ import '../../../../domain/use_cases/home_use_cases.dart';
 class CategoryItemsWidget extends StatelessWidget {
   final CategoryModel categoryList;
   final int index;
+
   const CategoryItemsWidget({
     super.key,
     required this.categoryList,
@@ -17,35 +19,38 @@ class CategoryItemsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=> HomeUseCases.navigateToCategoryDetailsScreen(context,categoryList.categoryName),
+      onTap: () => HomeUseCases.navigateToCategoryDetailsScreen(
+          context, categoryList.categoryName),
       child: Container(
-        padding:
-        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               height: 70,
               width: 70,
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
-                color: accentListColors[index].shade100,
+                color: colorsNormalCategoryList[index][200],
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Image.network(
                 categoryList.image,
+                loadingBuilder: (context,child,loadingProgress){
+                  return CommonUseCases.checkIfImageLoadingCATEGORYPlaceholder(loadingProgress, child);
+                },
               ),
             ),
             Text(
               categoryList.categoryName,
               style: style(
-                  fontSize: 13,
-                  color: Colors.black,
-                  weight: FontWeight.normal),
+                  fontSize: 13, color: Colors.black, weight: FontWeight.normal),
             ),
           ],
         ),
       ),
     );
   }
+
+
 }

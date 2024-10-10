@@ -19,7 +19,7 @@ List<BottomNavData> bottomMenu = [
   BottomNavData(title: "Cart", icon: Icons.shopping_cart),
 ];
 
-Widget homeScreens(int index) {
+Widget mainScreens(int index) {
   //print(index);
   switch (index) {
     case 0:

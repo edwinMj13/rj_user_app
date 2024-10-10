@@ -42,6 +42,7 @@ class BottomSheetBloc extends Bloc<BottomSheetEvent, BottomSheetState> {
        _subCategoryString=event.selectedItem;
      }
     _subCategories = await FilterGetDataUseCase.getSubCategories(event.selectedItem);
+     FilterGetDataUseCase.getSubCategoryList(_subCategories);
     print(subCategories);
     //emit();
     //emit(State(subList: subList));

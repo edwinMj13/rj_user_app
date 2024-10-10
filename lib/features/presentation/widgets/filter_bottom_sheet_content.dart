@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/domain/use_cases/filter_get_use_cases.dart';
 import 'package:rj/features/presentation/screens/category_details_screen/bloc/category_details_bloc.dart';
 import 'package:rj/features/presentation/widgets/button_green.dart';
+import 'package:rj/features/presentation/widgets/popup_list.dart';
 import 'package:rj/features/presentation/widgets/slide_up_animation_widget.dart';
 import 'package:rj/features/presentation/widgets/slider_design.dart';
 import 'package:rj/utils/constants.dart';
@@ -13,9 +14,11 @@ import '../../../utils/common.dart';
 import '../screens/explore_screen/bloc/explore_bloc.dart';
 import 'blocs/bottom_sheet/category_brand_bottomsheet_bloc/bottom_sheet_bloc.dart';
 import 'drop_down_button.dart';
+import 'filter_select_listenable_widget.dart';
 
 class FilterBottomSheetContent extends StatefulWidget {
   String tag;
+
   FilterBottomSheetContent({super.key, required this.tag});
 
   @override
@@ -25,8 +28,8 @@ class FilterBottomSheetContent extends StatefulWidget {
 
 class _FilterBottomSheetContentState extends State<FilterBottomSheetContent>
     with SingleTickerProviderStateMixin {
-  String? selectedItem;
   late AnimationController animationController;
+
 
   @override
   void initState() {
@@ -37,6 +40,7 @@ class _FilterBottomSheetContentState extends State<FilterBottomSheetContent>
     Timer(
         const Duration(milliseconds: 200), () => animationController.forward());
     animationController.forward();
+
     super.initState();
   }
 
@@ -49,47 +53,63 @@ class _FilterBottomSheetContentState extends State<FilterBottomSheetContent>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: MediaQuery
-          .of(context)
-          .size
-          .height * 0.5,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        children: [
-          _closeButton(context),
-          sizedH30,
-          SlideUPAnimatedWidget(
-            childWidget: _brand_Category(),
-            animationController: animationController,
+    return ValueListenableBuilder<bool>(
+        valueListenable: FilterGetDataUseCase.hasError,
+      builder: (context,snap,_) {
+        return Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.6,
+          decoration:  BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: snap==true ?Colors.red :Colors.white,width: 1,),
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
           ),
-          sizedH30,
-          SlideUPAnimatedWidget(
-            animationController: animationController,
-            childWidget: DropDownButtonWidget(
-              label: 'Sub-Category',
-              dataList: context
-                  .watch<BottomSheetBloc>()
-                  .subCategories,
-            ),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            children: [
+              _closeButton(context),
+              sizedH30,
+              SlideUPAnimatedWidget(
+                childWidget: _brandCategory(),
+                animationController: animationController,
+              ),
+              sizedH30,
+              SlideUPAnimatedWidget(
+                animationController: animationController,
+                childWidget: _filterSelectSubcategoryListenable(),
+                // DropDownButtonWidget(
+                //   label: 'Sub-Category',
+                //   dataList: context.watch<BottomSheetBloc>().subCategories,
+                // ),
+              ),
+              sizedH20,
+              SlideUPAnimatedWidget(
+                animationController: animationController,
+                childWidget: SliderDesign(),
+              ),
+              snap == true ?SizedBox(height:30,child: const Text(selectAllFieldsText)) : sizedH30,
+              SlideUPAnimatedWidget(
+                  animationController: animationController,
+                  childWidget: __actionButton()),
+            ],
           ),
-          sizedH20,
-          SlideUPAnimatedWidget(
-            animationController: animationController,
-            childWidget: SliderDesign(),
-          ),
-          sizedH30,
-          SlideUPAnimatedWidget(animationController: animationController,
-              childWidget: __actionButton()),
-        ],
-      ),
+        );
+      }
     );
+  }
+
+  ValueListenableBuilder<List<String>> _filterSelectSubcategoryListenable() {
+    return ValueListenableBuilder<List<String>>(
+        valueListenable: FilterGetDataUseCase.subCategoryListNotifier,
+        builder: (context, snap, _) {
+          print("Sub_List Notifier $snap");
+          return FilterSelectListenableWidget(
+            list: snap,
+            label: "Sub-Category",
+            valueListenable: FilterGetDataUseCase.subCategoryNotifier,
+          );
+        });
   }
 
   IconButton _closeButton(BuildContext context) {
@@ -107,72 +127,37 @@ class _FilterBottomSheetContentState extends State<FilterBottomSheetContent>
         ButtonGreen(
             backgroundColor: Colors.green[50],
             label: "Cancel",
-            callback: () => Navigator.of(context).pop(),
+            callback: () => FilterGetDataUseCase.clearFields(context),
             color: Colors.green),
         ButtonGreen(
             backgroundColor: Colors.green,
             label: "Show Results",
-            callback: () => callback(),
+            callback: () => FilterGetDataUseCase.showFilterResults(widget.tag,context),
             color: Colors.white),
       ],
     );
   }
 
-  BlocBuilder<BottomSheetBloc, BottomSheetState> _brand_Category() {
-    return BlocBuilder<BottomSheetBloc, BottomSheetState>(
-      builder: (context, state) {
-        if (state is CategoryBrandSuccessState) {
-          print(state.categoryList);
-          return Row(
-            children: [
-              Expanded(
-                child: DropDownButtonWidget(
-                  label: "Brand",
-                  dataList: state.brandList,
-                ),
-              ),
-              sizedW10,
-              Expanded(
-                child: DropDownButtonWidget(
-                  label: 'Category',
-                  dataList: state.categoryList,
-                ),
-              ),
-            ],
-          );
-        }
-        return const SizedBox();
-      },
+
+
+   _brandCategory()  {
+    return Row(
+      children: [
+        Expanded(
+          child: FilterSelectListenableWidget(
+            label: "Brand",
+            valueListenable: FilterGetDataUseCase.brandNotifier,
+          ),
+        ),
+        sizedW20,
+        Expanded(
+          child: FilterSelectListenableWidget(
+            label: "Category",
+            valueListenable: FilterGetDataUseCase.categoryNotifier,
+          ),
+        ),
+      ],
     );
   }
 
-  void callback() {
-    final sub = context
-        .read<BottomSheetBloc>()
-        .subCategoryString;
-    final bran = context
-        .read<BottomSheetBloc>()
-        .brand;
-    final cate = context
-        .read<BottomSheetBloc>()
-        .category;
-    print("bran - $bran   sub - $sub   cate - $cate");
-    if(widget.tag=="ExP") {
-      context.read<ExploreBloc>().add(ProductsFetchFilterEvent(
-        brand: bran!,
-        category: cate!,
-        subCategory: sub!,
-        sliderStart: sliderStart!,
-        context: context,
-        sliderEnd: sliderEnd!,));
-    }else{
-      context.read<CategoryDetailsBloc>().add(CategoryFetchFilterEvent(
-        brand: bran!,
-        category: cate!,
-        subCategory: sub!,
-        sliderStart: sliderStart!,
-        context: context,
-        sliderEnd: sliderEnd!,));
-    }
-  }
 }

@@ -16,7 +16,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<HomeBloc>().add(FetchDataHomeEvent());
     return Container(
       child: Column(
         children: [_topChips(), sizedH10, _banner(), _contents()],
@@ -29,21 +28,40 @@ class HomeScreen extends StatelessWidget {
       height: 120,
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
+          print("Home State ${state.runtimeType}");
           if (state is FetchDataHomeSuccessState) {
-            return ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: state.categoryList.length,
-              itemBuilder: (context, index) {
-                return CategoryItemsWidget(categoryList: state.categoryList[index],index:index,);
-              },
-            );
+            return _listCategory(state.categoryList);
           }
           return const SizedBox();
+          // else if(state is HomeInitial){
+          //   return _nullListCategory()
+          // }
         },
       ),
     );
+  }
+  /*ListView _nullListCategory() {
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return CategoryItemsWidget(categoryList: categoryList[index],index:index,);
+      },
+    );
+  }*/
+
+  ListView _listCategory(List<CategoryModel> categoryList) {
+    return ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: categoryList.length,
+            itemBuilder: (context, index) {
+              return CategoryItemsWidget(categoryList: categoryList[index],index:index,);
+            },
+          );
   }
 
   CarouselSlider _banner() {

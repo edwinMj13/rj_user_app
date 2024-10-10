@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../../utils/styles.dart';
+import '../../../widgets/nothing_text_widget.dart';
 
 class EmptyCartWidget extends StatelessWidget {
   const EmptyCartWidget({
@@ -21,16 +22,11 @@ class EmptyCartWidget extends StatelessWidget {
                 "assets/empty_icons/cart-cross-svgrepo-com.svg",
                 width: 150,
                 height: 150,
+
               ),
             ),
           ),
-          Text(
-            "Cart Empty",
-            style: style(
-                fontSize: 20,
-                color: Colors.black,
-                weight: FontWeight.normal),
-          )
+          const NothingTextWidget(),
         ],
       ),
     );

@@ -80,6 +80,7 @@ flutter:
     - assets/supreme_imaeg.jpg
     - assets/dummy_banner.jpg
     - assets/empty_icons/
+    - assets/category_items_placeholder.svg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
