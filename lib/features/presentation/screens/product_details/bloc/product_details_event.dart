@@ -3,16 +3,31 @@ part of 'product_details_bloc.dart';
 @immutable
 sealed class ProductDetailsEvent {}
 
-class FetchProductDetailsEvent extends ProductDetailsEvent{
-  final String nodeId;
-  FetchProductDetailsEvent({required this.nodeId});
+class CheckInWishListOrCartEvent extends ProductDetailsEvent{
+  final String productNodeId;
+  CheckInWishListOrCartEvent({required this.productNodeId});
 }
 
 class AddToCartEventPrDtEvent extends ProductDetailsEvent{
   final ProductsModel model;
-  final String nodeId;
-  final VoidCallback callback;
+  final String userNodeId;
+  final VoidCallback cancelLoading;
   final BuildContext context;
 
-  AddToCartEventPrDtEvent({required this.nodeId,required this.model,required this.callback,required this.context});
+  AddToCartEventPrDtEvent({required this.userNodeId,required this.model,required this.cancelLoading,required this.context});
+}
+class AddToWishListEventPrDtEvent extends ProductDetailsEvent{
+  final ProductsModel model;
+  final String userNodeId;
+  final VoidCallback cancelLoading;
+  final BuildContext context;
+
+  AddToWishListEventPrDtEvent({required this.userNodeId,required this.model,required this.cancelLoading,required this.context});
+}
+
+class RemoveFromWishListEvent extends ProductDetailsEvent{
+  final String productId;
+  final BuildContext context;
+  final VoidCallback cancelLoading;
+  RemoveFromWishListEvent({required this.productId,required this.context,required this.cancelLoading});
 }

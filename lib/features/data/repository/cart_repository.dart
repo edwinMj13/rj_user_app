@@ -39,11 +39,11 @@ class CartRepository {
     return cartList;
   }
 
-  Future<void> addToCart(ProductsModel model, String nodeId) async {
+  Future<void> addToCart(ProductsModel model, String userNodeId) async {
     try {
       await firebase
           .collection("Users")
-          .doc(nodeId)
+          .doc(userNodeId)
           .collection("Cart")
           .add(model.toMap())
           .then((node) async {
@@ -66,7 +66,7 @@ class CartRepository {
         );
         await firebase
             .collection("Users")
-            .doc(nodeId)
+            .doc(userNodeId)
             .collection("Cart")
             .doc(node.id)
             .update(poducts.toMap());
@@ -89,8 +89,7 @@ class CartRepository {
     }
   }
 
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getProductsInCart(
-      String prodId, String nodeID) async {
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getProductsInCart( String nodeID) async {
     final data =
         await firebase.collection("Users").doc(nodeID).collection("Cart").get();
     final mapData = data.docs;

@@ -9,22 +9,11 @@ import '../../presentation/screens/explore_screen/bloc/explore_bloc.dart';
 
 class ExplorePageUseCase{
 
-  checkIfProductInCart(String prodId, String nodeID) async {
-    final dataMap = await locator<CartRepository>().getProductsInCart(prodId, nodeID);
-    final ifInCart =
-    dataMap.where((test) => test["productId"].toString().contains(prodId));
-    if (ifInCart.isNotEmpty) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  static navigateToDetails(BuildContext context, String firebaseNodeId) {
+  static navigateToDetails(BuildContext context, ProductsModel productsModel) {
     return Navigator.pushNamed(
       context,
       RouteNames.productDetailsScreen,
-      arguments: firebaseNodeId,
+      arguments: productsModel,
     );
   }
 

@@ -12,12 +12,7 @@ class ShowLoadingWithOutCase{
           contextsProgress = contextProgressInner;
           return const PopScope(
             canPop: false,
-            child: Dialog(
-              child: Padding(
-                padding: EdgeInsets.all(15.0),
-                child: CircularProgressIndicator(),
-              ),
-            ),
+            child: Center(child: CircularProgressIndicator(backgroundColor: Colors.white,)),
           );
         });
   }

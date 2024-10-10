@@ -32,7 +32,7 @@ class AccountScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             //_greetings(context),
-            _accountsCardSection(),
+            _accountsCardSection(contextMain),
             IconTextIconWidgets(
                 iconStart: CupertinoIcons.person, label: "Edit Profile",callBack: ()=> AccountScreenUsecases.navigateToEditProfileScreen(contextMain),),
             IconTextIconWidgets(
@@ -126,7 +126,7 @@ SizedBox _recentlyViewedItems(List<ProductsModel> listRecent) {
 }
 
 
-Container _accountsCardSection() {
+Container _accountsCardSection(BuildContext context) {
   return Container(
     padding: const EdgeInsets.only(bottom: 20, top: 20),
     width: double.infinity,
@@ -141,12 +141,14 @@ Container _accountsCardSection() {
               iconData: CupertinoIcons.cube_box_fill,
               label: "Orders",
               color: accentListColors[0],
+              openScreenCallback:()=>AccountScreenUsecases.navigateToOrdersScreen(context),
             ),
             sizedW20,
             AccountCardWidgets(
               iconData: Icons.favorite_border,
               label: "WishList",
               color: accentListColors[1],
+              openScreenCallback:()=>AccountScreenUsecases.navigateToWishListScreen(context),
             ),
           ],
         ),
@@ -158,12 +160,14 @@ Container _accountsCardSection() {
               iconData: CupertinoIcons.gift,
               label: "Coupons",
               color: accentListColors[2],
+              openScreenCallback:()=>AccountScreenUsecases.navigateToOrdersScreen(context),
             ),
             sizedW20,
             AccountCardWidgets(
               iconData: Icons.call_rounded,
               label: "Contact Us",
               color: accentListColors[3],
+              openScreenCallback:()=>AccountScreenUsecases.navigateToOrdersScreen(context),
             ),
           ],
         ),

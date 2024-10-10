@@ -5,21 +5,23 @@ sealed class ProductDetailsState {}
 
 final class ProductDetailsInitial extends ProductDetailsState {}
 
-final class FetchProductDetailsLoadingState extends ProductDetailsState {}
-final class FetchProductDetailsSuccessState extends ProductDetailsState {
-  final ProductsModel productModal;
-  final String userName;
+
+final class CheckInWishListOrCartState extends ProductDetailsState {
+  // final ProductsModel productModal;
+  // final String userName;
+  // final UserProfileModel userProfileModel;
   final String isInCart;
-  final UserProfileModel userProfileModel;
+  final String isInWishList;
 
-  FetchProductDetailsSuccessState(
-      {required this.productModal, required this.userName,required this.isInCart,required this.userProfileModel});
+  CheckInWishListOrCartState({
+    // required this.productModal,
+    // required this.userName,
+    // required this.userProfileModel,
+    required this.isInCart,
+    required this.isInWishList,
+  });
 }
 
-final class AddToCartPrdDetLoadingState extends ProductDetailsState {
+final class AddToCartPrdDetLoadingState extends ProductDetailsState {}
 
-}
-final class AddToCartPrdDetSuccessState extends ProductDetailsState {
-
-}
-
+final class AddToCartPrdDetSuccessState extends ProductDetailsState {}

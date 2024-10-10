@@ -21,8 +21,8 @@ updateSlider(double start, double end) {
   sliderNotifier.value = data;
 }
 
-List<StorageImageModel> getImageList(List<dynamic> state) {
-  return state
+List<StorageImageModel> getImageList(List<dynamic> dynamicList) {
+  return dynamicList
       .map((e) => StorageImageModel(
             storageRefPath: e["storageRefPath"],
             downloadUrl: e["downloadUrl"],

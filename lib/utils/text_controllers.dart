@@ -13,4 +13,7 @@ final addAddressNameController = TextEditingController();
 final addAddressAddressController = TextEditingController();
 final addAddressPincodeController = TextEditingController();
 
+final addExtraQuantityController = TextEditingController();
+final cartQuantityController = TextEditingController();
+
 

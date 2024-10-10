@@ -8,4 +8,5 @@ class RouteNames{
   static const categoryDetailsScreen= "category_details_screen";
   static const addAddressScreen= "add_address_screen";
   static const editProfileScreen= "edit_profile_screen";
+  static const wishListScreen= "wish_list_screen";
 }

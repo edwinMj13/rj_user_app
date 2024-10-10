@@ -31,8 +31,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   Future<void> fetchCartEvent(FetchCartEvent event,
       Emitter<CartState> emit) async {
     final user = await CachedData.getUserDetails();
-    final cartList = await locator<CartRepository>().getCarts(user.nodeID);
-    emit(FetchCartSuccess(cartList: cartList, userModel: user));
+    await locator<CartRepository>().getCarts(user.nodeID).then((list){
+      if(list.isNotEmpty) {
+        emit(FetchCartSuccessState(cartList: list, userModel: user));
+      }else{
+        emit(FetchCartNullState());
+      }
+    });
+
   }
 
   Future<void> removeFromCartEvent(RemoveFromCartEvent event,
@@ -46,8 +52,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     // after removing from the cart the below code will help
     // refresh the cart section
     await locator<CartRepository>().getCarts(user.nodeID).then((listProducts) {
-      emit(FetchCartSuccess(cartList: listProducts, userModel: user));
+      emit(FetchCartSuccessState(cartList: listProducts, userModel: user));
       showLoadingCase.cancelLoading();
+      event.context.read<CartBloc>().add(FetchCartEvent());
       event.context.read<MainBloc>().add(UpdateIndexCarBadgeEvent(index: 3));
     });
   }
@@ -80,7 +87,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         user.nodeID, event.cartModel.firebaseNodeId, cartingProduct);
 
     await locator<CartRepository>().getCarts(user.nodeID).then((listProducts) {
-      emit(FetchCartSuccess(cartList: listProducts, userModel: user));
+      emit(FetchCartSuccessState(cartList: listProducts, userModel: user));
       showLoadingCase.cancelLoading();
     });
     // double lastAmt = CartUseCase.getCartTotal(totalItemAmount);

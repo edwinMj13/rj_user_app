@@ -15,32 +15,21 @@ import 'package:rj/utils/common.dart';
 import 'package:rj/utils/constants.dart';
 import 'package:rj/utils/styles.dart';
 
-class ProductDetailsScreen extends StatefulWidget {
-  ProductDetailsScreen({super.key});
+import '../../../domain/use_cases/show_loading_with_out_text.dart';
 
-  @override
-  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
-}
+class ProductDetailsScreen extends StatelessWidget {
+  final ProductsModel productModel;
 
-class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  String? nodeId;
+  ProductDetailsScreen({super.key, required this.productModel});
 
   final ShowLoadingCase showLoadingCase = ShowLoadingCase();
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    nodeId = ModalRoute.of(context)?.settings.arguments.toString();
-    context
-        .read<ProductDetailsBloc>()
-        .add(FetchProductDetailsEvent(nodeId: nodeId!));
-    super.didChangeDependencies();
-  }
+  final ShowLoadingWithOutCase showLoadingWithOutCase = ShowLoadingWithOutCase();
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-
+    context
+        .read<ProductDetailsBloc>()
+        .add(CheckInWishListOrCartEvent(productNodeId: productModel.productId));
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -48,52 +37,27 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
-            builder: (context, state) {
-              print("STATE ProductDetails ${state.runtimeType}");
-              switch (state.runtimeType) {
-                case FetchProductDetailsSuccessState:
-                  final stateData = state as FetchProductDetailsSuccessState;
-                  List<StorageImageModel> images =
-                      getImageList(stateData.productModal.imagesList);
-                  final data = stateData.productModal;
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _favoriteSection(),
-                        _imagesSection(images),
-                        sizedH20,
-                        _nameSection(data),
-                        sizedH10,
-                        _description(data),
-                        sizedH20,
-                        _amountSection(data),
-                        sizedH20,
-                        /*const Text("Deliver to : ",
-                            style: TextStyle(color: Colors.grey)),
-                        sizedH10,
-                        AddressChangeWidget(
-                          callback: () => callback,
-                          userModal: state.userProfileModel,
-                        ),*/
-                        sizedH20,
-                        _deliveryDate(),
-                        sizedH20,
-                        _addCartBuyNow(context, stateData.productModal,
-                            stateData.isInCart),
-                      ],
-                    ),
-                  );
-                case ProductDetailsInitial:
-                  return Center(child: CircularProgressIndicator());
-                default:
-                  return SizedBox();
-              }
-            },
+            child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _favoriteSection(),
+              _imagesSection(),
+              sizedH20,
+              _nameSection(),
+              sizedH10,
+              _description(),
+              sizedH20,
+              _amountSection(),
+              sizedH20,
+              sizedH20,
+              _deliveryDate(),
+              sizedH20,
+              _addToCartBuyNow(context),
+            ],
           ),
-        ),
+        )),
       ),
     );
   }
@@ -106,23 +70,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     ));
   }
 
-  Text _amountSection(ProductsModel data) {
+  Text _amountSection() {
     return Text(
-      "$rupeeSymbol ${data.sellingPrize}",
+      "$rupeeSymbol ${productModel.sellingPrize}",
       style: style(fontSize: 19, color: Colors.green, weight: FontWeight.bold),
     );
   }
 
-  Text _description(ProductsModel data) {
+  Text _description() {
     return Text(
-      data.description,
+      productModel.description,
       style: TextStyle(color: Colors.grey),
     );
   }
 
-  Text _nameSection(ProductsModel data) {
+  Text _nameSection() {
     return Text(
-      data.itemName,
+      productModel.itemName,
       style: style(fontSize: 20, color: Colors.black, weight: FontWeight.bold),
     );
   }
@@ -131,90 +95,149 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(),
-        IconButton(onPressed: () {}, icon: Icon(Icons.favorite_border)),
+        const SizedBox(),
+        BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
+          builder: (context, state) {
+            if (state is CheckInWishListOrCartState) {
+              return state.isInWishList == "true"
+                  ? wishListedIcon(context)
+                  : _unWishListedIcon(context);
+            }
+            return _unWishListedIcon(context);
+          },
+        ),
       ],
     );
   }
 
-  Container _addCartBuyNow(
-      BuildContext context, ProductsModel productModal, String isInCart) {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      color: Colors.white,
-      child: _cartTextIfAddedOrNot(context, productModal, isInCart),
+  IconButton wishListedIcon(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        showLoadingWithOutCase.showLoadingWithout(context);
+        context.read<ProductDetailsBloc>().add(RemoveFromWishListEvent(
+            productId: productModel.productId,
+            context: context,
+            cancelLoading: () => showLoadingWithOutCase.cancelLoading()));
+      },
+      icon: const Icon(
+        Icons.favorite,
+        color: Colors.red,
+      ),
     );
   }
 
-  Row _cartTextIfAddedOrNot(
-      BuildContext context, ProductsModel productModal, String isInCart) {
-    return isInCart == "false"
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                  onPressed: () async {
-                    showLoadingCase.showLoading(context, "Adding to cart...");
-                    final userData = await CachedData.getUserDetails();
-                    context.read<ProductDetailsBloc>().add(
-                        AddToCartEventPrDtEvent(
-                            model: productModal,
-                            nodeId: userData.nodeID,
-                            callback: () => showLoadingCase.cancelLoading(),
-                            context: context));
-                  },
-                  child: const Row(
-                    children: [
-                      Icon(
-                        CupertinoIcons.cart,
-                        size: 30,
-                        color: Colors.black,
-                      ),
-                      sizedW10,
-                      Text(
-                        "Add",
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                    ],
-                  )),
-              ButtonGreen(
-                  backgroundColor: Colors.black,
-                  label: "Buy Now",
-                  callback: callback,
-                  color: Colors.white)
-            ],
-          )
-        : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                  onPressed: () {
-                    snackbar(context, "Already added to cart");
-                  },
-                  child: const Row(
-                    children: [
-                      Icon(
-                        CupertinoIcons.cart,
-                        size: 30,
-                        color: Colors.green,
-                      ),
-                      sizedW10,
-                      Text(
-                        "Added",
-                        style: TextStyle(fontSize: 16, color: Colors.green),
-                      ),
-                    ],
-                  )),
-              ButtonGreen(
-                  backgroundColor: Colors.black,
-                  label: "Buy Now",
-                  callback: callback,
-                  color: Colors.white)
-            ],
-          );
+  IconButton _unWishListedIcon(BuildContext context) {
+    return IconButton(
+      onPressed: () async {
+        showLoadingCase.showLoading(context, "Adding to Wishlist...");
+        final userData = await CachedData.getUserDetails();
+        context.read<ProductDetailsBloc>().add(AddToWishListEventPrDtEvent(
+              userNodeId: userData.nodeID,
+              model: productModel,
+              cancelLoading: () => showLoadingCase.cancelLoading(),
+              context: context,
+            ));
+      },
+      icon: const Icon(Icons.favorite_border),
+    );
   }
 
-  CarouselSlider _imagesSection(List<StorageImageModel> images) {
+  Widget _addToCartBuyNow(BuildContext context) {
+    return BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
+      builder: (context, state) {
+        return Container(
+          padding: const EdgeInsets.all(10.0),
+          color: Colors.white,
+          child: _cartTextIfAddedOrNot(context),
+        );
+      },
+    );
+  }
+
+  Widget _cartTextIfAddedOrNot(BuildContext context) {
+    return BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
+        builder: (context, state) {
+      if (state is CheckInWishListOrCartState) {
+        return state.isInCart == "true"
+            ? _alreadyAddedToCartSection(context)
+            : _productNotInCartSection(context, productModel);
+      }
+      return _productNotInCartSection(context, productModel);
+    });
+  }
+
+  Row _productNotInCartSection(
+      BuildContext context, ProductsModel productModal) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        TextButton(
+          onPressed: () async {
+            showLoadingCase.showLoading(context, "Adding to cart...");
+            final userData = await CachedData.getUserDetails();
+            context.read<ProductDetailsBloc>().add(AddToCartEventPrDtEvent(
+                model: productModal,
+                userNodeId: userData.nodeID,
+                cancelLoading: () => showLoadingCase.cancelLoading(),
+                context: context));
+          },
+          child: const Row(
+            children: [
+              Icon(
+                CupertinoIcons.cart,
+                size: 30,
+                color: Colors.black,
+              ),
+              sizedW10,
+              Text(
+                "Add",
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+        ButtonGreen(
+            backgroundColor: Colors.black,
+            label: "Buy Now",
+            callback: () => callback(),
+            color: Colors.white)
+      ],
+    );
+  }
+
+  Row _alreadyAddedToCartSection(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        TextButton(
+            onPressed: () {
+              snackbar(context, "Already added to cart");
+            },
+            child: const Row(
+              children: [
+                Icon(
+                  CupertinoIcons.cart,
+                  size: 30,
+                  color: Colors.green,
+                ),
+                sizedW10,
+                Text(
+                  "Added",
+                  style: TextStyle(fontSize: 16, color: Colors.green),
+                ),
+              ],
+            )),
+        ButtonGreen(
+            backgroundColor: Colors.black,
+            label: "Buy Now",
+            callback: () => callback(),
+            color: Colors.white)
+      ],
+    );
+  }
+
+  CarouselSlider _imagesSection() {
+    List<StorageImageModel> images = getImageList(productModel.imagesList);
     return CarouselSlider(
         items: List.generate(images.length, (index) {
           return Image.network(

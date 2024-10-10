@@ -18,9 +18,9 @@ class ProductLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => ExplorePageUseCase.navigateToDetails(context,productsModel.firebaseNodeId),
+      onTap: () => ExplorePageUseCase.navigateToDetails(context,productsModel),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.0),
           border: Border.all(width: 0.5,color: Colors.grey),

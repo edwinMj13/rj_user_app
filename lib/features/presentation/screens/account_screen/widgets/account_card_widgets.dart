@@ -7,23 +7,27 @@ class AccountCardWidgets extends StatelessWidget {
   final IconData iconData;
   final String label;
   final Color color;
-  const AccountCardWidgets({super.key,required this.iconData,required this.label,required this.color});
+  final VoidCallback openScreenCallback;
+  const AccountCardWidgets({super.key,required this.iconData,required this.label,required this.color, required this.openScreenCallback});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      width: 140,
-      decoration: BoxDecoration(
-        color: color,borderRadius: BorderRadius.circular(10.0)
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(iconData,color: Colors.white,size: 30,),
-          sizedH10,
-          Text(label,style: const TextStyle(color: Colors.white),)
-        ],
+    return InkWell(
+      onTap: ()=>openScreenCallback(),
+      child: Container(
+        height: 100,
+        width: 140,
+        decoration: BoxDecoration(
+          color: color,borderRadius: BorderRadius.circular(10.0)
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(iconData,color: Colors.white,size: 30,),
+            sizedH10,
+            Text(label,style: const TextStyle(color: Colors.white),)
+          ],
+        ),
       ),
     );
   }

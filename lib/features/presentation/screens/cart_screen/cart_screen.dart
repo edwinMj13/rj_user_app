@@ -5,6 +5,8 @@ import 'package:rj/features/data/models/cart_model.dart';
 import 'package:rj/features/data/models/products_model.dart';
 import 'package:rj/features/domain/use_cases/cart_use_cases.dart';
 import 'package:rj/features/presentation/screens/cart_screen/bloc/cart_bloc.dart';
+import 'package:rj/features/presentation/screens/cart_screen/widgets/cart_items_list_widget.dart';
+import 'package:rj/features/presentation/screens/cart_screen/widgets/empty_cart_widget.dart';
 import 'package:rj/features/presentation/widgets/address_change_widget.dart';
 import 'package:rj/features/presentation/widgets/button_green.dart';
 import 'package:rj/utils/constants.dart';
@@ -34,42 +36,59 @@ class _CartScreenState extends State<CartScreen> {
         listener: (context, state) {},
         builder: (context, state) {
           print("State Cart Screen ${state.runtimeType}");
-          if (state is FetchCartSuccess) {
+          if (state is FetchCartSuccessState) {
             double cartTotal = CartUseCase.getCartTotal(state.cartList);
             double discountAmt = CartUseCase.discountAmt(cartTotal, 12);
             String lastPrice =
-                CartUseCase.getLastTotalAmount(cartTotal, discountAmt).toStringAsFixed(2);
+                CartUseCase.getLastTotalAmount(cartTotal, discountAmt)
+                    .toStringAsFixed(2);
 
             return Stack(
               children: [
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      children: [
-                        _cartItems(state, context),
-                        sizedH20,
-                        state.cartList.isNotEmpty
-                            ? _priceDetailsSection(
-                                state, cartTotal, lastPrice, discountAmt)
-                            : const SizedBox(),
-                        const SizedBox(height: 60,),
-                      ],
-                    ),
-                  ),
-                ),
-                state.cartList.isNotEmpty ?Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  //top: 1,
-                    child: _placeOrderButton(lastPrice),)
-                    :SizedBox(),
+                _cartListAndDetails(
+                    state, context, cartTotal, lastPrice, discountAmt),
+                state.cartList.isNotEmpty
+                    ? Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: _placeOrderButton(lastPrice),
+                      )
+                    : const SizedBox(),
               ],
             );
+          } else if (state is FetchCartNullState) {
+            return const EmptyCartWidget();
           }
           return const Center(child: CircularProgressIndicator());
         });
+  }
+
+  SingleChildScrollView _cartListAndDetails(
+      FetchCartSuccessState state,
+      BuildContext context,
+      double cartTotal,
+      String lastPrice,
+      double discountAmt) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            CartItemsListWidget(
+              state: state,
+            ),
+            sizedH20,
+            state.cartList.isNotEmpty
+                ? _priceDetailsSection(state, cartTotal, lastPrice, discountAmt)
+                : const SizedBox(),
+            const SizedBox(
+              height: 60,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _placeOrderButton(String lastPrice) {
@@ -82,7 +101,11 @@ class _CartScreenState extends State<CartScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("$rupeeSymbol $lastPrice",style: style(fontSize: 18, color: Colors.green, weight: FontWeight.bold),),
+          Text(
+            "$rupeeSymbol $lastPrice",
+            style: style(
+                fontSize: 18, color: Colors.green, weight: FontWeight.bold),
+          ),
           ButtonGreen(
               backgroundColor: Colors.yellow,
               label: "Place Order",
@@ -94,62 +117,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  ListView _cartItems(FetchCartSuccess state, BuildContext context) {
-    return ListView.separated(
-      shrinkWrap: true,
-      separatorBuilder: (context, index) => const Divider(
-        height: 0.5,
-        color: Colors.black12,
-      ),
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        return Container(
-          padding: const EdgeInsets.all(10.0),
-          color: Colors.white,
-          child: Column(
-            children: [
-              _imageName(state, index),
-              sizedH10,
-              _quantityPriceSection(state.cartList[index], context),
-              sizedH20,
-              const Row(
-                children: [
-                  Text("Delivery by Aug 30, Wed"),
-                  sizedW30,
-                  Text(
-                    "30rs",
-                    style: TextStyle(decoration: TextDecoration.lineThrough),
-                  ),
-                  sizedW10,
-                  Text(
-                    "FREE",
-                    style: TextStyle(color: Colors.green),
-                  )
-                ],
-              ),
-              _removeFromCartButton(context, state, index)
-            ],
-          ),
-        );
-      },
-      itemCount: state.cartList.length,
-    );
-  }
-
-  Container _removeFromCartButton(
-      BuildContext context, FetchCartSuccess state, int index) {
-    return Container(
-      decoration: BoxDecoration(),
-      child: TextButton(
-          onPressed: () {
-            context.read<CartBloc>().add(RemoveFromCartEvent(
-                cartModel: state.cartList[index], context: context));
-          },
-          child: Text("Remove")),
-    );
-  }
-
-  Column _priceDetailsSection(FetchCartSuccess state, double cartTotal,
+  Column _priceDetailsSection(FetchCartSuccessState state, double cartTotal,
       String lastAmt, double discountAmt) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,76 +201,246 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Row _imageName(FetchCartSuccess state, int index) {
-    return Row(
+/*
+  ListView _cartItems(FetchCartSuccess state, BuildContext context) {
+    return ListView.separated(
+      shrinkWrap: true,
+      separatorBuilder: (context, index) => const Divider(
+        height: 0.5,
+        color: Colors.black12,
+      ),
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return Container(
+          padding: const EdgeInsets.all(10.0),
+          color: Colors.white,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  _imageQty(state, index, state.cartList[index]),
+                  sizedW10,
+                  _namePriceSection(state.cartList[index], context),
+                ],
+              ),
+              sizedH20,
+              const Row(
+                children: [
+                  Text("Delivery by Aug 30, Wed"),
+                  sizedW30,
+                  Text(
+                    "30rs",
+                    style: TextStyle(decoration: TextDecoration.lineThrough),
+                  ),
+                  sizedW10,
+                  Text(
+                    "FREE",
+                    style: TextStyle(color: Colors.green),
+                  )
+                ],
+              ),
+              _removeFromCartButton(context, state, index)
+            ],
+          ),
+        );
+      },
+      itemCount: state.cartList.length,
+    );
+  }
+
+  Container _removeFromCartButton(
+      BuildContext context, FetchCartSuccess state, int index) {
+    return Container(
+      decoration: BoxDecoration(),
+      child: TextButton(
+          onPressed: () {
+            context.read<CartBloc>().add(RemoveFromCartEvent(
+                cartModel: state.cartList[index], context: context));
+          },
+          child: Text("Remove")),
+    );
+  }
+
+
+  Column _imageQty(FetchCartSuccess state, int index, CartModel productModel) {
+    final listDialog = ["1", "2", "3", "4", "5", "more"];
+    return Column(
       children: [
         Image.network(
           state.cartList[index].mainImage,
           height: 100.0,
           width: 100.0,
         ),
-        sizedW20,
-        Text(
-          state.cartList[index].itemName,
-          style:
-              style(fontSize: 18, color: Colors.black, weight: FontWeight.bold),
+        sizedH10,
+        InkWell(
+          onTap: () {
+            _quantityRawDataShowDialog(context, listDialog, productModel);
+          },
+          child: Container(
+            width: 70,
+            height: 40,
+            padding: const EdgeInsets.all(5.0),
+            decoration: BoxDecoration(
+                border: Border.all(
+              color: Colors.grey,
+              width: 0.5,
+            )),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Qty : ",
+                  style: style(
+                      fontSize: 12,
+                      color: Colors.black,
+                      weight: FontWeight.normal),
+                ),
+                Text(productModel.cartedQuantity.toString()),
+              ],
+            ),
+          ),
         ),
+
+        // Text(
+        //   state.cartList[index].itemName,
+        //   style:
+        //       style(fontSize: 18, color: Colors.black, weight: FontWeight.bold),
+        // ),
       ],
     );
   }
 
-  Widget _quantityPriceSection(CartModel productModel, BuildContext context) {
-    CartUseCase cartUseCase = CartUseCase();
-    return ValueListenableBuilder<int>(
-        valueListenable: CartUseCase.valQuantityNotifier,
-        builder: (context, snap, _) {
-          return Row(
-            children: [
-              SizedBox(
-                width: 100,
-                child: Center(
-                  child: DropdownMenu(
-                    initialSelection: productModel.cartedQuantity,
-                    width: 80,
-                    // menuWidth: 50,
-                    // disabledHint: const Text("Qty", style: TextStyle(fontSize: 11),),
-                    // borderRadius: BorderRadius.circular(10.0),
-                    label: const Text(
-                      "Qty",
-                      style: TextStyle(fontSize: 11),
-                    ),
-                    trailingIcon: const Icon(
-                      Icons.arrow_drop_down,
-                      size: 15,
-                    ),
-                    dropdownMenuEntries: [1, 2, 3, 4, 5]
-                        .map(
-                          (item) => DropdownMenuEntry(
-                              value: item, label: item.toString()),
-                        )
-                        .toList(),
-                    onSelected: (value) {
-                      cartUseCase.updateQuantity(value!);
-                      if (productModel.cartedQuantity != value) {
-                        context.read<CartBloc>().add(CartUpdateEvent(
-                            value: value,
-                            cartModel: productModel,
-                            context: context));
-                      }
-                    },
-                  ),
-                ),
-              ),
-              sizedW20,
-              Text(
-                "$rupeeSymbol ${productModel.totalAmount}",
-                style: style(
-                    fontSize: 20, color: Colors.black, weight: FontWeight.bold),
-              )
-            ],
-          );
-        });
+  Widget _namePriceSection(CartModel productModel, BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // InkWell(
+        //   onTap: () {
+        //     _quantityRawDataShowDialog(context, listDialog, productModel);
+        //   },
+        //   child: Container(
+        //     width: 70,
+        //     height: 40,
+        //     padding: const EdgeInsets.all(5.0),
+        //     decoration: BoxDecoration(
+        //         border: Border.all(
+        //       color: Colors.grey,
+        //       width: 0.5,
+        //     )),
+        //     child: Row(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       crossAxisAlignment: CrossAxisAlignment.center,
+        //       children: [
+        //         Text(
+        //           "Qty : ",
+        //           style: style(
+        //               fontSize: 12,
+        //               color: Colors.black,
+        //               weight: FontWeight.normal),
+        //         ),
+        //         Text(productModel.cartedQuantity.toString()),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        Text(
+          productModel.itemName,
+          style:
+              style(fontSize: 18, color: Colors.black, weight: FontWeight.bold),
+        ),
+        sizedW20,
+        Text(
+          "$rupeeSymbol ${productModel.totalAmount}",
+          style:
+              style(fontSize: 20, color: Colors.black, weight: FontWeight.bold),
+        )
+      ],
+    );
   }
 
+  Future<dynamic> _quantityRawDataShowDialog(BuildContext contextMain,
+      List<String> listDialog, CartModel productModel) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(listDialog.length, (index) {
+              return InkWell(
+                onTap: () {
+                  if (listDialog[index] != "more") {
+                    CartUseCase.changeQuantity(
+                        productModel, listDialog, index, context);
+                    Navigator.of(context).pop();
+                  } else {
+                    Navigator.of(context).pop();
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return _enterMoreQuantity(context, productModel);
+                        });
+                  }
+                },
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  width: double.infinity,
+                  child: Center(
+                    child: Text(
+                      listDialog[index],
+                      style: style(
+                          fontSize: 15,
+                          color: Colors.black,
+                          weight: FontWeight.normal),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _enterMoreQuantity(BuildContext context, CartModel productModel) {
+    return AlertDialog(
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text("Enter Quantity"),
+          TextField(
+            controller: addExtraQuantityController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+                border: InputBorder.none, hintText: "Quantity"),
+          ),
+        ],
+      ),
+      actionsPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.all(10),
+      actions: [
+        TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text("Cancel")),
+        TextButton(
+            onPressed: () {
+              if (productModel.cartedQuantity.toString() !=
+                  addExtraQuantityController.text) {
+                context.read<CartBloc>().add(CartUpdateEvent(
+                    value: int.parse(addExtraQuantityController.text),
+                    cartModel: productModel,
+                    context: context));
+              }
+              Navigator.of(context).pop();
+              addExtraQuantityController.clear();
+            },
+            child: Text("Ok")),
+      ],
+    );
+  }
+*/
   callback() {}
 }
+

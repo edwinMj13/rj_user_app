@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:rj/features/data/models/products_model.dart';
 import 'package:rj/features/presentation/screens/category_details_screen/category_details_screen.dart';
 import 'package:rj/features/presentation/screens/edit_profile_screen/edit_profile_screen.dart';
 import 'package:rj/features/presentation/screens/main_screen/main_screen.dart';
 import 'package:rj/features/presentation/screens/product_details/product_details_screen.dart';
+import 'package:rj/features/presentation/screens/wish_list_screen/wish_list_screen.dart';
 
 import '../../features/presentation/screens/add_address_screen/add_address_screen.dart';
 import '../../features/presentation/screens/add_details_screen/add_details_screen.dart';
@@ -26,7 +28,7 @@ class Routes {
             builder: (context) => AddDetailsScreen(), settings: settings);
       case "product_details_screen":
         return MaterialPageRoute(
-            builder: (context) => ProductDetailsScreen(), settings: settings);
+            builder: (context) => ProductDetailsScreen(productModel: settings.arguments as ProductsModel,), settings: settings);
       case "category_details_screen":
         //String? categoryTitle = settings.arguments.toString();
         return MaterialPageRoute(
@@ -38,6 +40,8 @@ class Routes {
         return MaterialPageRoute(builder: (context) => AddAddressScreen());
       case "edit_profile_screen":
         return MaterialPageRoute(builder: (context) => EditProfileScreen());
+      case "wish_list_screen":
+        return MaterialPageRoute(builder: (context) => WishListScreen());
       default:
         return MaterialPageRoute(
             builder: (context) => const Scaffold(

@@ -66,7 +66,7 @@ class _ExploreScreenState extends State<ExploreScreen>
               return GridView.builder(
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, crossAxisSpacing: 5),
+                    crossAxisCount: 2, crossAxisSpacing: 5,mainAxisSpacing: 5),
                 itemBuilder: (context, index) {
                   return _exploreItemsContent(context, stateData, index);
                 },
