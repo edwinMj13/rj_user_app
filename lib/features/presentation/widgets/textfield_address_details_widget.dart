@@ -14,21 +14,19 @@ class TextFormDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextFormField(
-        keyboardType: inputType,
-        decoration:  InputDecoration(
-          border: const OutlineInputBorder(),
-          labelText: label,
-        ),
-        controller: controller,
-        validator: (value){
-          if(value==null || value.isEmpty ){
-            return label;
-          }
-          return null;
-        },
+    return TextFormField(
+      keyboardType: inputType,
+      decoration:  InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: label,
       ),
+      controller: controller,
+      validator: (value){
+        if(value==null || value.isEmpty ){
+          return label;
+        }
+        return null;
+      },
     );
   }
 }

@@ -13,7 +13,6 @@ import 'package:rj/utils/constants.dart';
 import '../../../utils/common.dart';
 import '../screens/explore_screen/bloc/explore_bloc.dart';
 import 'blocs/bottom_sheet/category_brand_bottomsheet_bloc/bottom_sheet_bloc.dart';
-import 'drop_down_button.dart';
 import 'filter_select_listenable_widget.dart';
 
 class FilterBottomSheetContent extends StatefulWidget {

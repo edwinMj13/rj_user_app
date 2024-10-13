@@ -18,3 +18,11 @@ final CartModel cartModel;
 final BuildContext context;
 RemoveFromCartEvent({required this.cartModel,required this.context});
 }
+
+// class FromCartPlaceOrderEvent extends CartEvent {
+//   final String userNodeId;
+//   final String cartListNodeId;
+//
+//   FromCartPlaceOrderEvent({required this.userNodeId, required this.cartListNodeId});
+//
+// }

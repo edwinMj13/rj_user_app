@@ -43,10 +43,11 @@ class CachedData {
         "emailVerified : ${sharedPref.getBool("emailVerified")}\n");
   }
 
-  static saveUserNode(String nodeId,String shipping,String billing) async {
+  static saveUserNode(String nodeId,String shipping,String billing,String phoneNumber) async {
     final sharedPref = await SharedPreferences.getInstance();
     await sharedPref.setString('nodeId', nodeId);
     await sharedPref.setString('shippingAddress', shipping);
+    await sharedPref.setString('phoneNumber', phoneNumber);
     await sharedPref.setString('billingAddress', billing);
   }
 

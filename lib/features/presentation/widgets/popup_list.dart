@@ -10,6 +10,7 @@ class PopupDialogSelectList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Dialog(
       child: Column(
         mainAxisSize: MainAxisSize.min,

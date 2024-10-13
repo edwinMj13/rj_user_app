@@ -34,16 +34,26 @@ class AccountScreen extends StatelessWidget {
             //_greetings(context),
             _accountsCardSection(contextMain),
             IconTextIconWidgets(
-                iconStart: CupertinoIcons.person, label: "Edit Profile",callBack: ()=> AccountScreenUsecases.navigateToEditProfileScreen(contextMain),),
+              iconStart: CupertinoIcons.person,
+              label: "Edit Profile",
+              callBack: () => AccountScreenUsecases.navigateToEditProfileScreen(
+                  contextMain),
+            ),
             IconTextIconWidgets(
-                iconStart: Icons.location_on_outlined, label: "Add Address",callBack: ()=> AccountScreenUsecases.navigateToAddAddressScreen(contextMain),),
+              iconStart: Icons.location_on_outlined,
+              label: "Add Address",
+              callBack: () =>
+                  AccountScreenUsecases.navigateToAddAddressScreen(contextMain),
+            ),
             sizedH20,
             BlocBuilder<AccountBloc, AccountState>(
               builder: (context, state) {
                 if (state is RecentItemsSuccessState) {
                   return _recentlyViewedItems(state.listRecent);
                 }
-                return SizedBox(height: 200,);
+                return SizedBox(
+                  height: 200,
+                );
               },
             ),
             sizedH20,
@@ -60,7 +70,8 @@ ButtonGreen _logoutButtonSection(BuildContext context) {
     label: "Log Out",
     callback: () => showDialogToSignOut(context),
     color: Colors.green,
-    backgroundColor: Colors.green[50],);
+    backgroundColor: Colors.green[50],
+  );
 }
 
 SizedBox _recentlyViewedItems(List<ProductsModel> listRecent) {
@@ -75,9 +86,7 @@ SizedBox _recentlyViewedItems(List<ProductsModel> listRecent) {
           child: Text(
             "Recently Viewed Items",
             style: style(
-                fontSize: 17,
-                color: Colors.black,
-                weight: FontWeight.normal),
+                fontSize: 17, color: Colors.black, weight: FontWeight.normal),
           ),
         ),
         SizedBox(
@@ -85,37 +94,7 @@ SizedBox _recentlyViewedItems(List<ProductsModel> listRecent) {
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.symmetric(
-                    horizontal: 5, vertical: 15),
-                padding: EdgeInsets.all(5),
-                width: 120,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(3.0),
-                  boxShadow: const [
-                    BoxShadow(
-                        color: Colors.black12,
-                        spreadRadius: 0.1,
-                        blurRadius: 5,
-                        blurStyle: BlurStyle.normal,
-                        offset: Offset(1, 5)),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Image.network(
-                      listRecent[index].mainImage,
-                      fit: BoxFit.cover,
-                      width: 130,
-                      height: 110,
-                    ),
-                    Text(listRecent[index].itemName),
-                  ],
-                ),
-              );
+              return _recentlyViewdItemList(listRecent, index);
             },
             itemCount: listRecent.length,
           ),
@@ -125,6 +104,38 @@ SizedBox _recentlyViewedItems(List<ProductsModel> listRecent) {
   );
 }
 
+Container _recentlyViewdItemList(List<ProductsModel> listRecent, int index) {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+    padding: EdgeInsets.all(5),
+    width: 120,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(3.0),
+      boxShadow: const [
+        BoxShadow(
+            color: Colors.black12,
+            spreadRadius: 0.1,
+            blurRadius: 5,
+            blurStyle: BlurStyle.normal,
+            offset: Offset(1, 5)),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Image.network(
+          listRecent[index].mainImage,
+          fit: BoxFit.cover,
+          width: 130,
+          height: 110,
+        ),
+        Text(listRecent[index].itemName,maxLines: 2,overflow: TextOverflow.ellipsis,),
+      ],
+    ),
+  );
+}
 
 Container _accountsCardSection(BuildContext context) {
   return Container(
@@ -141,14 +152,16 @@ Container _accountsCardSection(BuildContext context) {
               iconData: CupertinoIcons.cube_box_fill,
               label: "Orders",
               color: accentListColors[0],
-              openScreenCallback:()=>AccountScreenUsecases.navigateToOrdersScreen(context),
+              openScreenCallback: () =>
+                  AccountScreenUsecases.navigateToOrdersScreen(context),
             ),
             sizedW20,
             AccountCardWidgets(
               iconData: Icons.favorite_border,
               label: "WishList",
               color: accentListColors[1],
-              openScreenCallback:()=>AccountScreenUsecases.navigateToWishListScreen(context),
+              openScreenCallback: () =>
+                  AccountScreenUsecases.navigateToWishListScreen(context),
             ),
           ],
         ),
@@ -160,14 +173,16 @@ Container _accountsCardSection(BuildContext context) {
               iconData: CupertinoIcons.gift,
               label: "Coupons",
               color: accentListColors[2],
-              openScreenCallback:()=>AccountScreenUsecases.navigateToOrdersScreen(context),
+              openScreenCallback: () =>
+                  AccountScreenUsecases.navigateToOrdersScreen(context),
             ),
             sizedW20,
             AccountCardWidgets(
               iconData: Icons.call_rounded,
               label: "Contact Us",
               color: accentListColors[3],
-              openScreenCallback:()=>AccountScreenUsecases.navigateToOrdersScreen(context),
+              openScreenCallback: () =>
+                  AccountScreenUsecases.navigateToOrdersScreen(context),
             ),
           ],
         ),
@@ -192,12 +207,12 @@ void showDialogToSignOut(BuildContext contextMain) {
                 child: const Text("Yes"),
                 onPressed: () {
                   Navigator.pop(context);
-                  context.read<AccountBloc>().add(
-                      SignOutEvent(context: contextMain));
+                  context
+                      .read<AccountBloc>()
+                      .add(SignOutEvent(context: contextMain));
                 }),
           ],
           actionsAlignment: MainAxisAlignment.spaceBetween,
         );
       });
 }
-

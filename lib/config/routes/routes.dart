@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:rj/features/data/models/cart_model.dart';
 import 'package:rj/features/data/models/products_model.dart';
+import 'package:rj/features/data/models/user_profile_model.dart';
 import 'package:rj/features/presentation/screens/category_details_screen/category_details_screen.dart';
+import 'package:rj/features/presentation/screens/change_address_screen/change_address_screen.dart';
 import 'package:rj/features/presentation/screens/edit_profile_screen/edit_profile_screen.dart';
 import 'package:rj/features/presentation/screens/main_screen/main_screen.dart';
+import 'package:rj/features/presentation/screens/place_order_screen/place_order_screen.dart';
 import 'package:rj/features/presentation/screens/product_details/product_details_screen.dart';
 import 'package:rj/features/presentation/screens/wish_list_screen/wish_list_screen.dart';
 
@@ -42,6 +46,18 @@ class Routes {
         return MaterialPageRoute(builder: (context) => EditProfileScreen());
       case "wish_list_screen":
         return MaterialPageRoute(builder: (context) => WishListScreen());
+      case "place_order_screen":
+        final mapData = settings.arguments as Map<String, dynamic>;
+        final cartList =  mapData["cartList"];
+        final userModel =  mapData["userModel"];
+        final lastPrice =  mapData["lastPrice"];
+        print(cartList);
+        return MaterialPageRoute(builder: (context) => PlaceOrderScreen(user: userModel,cartList: cartList,lastPrice: lastPrice,));
+      case "change_address_screen":
+        //final mapData = settings.arguments as Map<String, dynamic>;
+        // final addressModelCallback =  mapData["addressModelCallback"];
+        // final userModel =  mapData["userModel"];
+        return MaterialPageRoute(builder: (context) =>  ChangeAddressScreen(userModel: settings.arguments as UserProfileModel,));
       default:
         return MaterialPageRoute(
             builder: (context) => const Scaffold(

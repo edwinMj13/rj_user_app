@@ -66,6 +66,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     print("USER ID ${user.nodeID}");
     int totalItemAmount = CartUseCase.getTotalPrice(
         event.cartModel.sellingPrize, event.value);
+    print("totalItemAmount $totalItemAmount");
     final cartingProduct = CartModel(
       itemName: event.cartModel.itemName,
       category: event.cartModel.category,

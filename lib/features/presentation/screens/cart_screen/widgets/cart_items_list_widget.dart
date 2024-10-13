@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/domain/use_cases/common_use_cases.dart';
+import 'package:rj/features/presentation/widgets/text_price_section_line_widget.dart';
 
 import '../../../../../utils/constants.dart';
 import '../../../../../utils/styles.dart';
@@ -32,7 +33,7 @@ class CartItemsListWidget extends StatelessWidget {
                 children: [
                   _imageQty(state, index, state.cartList[index],context),
                   sizedW10,
-                  _namePriceSection(state.cartList[index], context),
+                  Expanded(child: _namePriceSection(state.cartList[index], context)),
                 ],
               ),
               sizedH20,
@@ -144,15 +145,21 @@ class CartItemsListWidget extends StatelessWidget {
         // ),
         Text(
           productModel.itemName,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
           style:
           style(fontSize: 18, color: Colors.black, weight: FontWeight.bold),
         ),
-        sizedW20,
-        Text(
-          "$rupeeSymbol ${productModel.totalAmount}",
-          style:
-          style(fontSize: 20, color: Colors.black, weight: FontWeight.bold),
-        )
+        Row(
+          children: [
+            Text(productModel.category),
+            sizedW10,
+            Container(width: 10,height: 1,color: Colors.black,),
+            sizedW10,
+            Text(productModel.subCategory!),
+          ],
+        ),
+        TextPriceSectionLineWidget(price: productModel.price!, offerPrice: productModel.totalAmount.toString())
       ],
     );
   }
@@ -175,7 +182,7 @@ class CartItemsListWidget extends StatelessWidget {
                ),
               Container(
                 height: 0.5,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.grey,
 
                 ),
@@ -246,11 +253,11 @@ class CartItemsListWidget extends StatelessWidget {
         ],
       ),
       actionsPadding: EdgeInsets.zero,
-      contentPadding: EdgeInsets.all(10),
+      contentPadding: const EdgeInsets.all(10),
       actions: [
         TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text("Cancel")),
+            child: const Text("Cancel")),
         TextButton(
             onPressed: () {
               if (productModel.cartedQuantity.toString() !=

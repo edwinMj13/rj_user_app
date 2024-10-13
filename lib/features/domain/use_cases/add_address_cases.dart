@@ -9,11 +9,11 @@ class AddAddressCases {
   final editAddressFromKey = GlobalKey<FormState>();
 
 
-  addAddress(AddressModel model,String nodeId){
-    locator<AddAddressRepo>().uploadAddress(model, nodeId);
+  addAddress(AddressModel model,String userNodeId){
+    locator<AddAddressRepo>().uploadAddress(model, userNodeId);
   }
-  Future<List<AddressModel>> getAddress(String nodeId) async {
-   return await locator<AddAddressRepo>().fetchAddress(nodeId);
+  Future<List<AddressModel>> getAddress(String userNodeId) async {
+   return await locator<AddAddressRepo>().fetchAddress(userNodeId);
   }
 
   Future<void> updateAddress(String userNodeId,String addressNodeId,AddressModel model)async{

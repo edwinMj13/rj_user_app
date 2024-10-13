@@ -7,6 +7,7 @@ import 'package:rj/features/data/repository/auth_repository.dart';
 import 'package:rj/features/presentation/screens/account_screen/bloc/account_bloc.dart';
 import 'package:rj/features/presentation/screens/add_address_screen/bloc/add_address_screen_bloc.dart';
 import 'package:rj/features/presentation/screens/cart_screen/bloc/cart_bloc.dart';
+import 'package:rj/features/presentation/screens/change_address_screen/bloc/change_address_bloc.dart';
 import 'package:rj/features/presentation/screens/explore_screen/bloc/explore_bloc.dart';
 import 'package:rj/features/presentation/screens/home_screen/bloc/home_bloc.dart';
 import 'package:rj/features/presentation/screens/main_screen/bloc/main_bloc.dart';
@@ -16,6 +17,7 @@ import 'package:rj/utils/dependencyLocation.dart';
 import 'features/presentation/screens/add_details_screen/bloc/add_details_bloc.dart';
 import 'features/presentation/screens/category_details_screen/bloc/category_details_bloc.dart';
 import 'features/presentation/screens/login_screen/bloc/auth_bloc.dart';
+import 'features/presentation/screens/place_order_screen/bloc/place_order_bloc.dart';
 import 'features/presentation/screens/wish_list_screen/bloc/wish_list_bloc.dart';
 import 'features/presentation/widgets/blocs/bottom_sheet/category_brand_bottomsheet_bloc/bottom_sheet_bloc.dart';
 import 'firebase_options.dart';
@@ -49,6 +51,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => CategoryDetailsBloc()),
         BlocProvider(create: (context) => AddAddressScreenBloc()),
         BlocProvider(create: (context) => WishListBloc()),
+        BlocProvider(create: (context) => ChangeAddressBloc()),
+        BlocProvider(create: (context) => PlaceOrderBloc()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

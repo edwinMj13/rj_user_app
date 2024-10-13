@@ -18,11 +18,15 @@ class AddScreenRepo {
         shippingAddress: userProfile.shippingAddress,
         billingAddress: userProfile.billingAddress,
       );
-      CachedData.saveUserNode(value.id,userProfile.shippingAddress!,userProfile.billingAddress!);
+      CachedData.saveUserNode(value.id,userProfile.shippingAddress!,userProfile.billingAddress!,userProfile.phoneNumber);
       firebase.collection("Users").doc(value.id).update(model.toMap());
       //print("User Added Success - ${value}");
     }).catchError((e) {
       print("USser Added Catch Error - ${e.toString()}");
     });
+  }
+  Future<void> update(String userNodeId,UserProfileModel model) async {
+    print("user IDD $userNodeId");
+    await firebase.collection("Users").doc(userNodeId).update(model.toMap());
   }
 }

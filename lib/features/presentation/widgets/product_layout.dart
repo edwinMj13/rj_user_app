@@ -40,6 +40,8 @@ class ProductLayout extends StatelessWidget {
             )),
             Text(
               productsModel.itemName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: style(
                   fontSize: 15, color: Colors.black, weight: FontWeight.bold),
             ),
