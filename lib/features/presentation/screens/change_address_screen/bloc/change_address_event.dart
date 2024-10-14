@@ -13,7 +13,7 @@ final String userNodeId;
 class UpdateAddressChangeEvent extends ChangeAddressEvent {
 
   final String address;
-  final BuildContext? context;
+  final BuildContext context;
 
   UpdateAddressChangeEvent({required this.address, required this.context});
 

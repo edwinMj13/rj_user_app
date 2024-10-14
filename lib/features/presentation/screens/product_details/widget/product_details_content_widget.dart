@@ -34,8 +34,16 @@ class ProductDetailsContentWidget extends StatelessWidget {
           _nameSection(),
           sizedH10,
           _description(),
-          sizedH20,
-          _amountSection(),
+          sizedH10,
+          Row(
+            children: [
+              Text(productModel.category),
+              sizedW10,
+              Container(width: 10,height: 1,color: Colors.black,),
+              sizedW10,
+              Text(productModel.subCategory!),
+            ],
+          ),
           sizedH20,
           _deliveryDate(),
           sizedH20,
@@ -54,9 +62,7 @@ class ProductDetailsContentWidget extends StatelessWidget {
         ));
   }
 
-  Widget _amountSection() {
-    return TextPriceSectionLineWidget(price: productModel.price!,offerPrice: productModel.sellingPrize,);
-  }
+
 
   Text _description() {
     return Text(

@@ -4,26 +4,32 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:rj/features/data/models/cart_model.dart';
 import 'package:rj/features/data/models/user_profile_model.dart';
 import 'package:rj/features/domain/use_cases/place_order_cases.dart';
+import 'package:rj/features/presentation/screens/cart_screen/widgets/cart_items_list_widget.dart';
+import 'package:rj/features/presentation/screens/place_order_screen/address_bloc/address_bloc.dart';
 import 'package:rj/features/presentation/screens/place_order_screen/bloc/place_order_bloc.dart';
 import 'package:rj/features/presentation/widgets/address_change_widget.dart';
+import 'package:rj/features/presentation/widgets/price_summary_widget.dart';
 import 'package:rj/utils/common.dart';
 
 import '../../../../utils/constants.dart';
 import '../../../../utils/styles.dart';
 import '../../../domain/use_cases/cart_use_cases.dart';
 import '../../widgets/button_green.dart';
+import '../../widgets/place_order_carted_items_widget.dart';
 
 class PlaceOrderScreen extends StatefulWidget {
   const PlaceOrderScreen({
     super.key,
     required this.cartList,
     required this.user,
-    required this.lastPrice,
+    required this.priceBreakup,
   });
 
   final List<CartModel> cartList;
   final UserProfileModel user;
-  final String lastPrice;
+  final Map<String,dynamic> priceBreakup;
+
+
 
   @override
   State<PlaceOrderScreen> createState() => _PlaceOrderScreenState();
@@ -31,15 +37,57 @@ class PlaceOrderScreen extends StatefulWidget {
 
 class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
   late Razorpay razorPay;
-
+  double? cartTotal;
+  double? lastAmtAfterDiscount;
+  double? discountAmt;
+  int? discountPercent;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    cartTotal=widget.priceBreakup["cartTotal"];
+     lastAmtAfterDiscount=widget.priceBreakup["lastPriceAfterDiscount"];
+     discountAmt=widget.priceBreakup["discountAmt"];
+     discountPercent=widget.priceBreakup["discountPercent"];
     razorPay = Razorpay();
     razorPay.on(
-        Razorpay.EVENT_PAYMENT_SUCCESS, PlaceOrderCases.onSuccessHandler);
-    razorPay.on(Razorpay.EVENT_PAYMENT_ERROR, PlaceOrderCases.onErrorHandler);
+        Razorpay.EVENT_PAYMENT_SUCCESS, onSuccessHandler);
+    razorPay.on(Razorpay.EVENT_PAYMENT_ERROR, onErrorHandler);
+  }
+
+  onSuccessHandler(PaymentSuccessResponse response){
+    print( "Payment SuccessFull \n"
+        "${response.data}");
+    showDialog(context: context, builder: (context){
+      return const Dialog(
+        backgroundColor: Colors.green,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.check_outlined,color: Colors.white,),
+            sizedH20,
+            Text("Success",style: TextStyle(color: Colors.white),),
+          ],
+        ),
+      );
+    });
+  }
+
+   onErrorHandler(PaymentFailureResponse response){
+    print( "${response.error}");
+    showDialog(context: context, builder: (context){
+      return const Dialog(
+        backgroundColor: Colors.red,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.close,color: Colors.white,),
+            sizedH20,
+            Text("Payment Failed",style: TextStyle(color: Colors.white),),
+          ],
+        ),
+      );
+    });
   }
 
   @override
@@ -66,10 +114,41 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
               SingleChildScrollView(
                 child: Column(
                   children: [
-                    AddressChangeWidget(
-                        callback: () => PlaceOrderCases.navigateToAddressChangeScreen(
-                            context, widget.user),
-                        userModal: widget.user),
+                    BlocBuilder<AddressBloc, AddressState>(
+                      builder: (context, state) {
+                        if (state is FetchAddressCartState) {
+                          return AddressChangeWidget(
+                              callback: () =>
+                                  PlaceOrderCases.navigateToAddressChangeScreen(
+                                      context, state.user),
+                              userModal: state.user);
+                        }
+                        return const SizedBox(
+                          height: 100,
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      },
+                    ),
+                    sizedH10,
+                    Container(
+                      height: 0.5,
+                      color: Colors.grey,
+                    ),
+                    sizedH10,
+                    BlocBuilder<PlaceOrderBloc, PlaceOrderState>(
+                      builder: (context, state) {
+                        if (state is GetCartPlaceOrderScreenState) {
+                          return Column(
+                            children: [
+                              PlaceOrderCartedItemsWidget(cartList: state.cartList),
+                              PriceSummaryWidget(length: state.cartList.length, priceMap: widget.priceBreakup)
+
+                            ],
+                          );
+                        }
+                        return const Center(child: CircularProgressIndicator());
+                      },
+                    ),
                     const SizedBox(),
                   ],
                 ),
@@ -88,7 +167,7 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "$rupeeSymbol ${widget.lastPrice}",
+                        "$rupeeSymbol $lastAmtAfterDiscount",
                         style: style(
                             fontSize: 18,
                             color: Colors.green,
@@ -96,12 +175,11 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                       ),
                       ButtonGreen(
                           backgroundColor: Colors.yellow,
-                          label: "Place Order",
+                          label: "Proceed",
                           callback: () {
-                            double q = double.parse(widget.lastPrice);
-                            context.read<PlaceOrderBloc>().add(DoPaymentEvent(
-                                razorpay: razorPay,
-                                amount: q));
+                            int q = lastAmtAfterDiscount!.toInt();
+                            context.read<PlaceOrderBloc>().add(
+                                DoPaymentEvent(razorpay: razorPay, amount: q));
                           },
                           buttonHeight: const Size.fromHeight(45),
                           color: Colors.black),

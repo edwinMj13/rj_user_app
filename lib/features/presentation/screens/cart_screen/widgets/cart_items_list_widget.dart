@@ -11,8 +11,8 @@ import '../../../../domain/use_cases/cart_use_cases.dart';
 import '../bloc/cart_bloc.dart';
 
 class CartItemsListWidget extends StatelessWidget {
-  final FetchCartSuccessState state;
-  const CartItemsListWidget({super.key,required this.state});
+  final List<CartModel> cartList;
+  const CartItemsListWidget({super.key,required this.cartList});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,9 @@ class CartItemsListWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  _imageQty(state, index, state.cartList[index],context),
+                  _imageQty(cartList[index],context),
                   sizedW10,
-                  Expanded(child: _namePriceSection(state.cartList[index], context)),
+                  Expanded(child: _namePriceSection(cartList[index], context)),
                 ],
               ),
               sizedH20,
@@ -52,20 +52,20 @@ class CartItemsListWidget extends StatelessWidget {
                   )
                 ],
               ),
-              _removeFromCartButton(context, state, index)
+              _removeFromCartButton(context, cartList[index])
             ],
           ),
         );
       },
-      itemCount: state.cartList.length,
+      itemCount: cartList.length,
     );
   }
-  Column _imageQty(FetchCartSuccessState state, int index, CartModel productModel, BuildContext context) {
+  Column _imageQty( CartModel cartModel, BuildContext context) {
     final listDialog = ["1", "2", "3", "4", "5", "more"];
     return Column(
       children: [
         Image.network(
-          state.cartList[index].mainImage,
+          cartModel.mainImage,
           height: 100.0,
           width: 100.0,
           loadingBuilder: (context,child,loadingProgress)=>CommonUseCases.checkIfImageLoadingPRODUCTPlaceholder(loadingProgress, child,100),
@@ -73,7 +73,7 @@ class CartItemsListWidget extends StatelessWidget {
         sizedH10,
         InkWell(
           onTap: () {
-            _quantityRawDataShowDialog(context, listDialog, productModel);
+            _quantityRawDataShowDialog(context, listDialog, cartModel);
           },
           child: Container(
             width: 70,
@@ -95,17 +95,11 @@ class CartItemsListWidget extends StatelessWidget {
                       color: Colors.black,
                       weight: FontWeight.normal),
                 ),
-                Text(productModel.cartedQuantity.toString()),
+                Text(cartModel.cartedQuantity.toString()),
               ],
             ),
           ),
         ),
-
-        // Text(
-        //   state.cartList[index].itemName,
-        //   style:
-        //       style(fontSize: 18, color: Colors.black, weight: FontWeight.bold),
-        // ),
       ],
     );
   }
@@ -225,15 +219,15 @@ class CartItemsListWidget extends StatelessWidget {
   }
 
   Container _removeFromCartButton(
-      BuildContext context, FetchCartSuccessState state, int index) {
+      BuildContext context, CartModel cartModel) {
     return Container(
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: TextButton(
           onPressed: () {
             context.read<CartBloc>().add(RemoveFromCartEvent(
-                cartModel: state.cartList[index], context: context));
+                cartModel: cartModel, context: context));
           },
-          child: Text("Remove")),
+          child: const Text("Remove")),
     );
   }
 

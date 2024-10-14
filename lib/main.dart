@@ -11,6 +11,7 @@ import 'package:rj/features/presentation/screens/change_address_screen/bloc/chan
 import 'package:rj/features/presentation/screens/explore_screen/bloc/explore_bloc.dart';
 import 'package:rj/features/presentation/screens/home_screen/bloc/home_bloc.dart';
 import 'package:rj/features/presentation/screens/main_screen/bloc/main_bloc.dart';
+import 'package:rj/features/presentation/screens/place_order_screen/address_bloc/address_bloc.dart';
 import 'package:rj/features/presentation/screens/product_details/bloc/product_details_bloc.dart';
 import 'package:rj/utils/dependencyLocation.dart';
 
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => WishListBloc()),
         BlocProvider(create: (context) => ChangeAddressBloc()),
         BlocProvider(create: (context) => PlaceOrderBloc()),
+        BlocProvider(create: (context) => AddressBloc()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

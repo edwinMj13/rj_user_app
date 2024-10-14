@@ -43,16 +43,16 @@ class Routes {
       case "add_address_screen":
         return MaterialPageRoute(builder: (context) => AddAddressScreen());
       case "edit_profile_screen":
-        return MaterialPageRoute(builder: (context) => EditProfileScreen());
+        return MaterialPageRoute(builder: (context) => const EditProfileScreen());
       case "wish_list_screen":
-        return MaterialPageRoute(builder: (context) => WishListScreen());
+        return MaterialPageRoute(builder: (context) => const WishListScreen());
       case "place_order_screen":
         final mapData = settings.arguments as Map<String, dynamic>;
         final cartList =  mapData["cartList"];
         final userModel =  mapData["userModel"];
-        final lastPrice =  mapData["lastPrice"];
+        final priceBreakup =  mapData["priceBreakup"];
         print(cartList);
-        return MaterialPageRoute(builder: (context) => PlaceOrderScreen(user: userModel,cartList: cartList,lastPrice: lastPrice,));
+        return MaterialPageRoute(builder: (context) => PlaceOrderScreen(user: userModel,cartList: cartList,priceBreakup: priceBreakup,));
       case "change_address_screen":
         //final mapData = settings.arguments as Map<String, dynamic>;
         // final addressModelCallback =  mapData["addressModelCallback"];

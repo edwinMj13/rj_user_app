@@ -5,14 +5,16 @@ import '../../../utils/constants.dart';
 import '../../../utils/styles.dart';
 
 class PriceSummaryWidget extends StatelessWidget {
-  const PriceSummaryWidget({super.key, required this.length, required this.cartTotal, required this.lastAmtAfterDiscount, required this.discountAmt, required this.discountPercent});
+  const PriceSummaryWidget({super.key, required this.length, required this.priceMap});
   final int length;
-  final double cartTotal;
-  final double lastAmtAfterDiscount;
-  final double discountAmt;
-  final int discountPercent;
+  final Map<String, dynamic> priceMap;
+
   @override
   Widget build(BuildContext context) {
+    final double cartTotal=priceMap["cartTotal"];
+    final double lastAmtAfterDiscount=priceMap["lastPriceAfterDiscount"];
+    final double discountAmt=priceMap["discountAmt"];
+    final int discountPercent=priceMap["discountPercent"];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -60,15 +60,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Stack(
+            fit: StackFit.expand,
             children: [
-              ProductDetailsContentWidget(productModel:widget.productModel),
+              ProductDetailsContentWidget(productModel: widget.productModel),
               Positioned(
                 bottom: 0,
                 left: 0,
                 right: 0,
                 child: SlideUPAnimatedWidget(
                   animationController: _animationController,
-                  childWidget: _addToCartBuyNow(context),
+                  childWidget: _addToCart(context),
                 ),
               ),
             ],
@@ -78,10 +79,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
     );
   }
 
-  Widget _addToCartBuyNow(BuildContext context) {
+  Widget _addToCart(BuildContext context) {
     return Container(
       height: 80,
-      padding: const EdgeInsets.all(10.0),
       color: Colors.white,
       child: _cartTextIfAddedOrNot(context),
     );
@@ -92,7 +92,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
         builder: (context, state) {
       if (state is CheckInWishListOrCartState) {
         return state.isInCart == "true"
-            ? _alreadyAddedToCartSection(context)
+            ? _alreadyAddedToCartSection(context, widget.productModel)
             : _productNotInCartSection(context, widget.productModel);
       }
       return _productNotInCartSection(context, widget.productModel);
@@ -129,16 +129,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
             ],
           ),
         ),
-        ButtonGreen(
-            backgroundColor: Colors.black,
-            label: "Buy Now",
-            callback: () => callback(),
-            color: Colors.white)
+        TextPriceSectionLineWidget(
+          price: productModal.price!,
+          offerPrice: productModal.sellingPrize,
+        )
       ],
     );
   }
 
-  Row _alreadyAddedToCartSection(BuildContext context) {
+  Row _alreadyAddedToCartSection(
+      BuildContext context, ProductsModel productModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -160,17 +160,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                 ),
               ],
             )),
-        ButtonGreen(
-            backgroundColor: Colors.black,
-            label: "Buy Now",
-            callback: () => callback(),
-            color: Colors.white)
+        TextPriceSectionLineWidget(
+          price: productModel.price!,
+          offerPrice: productModel.sellingPrize,
+        )
       ],
     );
   }
 
-
-
   callback() {}
 }
-

@@ -47,14 +47,18 @@ class _CartScreenState extends State<CartScreen> {
             String lastPriceAfterDiscount =
                 CartUseCase.getLastTotalAmount(cartTotal, discountAmt)
                     .toStringAsFixed(2);
+            final priceBreakupMap = {
+              "cartTotal": cartTotal,
+              "discountPercent": discountPercent,
+              "lastPriceAfterDiscount": double.parse(lastPriceAfterDiscount),
+              "discountAmt": discountAmt,
+            };
 
             return Stack(
               fit: StackFit.expand,
               children: [
-                _cartListAndDetails(state, context, cartTotal,
-                    lastPriceAfterDiscount, discountAmt, discountPercent),
-                _placeOrderButton(
-                    state, lastPriceAfterDiscount, discountPercent),
+                _cartListAndDetails(state.cartList, context, priceBreakupMap),
+                _placeOrderButton(state, priceBreakupMap),
               ],
             );
           } else if (state is FetchCartNullState) {
@@ -64,31 +68,22 @@ class _CartScreenState extends State<CartScreen> {
         });
   }
 
-  SingleChildScrollView _cartListAndDetails(
-      FetchCartSuccessState state,
-      BuildContext context,
-      double cartTotal,
-      String lastPriceAfterDiscount,
-      double discountAmt,
-      int discountPercent) {
+  SingleChildScrollView _cartListAndDetails(List<CartModel> cartList,
+      BuildContext context, Map<String, dynamic> map) {
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
             CartItemsListWidget(
-              state: state,
+              cartList: cartList,
             ),
             sizedH20,
-            state.cartList.isNotEmpty
-                ? PriceSummaryWidget(
-                    length: state.cartList.length,
-                    cartTotal: cartTotal,
-                    lastAmtAfterDiscount: double.parse(lastPriceAfterDiscount),
-                    discountAmt: discountAmt,
-                    discountPercent: discountPercent,
-                  )
-                : const SizedBox(),
+            PriceSummaryWidget(
+              length: cartList.length,
+              priceMap: map,
+            ),
             const SizedBox(
               height: 60,
             ),
@@ -98,8 +93,10 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _placeOrderButton(FetchCartSuccessState state,
-      String lastPriceAfterDiscount, int discountPercent) {
+  Widget _placeOrderButton(
+      FetchCartSuccessState state, Map<String, dynamic> map) {
+    double lastPriceAfterDiscount = map["lastPriceAfterDiscount"];
+    int discountPercent = map["discountPercent"];
     return state.cartList.isNotEmpty
         ? Positioned(
             bottom: 0,
@@ -125,10 +122,7 @@ class _CartScreenState extends State<CartScreen> {
                       backgroundColor: Colors.yellow,
                       label: "Place Order",
                       callback: () => CartUseCase.passDetailsToPlaceOrderScreen(
-                          context,
-                          state.cartList,
-                          state.userModel,
-                          lastPriceAfterDiscount),
+                          context, state.cartList, state.userModel, map),
                       buttonHeight: const Size.fromHeight(45),
                       color: Colors.black),
                 ],

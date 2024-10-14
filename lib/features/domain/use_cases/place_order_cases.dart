@@ -16,16 +16,8 @@ class PlaceOrderCases{
   }
 
   static callback(AddressModel model) {}
- static onSuccessHandler(PaymentSuccessResponse response){
-  print( "Payment SuccessFull \n"
-      "${response.data}");
- }
 
- static onErrorHandler(PaymentFailureResponse response){
-  print( "${response.error}");
- }
-
- static openRazorPay(Razorpay razorpay,double amount) async {
+ static openRazorPay(Razorpay razorpay,int amount) async {
 
   // need to specify the number in point
   amount = amount * 100;

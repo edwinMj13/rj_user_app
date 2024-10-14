@@ -18,15 +18,35 @@ class AddScreenRepo {
         shippingAddress: userProfile.shippingAddress,
         billingAddress: userProfile.billingAddress,
       );
-      CachedData.saveUserNode(value.id,userProfile.shippingAddress!,userProfile.billingAddress!,userProfile.phoneNumber);
+      CachedData.saveUserNode(
+          value.id, userProfile.shippingAddress!, userProfile.billingAddress!,
+          userProfile.phoneNumber);
       firebase.collection("Users").doc(value.id).update(model.toMap());
       //print("User Added Success - ${value}");
     }).catchError((e) {
       print("USser Added Catch Error - ${e.toString()}");
     });
   }
-  Future<void> update(String userNodeId,UserProfileModel model) async {
+
+  Future<void> update(String userNodeId, UserProfileModel model) async {
     print("user IDD $userNodeId");
     await firebase.collection("Users").doc(userNodeId).update(model.toMap());
   }
+
+
+ Future<UserProfileModel> getUserDetails(String userId) async {
+    final data = await firebase.collection("Users").doc(userId).get();
+    final mapData = data.data();
+    final model = UserProfileModel(name: mapData!["name"],
+      phoneNumber: mapData["phoneNumber"],
+      email: mapData["email"],
+      nodeID: mapData["nodeID"],
+      uid: mapData["uid"],
+    billingAddress: mapData["billingAddress"],
+    shippingAddress: mapData["shippingAddress"],);
+    print("MapData $mapData");
+    return model;
+    //final user = mapData.;
+  }
+
 }
