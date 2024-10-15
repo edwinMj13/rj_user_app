@@ -11,6 +11,7 @@ import 'package:rj/features/presentation/widgets/address_change_widget.dart';
 import 'package:rj/features/presentation/widgets/button_green.dart';
 import 'package:rj/features/presentation/widgets/price_summary_widget.dart';
 import 'package:rj/utils/constants.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../utils/styles.dart';
 import '../../../../utils/text_controllers.dart';
@@ -70,7 +71,6 @@ class _CartScreenState extends State<CartScreen> {
 
   SingleChildScrollView _cartListAndDetails(List<CartModel> cartList,
       BuildContext context, Map<String, dynamic> map) {
-
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -121,8 +121,9 @@ class _CartScreenState extends State<CartScreen> {
                   ButtonGreen(
                       backgroundColor: Colors.yellow,
                       label: "Place Order",
-                      callback: () => CartUseCase.passDetailsToPlaceOrderScreen(
-                          context, state.cartList, state.userModel, map),
+                      callback: () {
+                        CartUseCase.passDetailsToPlaceOrderScreen(context, state.cartList, state.userModel, map);
+                      },
                       buttonHeight: const Size.fromHeight(45),
                       color: Colors.black),
                 ],

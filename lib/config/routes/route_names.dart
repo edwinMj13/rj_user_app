@@ -11,4 +11,7 @@ class RouteNames{
   static const wishListScreen= "wish_list_screen";
   static const placeOrderScreen= "place_order_screen";
   static const changeAddressScreen= "change_address_screen";
+  static const paymentSuccessScreen= "payment_success_screen";
+  static const orderListScreen= "order_list_screen";
+  static const orderDetailsScreen= "order_details_screen";
 }

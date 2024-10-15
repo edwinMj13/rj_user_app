@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:rj/features/data/models/cart_model.dart';
+import 'package:rj/features/data/models/order_model.dart';
 import 'package:rj/features/data/models/products_model.dart';
 import 'package:rj/features/data/models/user_profile_model.dart';
 import 'package:rj/features/presentation/screens/category_details_screen/category_details_screen.dart';
 import 'package:rj/features/presentation/screens/change_address_screen/change_address_screen.dart';
 import 'package:rj/features/presentation/screens/edit_profile_screen/edit_profile_screen.dart';
 import 'package:rj/features/presentation/screens/main_screen/main_screen.dart';
+import 'package:rj/features/presentation/screens/order_details_screen/order_details_screen.dart';
+import 'package:rj/features/presentation/screens/order_list_screen/order_list_screen.dart';
 import 'package:rj/features/presentation/screens/place_order_screen/place_order_screen.dart';
 import 'package:rj/features/presentation/screens/product_details/product_details_screen.dart';
+import 'package:rj/features/presentation/screens/success_screen/success_screen.dart';
 import 'package:rj/features/presentation/screens/wish_list_screen/wish_list_screen.dart';
 
 import '../../features/presentation/screens/add_address_screen/add_address_screen.dart';
@@ -32,9 +36,11 @@ class Routes {
             builder: (context) => AddDetailsScreen(), settings: settings);
       case "product_details_screen":
         return MaterialPageRoute(
-            builder: (context) => ProductDetailsScreen(productModel: settings.arguments as ProductsModel,), settings: settings);
+            builder: (context) => ProductDetailsScreen(
+                  productModel: settings.arguments as ProductsModel,
+                ),
+            settings: settings);
       case "category_details_screen":
-        //String? categoryTitle = settings.arguments.toString();
         return MaterialPageRoute(
             builder: (context) => CategoryDetailsScreen(
                   categoryName: settings.arguments.toString(),
@@ -43,21 +49,46 @@ class Routes {
       case "add_address_screen":
         return MaterialPageRoute(builder: (context) => AddAddressScreen());
       case "edit_profile_screen":
-        return MaterialPageRoute(builder: (context) => const EditProfileScreen());
+        return MaterialPageRoute(
+            builder: (context) => const EditProfileScreen());
       case "wish_list_screen":
         return MaterialPageRoute(builder: (context) => const WishListScreen());
+      case "payment_success_screen":
+        final mapData = settings.arguments as Map<String, dynamic>;
+        final cartList = mapData["cartList"];
+        final userModel = mapData["user"];
+        final priceBreakup = mapData["priceBreakup"];
+        final paymentId = mapData["payment_id"];
+        return MaterialPageRoute(
+            builder: (context) => SuccessScreen(
+                  userModel: userModel,
+                  cartList: cartList,
+                  paymentId: paymentId,
+                  priceBreakup: priceBreakup,
+                ));
       case "place_order_screen":
         final mapData = settings.arguments as Map<String, dynamic>;
-        final cartList =  mapData["cartList"];
-        final userModel =  mapData["userModel"];
-        final priceBreakup =  mapData["priceBreakup"];
+        final cartList = mapData["cartList"];
+        final userModel = mapData["userModel"];
+        final priceBreakup = mapData["priceBreakup"];
         print(cartList);
-        return MaterialPageRoute(builder: (context) => PlaceOrderScreen(user: userModel,cartList: cartList,priceBreakup: priceBreakup,));
+        return MaterialPageRoute(
+            builder: (context) => PlaceOrderScreen(
+                  user: userModel,
+                  cartList: cartList,
+                  priceBreakup: priceBreakup,
+                ));
       case "change_address_screen":
-        //final mapData = settings.arguments as Map<String, dynamic>;
-        // final addressModelCallback =  mapData["addressModelCallback"];
-        // final userModel =  mapData["userModel"];
-        return MaterialPageRoute(builder: (context) =>  ChangeAddressScreen(userModel: settings.arguments as UserProfileModel,));
+        return MaterialPageRoute(
+            builder: (context) => ChangeAddressScreen(
+                  userModel: settings.arguments as UserProfileModel,
+                ));
+      case "order_list_screen":
+        return MaterialPageRoute(
+            builder: (context) => const OrderListScreen());
+      case "order_details_screen":
+        return MaterialPageRoute(
+            builder: (context) => OrderDetailsScreen(orderId: settings.arguments.toString(),));
       default:
         return MaterialPageRoute(
             builder: (context) => const Scaffold(

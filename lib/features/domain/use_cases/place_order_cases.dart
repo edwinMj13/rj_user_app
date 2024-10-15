@@ -3,19 +3,35 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:rj/config/routes/route_names.dart';
 import 'package:rj/features/data/models/address_model.dart';
+import 'package:rj/features/data/models/cart_model.dart';
+import 'package:rj/features/data/models/order_model.dart';
 import 'package:rj/features/data/models/user_profile_model.dart';
+import 'package:rj/features/data/repository/add_screen_repository.dart';
+import 'package:rj/features/domain/use_cases/show_loading_with_out_text.dart';
+import 'package:rj/utils/dependencyLocation.dart';
 
 import '../../../utils/common.dart';
+import '../../data/models/products_model.dart';
 import '../../presentation/screens/change_address_screen/bloc/change_address_bloc.dart';
 
 class PlaceOrderCases{
+
  static  navigateToAddressChangeScreen(BuildContext context,UserProfileModel user){
   context.read<ChangeAddressBloc>().add(FetchAddressChangeEvent(selectedValue: 0, userNodeId: user.nodeID));
  // Map<String,dynamic> map = {"userModel":user,"addressModelCallback":(model)=>callback(model)};
   Navigator.pushNamed(context, RouteNames.changeAddressScreen,arguments:user );
   }
 
-  static callback(AddressModel model) {}
+  static navigateToSuccessPage(BuildContext context, PaymentSuccessResponse response,String userNodeId, Map<String, dynamic> priceBreakup,  List<CartModel> cartList,) async {
+  UserProfileModel user =await locator<AddScreenRepo>().getUserDetails(userNodeId);
+  Map<String,dynamic> map = {
+   "payment_id":response.paymentId,
+   "priceBreakup":priceBreakup,
+   "user":user,
+   "cartList":cartList,
+  };
+   Navigator.pushNamed(context, RouteNames.paymentSuccessScreen,arguments: map);
+  }
 
  static openRazorPay(Razorpay razorpay,int amount) async {
 
@@ -43,8 +59,26 @@ class PlaceOrderCases{
   }
  }
 
-// onSuccessHandler(PaymentSuccessResponse response){
-//   snackbar(context, "Payment SuccessFull");
-// }
+  void navigateToProdDetails(BuildContext context, CartModel cartList) {
+   final model = ProductsModel(
+    itemName: cartList.itemName,
+    category: cartList.category,
+    firebaseNodeId: cartList.firebaseNodeId,
+    productId: cartList.productId,
+    status: cartList.status,
+    imagesList: cartList.imagesList,
+    description: cartList.description,
+    itemBrand: cartList.itemBrand,
+    mainImage: cartList.mainImage,
+    sellingPrize: cartList.sellingPrize,
+    subCategory: cartList.subCategory,
+    price: cartList.price,
+    stock: cartList.stock,
+   );
+   Navigator.pushNamed(context, RouteNames.productDetailsScreen,arguments: model);
+  }
+
+
+  //getP
 
 }

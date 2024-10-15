@@ -5,6 +5,8 @@ import 'package:rj/features/data/repository/cart_repository.dart';
 import 'package:rj/features/data/repository/explore_repo.dart';
 import 'package:rj/features/data/repository/add_screen_repository.dart';
 import 'package:rj/features/data/repository/get_firebase_repo.dart';
+import 'package:rj/features/data/repository/order_details_repository.dart';
+import 'package:rj/features/data/repository/order_list_respository.dart';
 import 'package:rj/features/data/repository/product_repository.dart';
 import 'package:rj/features/data/repository/wishlist_repository.dart';
 
@@ -28,4 +30,6 @@ Future<void> initializeDependencies()async {
   locator.registerLazySingleton(()=> FilterRepo());
   locator.registerLazySingleton(()=> AddAddressRepo());
   locator.registerLazySingleton(()=> WishListRepo());
+  locator.registerLazySingleton(()=> OrderListRepo());
+  locator.registerLazySingleton(()=> OrderDetailsRepo());
 }

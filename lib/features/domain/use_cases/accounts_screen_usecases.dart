@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rj/features/presentation/screens/order_list_screen/bloc/order_list_bloc.dart';
 import 'package:rj/features/presentation/screens/wish_list_screen/bloc/wish_list_bloc.dart';
 
 import '../../../config/routes/route_names.dart';
@@ -22,7 +23,8 @@ class AccountScreenUsecases{
 
   static navigateToOrdersScreen(BuildContext context){
     print("object");
-    //Navigator.pushNamed(context, RouteNames.addAddressScreen);
+    context.read<OrderListBloc>().add(FetchOrderListEvent());
+    Navigator.pushNamed(context, RouteNames.orderListScreen);
   }
 
   static navigateToWishListScreen(BuildContext context){
