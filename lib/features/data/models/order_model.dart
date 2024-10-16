@@ -1,4 +1,5 @@
 import 'package:rj/features/data/models/cart_model.dart';
+import 'package:rj/features/data/models/order_cart_purchase_model.dart';
 
 class OrderModel {
   final String userNodeId;
@@ -14,12 +15,12 @@ class OrderModel {
   final double orderdiscountAmt;
   final int orderdiscountPercent;
   String? orderNodeIdInUsers;
-  final List<CartModel> cartList;
+  final List<OrderCartPurchaseModel> purchasedCartList;
 
   OrderModel({
     required this.userNodeId,
     required this.orderNodeId,
-    required this.cartList,
+    required this.purchasedCartList,
     required this.shippingAddress,
     required this.orderDate,
     required this.customerName,
@@ -48,7 +49,7 @@ class OrderModel {
       "orderdiscountPercent": orderdiscountPercent,
       "orderDate": orderDate,
       "orderNodeIdInUsers": orderNodeIdInUsers,
-      "cartList": cartList.map((item)=>item.toMap()),
+      "purchasedCartList": purchasedCartList.map((item)=>item.toMap()),
     };
   }
 //

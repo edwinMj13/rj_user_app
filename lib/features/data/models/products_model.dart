@@ -10,6 +10,8 @@ class ProductsModel {
   final String sellingPrize;
   final String firebaseNodeId;
   final String productId;
+  final String itemMrp;
+  final String totalMrp;
   final String status;
   final List<dynamic> imagesList;
 
@@ -20,6 +22,8 @@ class ProductsModel {
       required this.productId,
       required this.status,
       required this.imagesList,
+      required this.itemMrp,
+      required this.totalMrp,
       this.subCategory,
       this.stock,
       required this.description,
@@ -37,6 +41,8 @@ class ProductsModel {
       "status":status,
       "imagesList":imagesList,
       "subCategory":subCategory,
+      "itemMrp":itemMrp,
+      "totalMrp":totalMrp,
       "stock":stock,
       "description":description,
       "productId":productId,

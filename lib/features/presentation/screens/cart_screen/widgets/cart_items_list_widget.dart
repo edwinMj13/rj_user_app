@@ -104,7 +104,7 @@ class CartItemsListWidget extends StatelessWidget {
     );
   }
 
-  Widget _namePriceSection(CartModel productModel, BuildContext context) {
+  Widget _namePriceSection(CartModel cartModel, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -138,7 +138,7 @@ class CartItemsListWidget extends StatelessWidget {
         //   ),
         // ),
         Text(
-          productModel.itemName,
+          cartModel.itemName,
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
           style:
@@ -146,14 +146,15 @@ class CartItemsListWidget extends StatelessWidget {
         ),
         Row(
           children: [
-            Text(productModel.category),
+            Text(cartModel.category),
             sizedW10,
             Container(width: 10,height: 1,color: Colors.black,),
             sizedW10,
-            Text(productModel.subCategory!),
+            Text(cartModel.subCategory!),
           ],
         ),
-        TextPriceSectionLineWidget(price: productModel.price!, offerPrice: productModel.totalAmount.toString())
+
+        TextPriceSectionLineWidget(price: cartModel.totalMrp, offerPrice: cartModel.totalAmount.toString())
       ],
     );
   }

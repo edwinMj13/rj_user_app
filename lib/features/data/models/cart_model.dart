@@ -4,6 +4,8 @@ class CartModel {
   final String? subCategory;
   final String? stock;
   final String mainImage;
+  final String itemMrp;
+  final String totalMrp;
   final String description;
   final String itemBrand;
   final String? price;
@@ -21,9 +23,11 @@ class CartModel {
         required this.firebaseNodeId,
         required this.productId,
         required this.status,
+        required this.itemMrp,
         required this.imagesList,
         this.subCategory,
         required this.cartedQuantity,
+        required this.totalMrp,
         required this.totalAmount,
         this.stock,
         required this.description,
@@ -40,7 +44,9 @@ class CartModel {
       "firebaseNodeId":firebaseNodeId,
       "status":status,
       "imagesList":imagesList,
+      "itemMrp":itemMrp,
       "subCategory":subCategory,
+      "totalMrp":totalMrp,
       "stock":stock,
       "cartedQuantity":cartedQuantity,
       "totalAmount":totalAmount,

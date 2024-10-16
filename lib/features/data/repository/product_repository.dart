@@ -12,7 +12,9 @@ class ProductRepo {
     final dataDoc = data.data();
     final model = ProductsModel(
       itemName: dataDoc!["itemName"],
+      itemMrp: dataDoc["itemMrp"],
       category: dataDoc["category"],
+      totalMrp: dataDoc["totalMrp"],
       productId: dataDoc["productId"],
       firebaseNodeId: dataDoc["firebaseNodeId"],
       status: dataDoc["status"],

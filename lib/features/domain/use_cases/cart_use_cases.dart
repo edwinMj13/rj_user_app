@@ -25,13 +25,13 @@ class CartUseCase {
     return cartTotal;
   }
 
-  static double discountAmt(double cartTotal, int discountPercentage) {
-    double discountAmt = (cartTotal * discountPercentage) / 100;
+  static double discountAmt(double amt, int discountPercentage) {
+    double discountAmt = (amt * discountPercentage) / 100;
     return discountAmt;
   }
 
-  static double getLastTotalAmount(double cartTotal, double discountAmt) {
-    return cartTotal - discountAmt;
+  static double getLastTotalAmount(double amt, double discountAmt) {
+    return amt - discountAmt;
   }
 
   updateQuantity(int value) {

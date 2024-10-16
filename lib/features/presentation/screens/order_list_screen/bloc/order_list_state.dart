@@ -10,3 +10,4 @@ final class OrderListInitial extends OrderListState {}
 
   FetchOrderListSuccessSTate({required this.orderList});
 }
+class FetchOrderListNULLState extends OrderListState{}

@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/data/models/cart_model.dart';
+import 'package:rj/features/data/models/order_cart_purchase_model.dart';
 import 'package:rj/features/data/models/to_model_class.dart';
+import 'package:rj/features/data/repository/cart_repository.dart';
+import 'package:rj/utils/dependencyLocation.dart';
 
 import '../../domain/use_cases/common_use_cases.dart';
 import '../../presentation/screens/main_screen/bloc/main_bloc.dart';
@@ -20,7 +23,8 @@ class OrderListRepo {
       final order = OrderModel(
         userNodeId: orderModel.userNodeId,
         orderNodeId: node.id,
-        cartList: orderModel.cartList,
+        purchasedCartList: orderModel.purchasedCartList,
+        orderNodeIdInUsers: "",
         shippingAddress: orderModel.shippingAddress,
         orderDate: orderModel.orderDate,
         customerName: orderModel.customerName,
@@ -59,6 +63,7 @@ class OrderListRepo {
           .update(orderModel.toMap())
           .then((_) {
         Future.delayed(Duration(seconds: 1));
+        locator<CartRepository>().clearCart(orderModel.userNodeId);
         context.read<MainBloc>().add(UpdateIndexCarBadgeEvent(index: 0));
         CommonUseCases.gotoHomeScreen(context);
       });
@@ -66,7 +71,6 @@ class OrderListRepo {
   }
 
   Future<List<OrderModel?>> getOrderList(String userNodeId) async {
-    List<CartModel> cartList = [];
     OrderModel? orderModel;
     final data = await firebase
         .collection("Users")
@@ -75,14 +79,15 @@ class OrderListRepo {
         .get();
     final dataMap = data.docs;
     List<OrderModel?> orderList = dataMap.map((model) {
+      List<OrderCartPurchaseModel> cartList = [];
       print("Started");
-      cartList.clear();
-      for (var item in model["cartList"]) {
-        cartList.add(ToModelClass.toCartModel(item));
+      for (var item in model["purchasedCartList"]) {
+        cartList.add(ToModelClass.toPurchaseModel(item));
+      }
         orderModel = OrderModel(
           userNodeId: model["userNodeId"],
           orderNodeId: model["orderNodeId"],
-          cartList: cartList,
+          purchasedCartList: cartList,
           shippingAddress: model["shippingAddress"],
           orderDate: model["orderDate"],
           customerName: model["customerName"],
@@ -96,7 +101,6 @@ class OrderListRepo {
           orderNodeIdInUsers: model["orderNodeIdInUsers"],
         );
         print(cartList.length);
-      }
       return orderModel;
     }).toList();
     print("Finished All");

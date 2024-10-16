@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rj/features/data/models/cart_model.dart';
+import 'package:rj/features/data/models/order_cart_purchase_model.dart';
 import 'package:rj/features/data/models/order_model.dart';
 import 'package:rj/features/data/models/products_model.dart';
 import 'package:rj/features/data/models/user_profile_model.dart';
@@ -71,6 +72,7 @@ class Routes {
         final cartList = mapData["cartList"];
         final userModel = mapData["userModel"];
         final priceBreakup = mapData["priceBreakup"];
+        //final tag = mapData["tag"];
         print(cartList);
         return MaterialPageRoute(
             builder: (context) => PlaceOrderScreen(
@@ -87,8 +89,11 @@ class Routes {
         return MaterialPageRoute(
             builder: (context) => const OrderListScreen());
       case "order_details_screen":
+        final mapData = settings.arguments as Map<String, dynamic>;
+    final priceBreakup = mapData["priceBreakup"];
+    final modelList = mapData["purchaseCart"];
         return MaterialPageRoute(
-            builder: (context) => OrderDetailsScreen(orderId: settings.arguments.toString(),));
+            builder: (context) => OrderDetailsScreen(purchasedCartList: modelList,priceBreakup: priceBreakup,));
       default:
         return MaterialPageRoute(
             builder: (context) => const Scaffold(

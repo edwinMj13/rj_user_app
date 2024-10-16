@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rj/features/data/models/cart_model.dart';
+import 'package:rj/features/data/models/order_cart_purchase_model.dart';
 import 'package:rj/features/data/models/order_model.dart';
 
 import '../models/to_model_class.dart';
@@ -8,7 +9,7 @@ class OrderDetailsRepo {
   final firebase = FirebaseFirestore.instance;
 
   Future<OrderModel> getOrderDetails(String orderId, String userNode) async {
-    List<CartModel> cartList = [];
+    List<OrderCartPurchaseModel> purchasedList = [];
     final data = await firebase
         .collection("Users")
         .doc(userNode)
@@ -20,13 +21,13 @@ class OrderDetailsRepo {
     //final cartList = model["cartList"];
 
     for(var item in model["cartList"]) {
-      cartList.add(ToModelClass.toCartModel(item));
+      purchasedList.add(ToModelClass.toPurchaseModel(item));
     }
-    print(cartList);
+    print(purchasedList);
     final orderModel =  OrderModel(
       userNodeId: model["userNodeId"],
       orderNodeId: model["orderNodeId"],
-      cartList: cartList,
+      purchasedCartList: purchasedList,
       shippingAddress: model["shippingAddress"],
       orderDate: model["orderDate"],
       customerName: model["customerName"],

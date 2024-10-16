@@ -63,12 +63,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       Emitter<CartState> emit) async {
     showLoadingCase.showLoading(event.context, "Please Wait...");
     final user = await CachedData.getUserDetails();
+    final totalMrp = event.cartModel.itemMrp != "" ? int.parse(event.cartModel.itemMrp)*event.value : event.cartModel.itemMrp;
+    print("TOTAL MRP $totalMrp    -   ${event.cartModel.itemMrp}   -   ${event.value}");
     print("USER ID ${user.nodeID}");
     int totalItemAmount = CartUseCase.getTotalPrice(
         event.cartModel.sellingPrize, event.value);
     print("totalItemAmount $totalItemAmount");
     final cartingProduct = CartModel(
       itemName: event.cartModel.itemName,
+      itemMrp: event.cartModel.itemMrp,
+      totalMrp: totalMrp.toString(),
       category: event.cartModel.category,
       firebaseNodeId: event.cartModel.firebaseNodeId,
       productId: event.cartModel.productId,

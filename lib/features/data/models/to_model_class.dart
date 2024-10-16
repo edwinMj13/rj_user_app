@@ -1,23 +1,26 @@
 import 'package:rj/features/data/models/cart_model.dart';
+import 'package:rj/features/data/models/order_cart_purchase_model.dart';
 
 class ToModelClass {
-  static CartModel toCartModel(e){
-    return CartModel(
-      itemName: e["itemName"],
-      category: e["category"],
-      firebaseNodeId: e["firebaseNodeId"],
-      productId: e["productId"],
-      status: e["status"],
-      stock: e["stock"],
-      totalAmount: e["totalAmount"],
-      cartedQuantity: e["cartedQuantity"],
-      price: e["price"],
-      subCategory: e["subCategory"],
-      imagesList: e["imagesList"],
-      description: e["description"],
-      itemBrand: e["itemBrand"],
-      mainImage: e["mainImage"],
-      sellingPrize: e["sellingPrize"],
+  static OrderCartPurchaseModel toPurchaseModel(item){
+    return OrderCartPurchaseModel(
+      itemName: item["itemName"],
+      itemCategory: item["itemCategory"],
+      itemFirebaseNodeId: item["itemFirebaseNodeId"],
+      itemProductId: item["itemProductId"],
+      itemStatus: item["itemStatus"],
+      itemMrp: item["itemMrp"],
+      imagesList: item["imagesList"],
+      itemCartedQuantity: item["itemCartedQuantity"],
+      itemPrice: item["itemPrice"],
+      itemSubCategory: item["itemSubCategory"],
+      itemCartedLastAmt: item["itemCartedLastAmt"],
+      itemDiscountAmt: item["itemDiscountAmt"],
+      itemDiscountPercent: item["itemDiscountPercent"],
+      itemDescription: item["itemDescription"],
+      itemBrand: item["itemBrand"],
+      itemMainImage: item["itemMainImage"],
+      itemSellingPrize: item["itemSellingPrize"],
     );
   }
 }

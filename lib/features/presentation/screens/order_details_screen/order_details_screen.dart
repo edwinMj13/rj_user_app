@@ -1,51 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/data/models/cart_model.dart';
+import 'package:rj/features/data/models/order_cart_purchase_model.dart';
 import 'package:rj/features/data/models/order_model.dart';
 import 'package:rj/features/presentation/screens/order_details_screen/bloc/order_details_bloc.dart';
+import 'package:rj/features/presentation/screens/order_details_screen/widgets/order_details_cart_items_widget.dart';
 import 'package:rj/features/presentation/screens/order_list_screen/bloc/order_list_bloc.dart';
+import 'package:rj/features/presentation/widgets/price_summary_widget.dart';
 
 import '../../../data/models/to_model_class.dart';
 import '../../widgets/place_order_carted_items_widget.dart';
 
-class OrderDetailsScreen extends StatefulWidget {
-  const OrderDetailsScreen({
+class OrderDetailsScreen extends StatelessWidget {
+   OrderDetailsScreen({
     super.key,
-    required this.orderId,
+    required this.purchasedCartList,
+    required this.priceBreakup,
   });
 
-  final String orderId;
+  final List<OrderCartPurchaseModel> purchasedCartList;
+  final Map<String,dynamic> priceBreakup;
 
-  @override
-  State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
-}
-
-class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
-
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    context.read<OrderDetailsBloc>().add(FetchOrderDetailsEvent(orderId: widget.orderId,));
-  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Details"),
       ),
-      body: BlocBuilder<OrderDetailsBloc, OrderDetailsState>(
-        builder: (context, state) {
-          if(state is OrderDetailsSuccessState) {
-          //  List<CartModel> cartList = ToModelClass.toCartModel(state.orderModel.cartList)
-            return SingleChildScrollView(child: PlaceOrderCartedItemsWidget(
-                cartList: state.orderModel.cartList));
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
+      body: SingleChildScrollView(child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            OrderDetailsCartItemsWidget(
+                purchaseModel: purchasedCartList),
+            PriceSummaryWidget(length: purchasedCartList.length, priceMap: priceBreakup)
+          ],
+        ),
+      ))
+
     );
   }
 }

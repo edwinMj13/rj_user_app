@@ -32,9 +32,10 @@ class PlaceOrderCartedItemsWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            final model = ProductsModel(
+            /*final model = ProductsModel(
               itemName: cartList[index].itemName,
               category: cartList[index].category,
+              itemMrp: cartList[index].itemMrp,
               firebaseNodeId: cartList[index].firebaseNodeId,
               productId: cartList[index].productId,
               status: cartList[index].status,
@@ -43,11 +44,12 @@ class PlaceOrderCartedItemsWidget extends StatelessWidget {
               itemBrand: cartList[index].itemBrand,
               mainImage: cartList[index].mainImage,
               sellingPrize: cartList[index].sellingPrize,
+              totalMrp: cartList[index].totalMrp,
               subCategory: cartList[index].subCategory,
               price: cartList[index].price,
               stock: cartList[index].stock,
             );
-            ProductDetailsScreen(productModel: model);
+            ProductDetailsScreen(productModel: model);*/
             placeOrderCases.navigateToProdDetails(context,cartList[index]);
           },
           child: Container(
@@ -97,7 +99,7 @@ class PlaceOrderCartedItemsWidget extends StatelessWidget {
           ],
         ),
         TextPriceSectionLineWidget(
-            price: productModel.price!,
+            price: productModel.totalMrp,
             offerPrice: productModel.totalAmount.toString())
       ],
     );

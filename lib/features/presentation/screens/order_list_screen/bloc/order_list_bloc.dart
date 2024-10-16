@@ -19,7 +19,11 @@ class OrderListBloc extends Bloc<OrderListEvent, OrderListState> {
     final user = await CachedData.getUserDetails();
     await locator<OrderListRepo>().getOrderList(user.nodeID).then((orderList){
       print("ORDERLIST - $orderList");
-      emit(FetchOrderListSuccessSTate(orderList: orderList!));
+      if(orderList.isNotEmpty) {
+        emit(FetchOrderListSuccessSTate(orderList: orderList));
+      }else{
+        emit(FetchOrderListNULLState());
+      }
     });
   }
 }

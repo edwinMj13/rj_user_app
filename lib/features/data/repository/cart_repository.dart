@@ -15,11 +15,15 @@ class CartRepository {
           .get();
       final dataMap = data.docs;
       cartList = dataMap
-          .map((e) => CartModel(
+          .map((e) {
+            final mrp = e["totalMrp"]=="" ?e["itemMrp"]:e["totalMrp"];
+        return CartModel(
                 itemName: e["itemName"],
                 category: e["category"],
                 firebaseNodeId: e["firebaseNodeId"],
+                totalMrp: mrp,
                 productId: e["productId"],
+                itemMrp: e["itemMrp"],
                 status: e["status"],
                 stock: e["stock"],
                 totalAmount: e["totalAmount"],
@@ -31,7 +35,7 @@ class CartRepository {
                 itemBrand: e["itemBrand"],
                 mainImage: e["mainImage"],
                 sellingPrize: e["sellingPrize"],
-              ))
+              );})
           .toList();
     } catch (e) {
       print("Red Cart Exception - ${e.toString()}");
@@ -40,6 +44,7 @@ class CartRepository {
   }
 
   Future<void> addToCart(ProductsModel model, String userNodeId) async {
+    print("${model.itemMrp}        ${model.totalMrp}");
     try {
       await firebase
           .collection("Users")
@@ -53,7 +58,9 @@ class CartRepository {
           totalAmount: int.parse(model.sellingPrize),
           category: model.category,
           productId: model.firebaseNodeId,
+          itemMrp: model.itemMrp,
           firebaseNodeId: node.id,
+          totalMrp: model.totalMrp,
           status: model.status,
           imagesList: model.imagesList,
           description: model.description,
@@ -89,7 +96,8 @@ class CartRepository {
     }
   }
 
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getProductsInCart( String nodeID) async {
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getProductsInCart(
+      String nodeID) async {
     final data =
         await firebase.collection("Users").doc(nodeID).collection("Cart").get();
     final mapData = data.docs;
@@ -104,5 +112,14 @@ class CartRepository {
         .collection("Cart")
         .doc(nodeId)
         .delete();
+  }
+  Future<void> clearCart(String userNodId) async {
+    final allDocuments = await firebase
+        .collection("Users")
+        .doc(userNodId)
+        .collection("Cart").get();
+    for(var item in allDocuments.docs){
+      await item.reference.delete();
+    }
   }
 }

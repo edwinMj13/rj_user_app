@@ -15,6 +15,7 @@ class PriceSummaryWidget extends StatelessWidget {
     final double lastAmtAfterDiscount=priceMap["lastPriceAfterDiscount"];
     final double discountAmt=priceMap["discountAmt"];
     final int discountPercent=priceMap["discountPercent"];
+    final String tag=priceMap["tag"];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -72,7 +73,7 @@ class PriceSummaryWidget extends StatelessWidget {
         Center(
             child: RichText(
               text: TextSpan(
-                  text: "You’ll save ",
+                  text: tag!="ol" ? "You’ll save ":"You have saved",
                   style: style(
                       fontSize: 15, color: Colors.green, weight: FontWeight.bold),
                   children: [

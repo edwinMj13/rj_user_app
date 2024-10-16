@@ -53,6 +53,7 @@ class _CartScreenState extends State<CartScreen> {
               "discountPercent": discountPercent,
               "lastPriceAfterDiscount": double.parse(lastPriceAfterDiscount),
               "discountAmt": discountAmt,
+              "tag": "cart",
             };
 
             return Stack(

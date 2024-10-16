@@ -13,9 +13,11 @@ class WishListRepo {
         .then((node) async {
       final product = ProductsModel(
         itemName: model.itemName,
+        itemMrp: model.itemMrp,
         category: model.category,
         firebaseNodeId: node.id,
         productId: model.productId,
+        totalMrp: model.totalMrp,
         status: model.status,
         imagesList: model.imagesList,
         description: model.description,
@@ -43,12 +45,14 @@ class WishListRepo {
         .map((e) => ProductsModel(
       itemName: e["itemName"],
       category: e["category"],
+      itemMrp: e["itemMrp"],
       firebaseNodeId: e["firebaseNodeId"],
       productId: e["productId"],
       status: e["status"],
       stock: e["stock"],
       price: e["price"],
       subCategory: e["subCategory"],
+      totalMrp: e["totalMrp"],
       imagesList: e["imagesList"],
       description: e["description"],
       itemBrand: e["itemBrand"],
