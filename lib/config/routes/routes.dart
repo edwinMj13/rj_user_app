@@ -92,8 +92,9 @@ class Routes {
         final mapData = settings.arguments as Map<String, dynamic>;
     final priceBreakup = mapData["priceBreakup"];
     final modelList = mapData["purchaseCart"];
+    final invNo = mapData["invNo"];
         return MaterialPageRoute(
-            builder: (context) => OrderDetailsScreen(purchasedCartList: modelList,priceBreakup: priceBreakup,));
+            builder: (context) => OrderDetailsScreen(purchasedCartList: modelList,priceBreakup: priceBreakup,invNo:invNo,));
       default:
         return MaterialPageRoute(
             builder: (context) => const Scaffold(

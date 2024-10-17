@@ -24,7 +24,11 @@ AddAddressCases addAddressCases = AddAddressCases();
   Future<void> fetchAddressScreenEvent(FetchAddressScreenEvent event, Emitter<AddAddressScreenState> emit) async {
     final user = await CachedData.getUserDetails();
     final addressList = await addAddressCases.getAddress(user.nodeID);
-    emit(FetchAddressState(addressList: addressList));
+    if(addressList.isNotEmpty) {
+      emit(FetchAddressState(addressList: addressList));
+    }else {
+      emit(FetchAddressScreenNullState());
+    }
   }
 
   FutureOr<void> addUpdloadAddressScreenEvent(AddUpdloadAddressScreenEvent event, Emitter<AddAddressScreenState> emit) async {
@@ -43,7 +47,11 @@ AddAddressCases addAddressCases = AddAddressCases();
       Navigator.of(event.context).pop();
     });
     final addressList = await addAddressCases.getAddress(user.nodeID);
-    emit(FetchAddressState(addressList: addressList));
+    if(addressList.isNotEmpty) {
+      emit(FetchAddressState(addressList: addressList));
+    }else {
+      emit(FetchAddressScreenNullState());
+    }
   }
 
   FutureOr<void> addAddressScreenDeleteEvent(AddAddressScreenDeleteEvent event, Emitter<AddAddressScreenState> emit) async {
@@ -52,6 +60,10 @@ AddAddressCases addAddressCases = AddAddressCases();
       Navigator.of(event.context).pop();
     });
     final addressList = await addAddressCases.getAddress(user.nodeID);
-    emit(FetchAddressState(addressList: addressList));
+    if(addressList.isNotEmpty) {
+      emit(FetchAddressState(addressList: addressList));
+    }else {
+      emit(FetchAddressScreenNullState());
+    }
   }
 }

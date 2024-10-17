@@ -37,7 +37,7 @@ class CommonUseCases {
   }
 
   static Widget getStatus(OrderModel orderModel){
-    if(orderModel.orderStatus =="order_placed"){
+    if(orderModel.orderStatus =="Order Placed"){
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -45,7 +45,7 @@ class CommonUseCases {
           Text("Delivery on ${orderModel.orderDate}",style: style(fontSize: 12, color: Colors.grey, weight: FontWeight.normal),),
         ],
       );
-    }else if(orderModel.orderStatus =="order_shipped"){
+    }else if(orderModel.orderStatus =="Order Shipped"){
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -54,7 +54,7 @@ class CommonUseCases {
 
         ],
       );
-    }else if(orderModel.orderStatus =="order_delivered"){
+    }else if(orderModel.orderStatus =="Order Delivered"){
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

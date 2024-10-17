@@ -130,7 +130,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
           ),
         ),
         TextPriceSectionLineWidget(
-          price: productModal.price!,
+          price: productModal.itemMrp,
           offerPrice: productModal.sellingPrize,
         )
       ],

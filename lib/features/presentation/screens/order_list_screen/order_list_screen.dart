@@ -5,7 +5,7 @@ import 'package:rj/features/data/models/cart_model.dart';
 import 'package:rj/features/data/models/order_model.dart';
 import 'package:rj/features/domain/use_cases/common_use_cases.dart';
 import 'package:rj/features/domain/use_cases/order_list_cases.dart';
-import 'package:rj/features/presentation/screens/order_list_screen/widgets/empty_order_list_widget.dart';
+import 'package:rj/features/presentation/widgets/empty_list_widget.dart';
 import 'package:rj/features/presentation/widgets/hundred_h_w_image_widget.dart';
 import 'package:rj/utils/constants.dart';
 
@@ -31,17 +31,8 @@ class OrderListScreen extends StatelessWidget {
                   // print("MainIndex  $index - ${imagesList[0].}");
                   return InkWell(
                     onTap: () {
-
-                      final priceBreakupMap = {
-                        "cartTotal": state.orderList[index]!.cartOrderTotal,
-                        "discountPercent": state.orderList[index]!.orderdiscountPercent,
-                        "lastPriceAfterDiscount":state.orderList[index]!.orderlastAmtAfterDiscount,
-                        "discountAmt": state.orderList[index]!.orderdiscountAmt,
-                        "tag": "ol",
-                       // "discountAmt": state.orderList[index]!.purchasedCartList[].orderdiscountAmt,
-                      };
                       OrderListCases.navigateToOrderDetailsScreen(
-                          context, state.orderList[index]!.purchasedCartList,priceBreakupMap);
+                          context, state.orderList[index]!.purchasedCartList,state.orderList[index],state.orderList[index]!.invoiceNo,);
                     },
                     child: orderListItems(state.orderList[index]!),
                   );
@@ -54,7 +45,7 @@ class OrderListScreen extends StatelessWidget {
               );
             }
             else if (state is FetchOrderListNULLState) {
-              return EmptyOrderListWidget();
+              return const EmptyListWidget();
             }
             return const Center(child: CircularProgressIndicator());
           },
@@ -120,7 +111,6 @@ class CircleImagesInOrderList extends StatelessWidget {
         itemCount: 2,
         // Maximum number of images to be shown in stack
         itemBorderWidth: 2,
-        itemBorderColor: Colors.black,
         // Border width around the images
       ),
     );

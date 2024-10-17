@@ -24,7 +24,12 @@ class ChangeAddressBloc extends Bloc<ChangeAddressEvent, ChangeAddressState> {
   final addAddressCases = AddAddressCases();
   Future<void> fetchAddressChangeEvent(FetchAddressChangeEvent event, Emitter<ChangeAddressState> emit) async {
    final list = await addAddressCases.getAddress(event.userNodeId);
-   emit(FetchAddressChangeState(addressList: list, selectedValue: event.selectedValue));
+   if(list.isNotEmpty) {
+     emit(FetchAddressChangeState(
+         addressList: list, selectedValue: event.selectedValue));
+   }else{
+     emit(FetchAddressNULLState());
+   }
 
   }
 

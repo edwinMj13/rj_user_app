@@ -27,7 +27,9 @@ class OrderDetailsRepo {
     final orderModel =  OrderModel(
       userNodeId: model["userNodeId"],
       orderNodeId: model["orderNodeId"],
+      paymentId: model["paymentId"],
       purchasedCartList: purchasedList,
+      invoiceNo: model["purchasedList"],
       shippingAddress: model["shippingAddress"],
       orderDate: model["orderDate"],
       customerName: model["customerName"],

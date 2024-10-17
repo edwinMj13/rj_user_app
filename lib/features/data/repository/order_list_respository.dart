@@ -16,13 +16,17 @@ class OrderListRepo {
 
   addOrderDetails(OrderModel orderModel, BuildContext context) async {
     print("addOrderDetails   ${orderModel.userNodeId}");
+    String? invNo ;
     await firebase
         .collection("Orders")
         .add(orderModel.toMap())
         .then((node) async {
+          
       final order = OrderModel(
         userNodeId: orderModel.userNodeId,
         orderNodeId: node.id,
+        invoiceNo: orderModel.paymentId.substring(orderModel.paymentId.length-6),
+        paymentId: orderModel.paymentId,
         purchasedCartList: orderModel.purchasedCartList,
         orderNodeIdInUsers: "",
         shippingAddress: orderModel.shippingAddress,
@@ -41,32 +45,25 @@ class OrderListRepo {
           .doc(node.id)
           .update(order.toMap())
           .then((_) {
-        addOrderToUser(order, context);
+        addOrderToUser(order, context,node.id);
       });
     });
   }
 
-  addOrderToUser(OrderModel orderModel, BuildContext context) async {
+  addOrderToUser(OrderModel orderModel, BuildContext context, String id) async {
     print("addOrderDetails   ${orderModel.userNodeId}");
     await firebase
         .collection("Users")
         .doc(orderModel.userNodeId)
         .collection("orders")
-        .add(orderModel.toMap())
+        .doc(id)
+        .set(orderModel.toMap())
         .then((node) async {
-      orderModel.orderNodeIdInUsers = node.id;
-      await firebase
-          .collection("Users")
-          .doc(orderModel.userNodeId)
-          .collection("orders")
-          .doc(node.id)
-          .update(orderModel.toMap())
-          .then((_) {
+      orderModel.orderNodeIdInUsers = id;
         Future.delayed(Duration(seconds: 1));
         locator<CartRepository>().clearCart(orderModel.userNodeId);
         context.read<MainBloc>().add(UpdateIndexCarBadgeEvent(index: 0));
         CommonUseCases.gotoHomeScreen(context);
-      });
     });
   }
 
@@ -87,6 +84,8 @@ class OrderListRepo {
         orderModel = OrderModel(
           userNodeId: model["userNodeId"],
           orderNodeId: model["orderNodeId"],
+          invoiceNo: model["invoiceNo"],
+          paymentId: model["paymentId"],
           purchasedCartList: cartList,
           shippingAddress: model["shippingAddress"],
           orderDate: model["orderDate"],
@@ -94,10 +93,10 @@ class OrderListRepo {
           orderTime: model["orderTime"],
           orderStatus: model["orderStatus"],
           orderPaymentMethod: model["orderPaymentMethod"],
-          cartOrderTotal: model["cartOrderTotal"],
-          orderlastAmtAfterDiscount: model["orderlastAmtAfterDiscount"],
-          orderdiscountAmt: model["orderdiscountAmt"],
-          orderdiscountPercent: model["orderdiscountPercent"],
+          cartOrderTotal: model["cartOrderTotal"].toString(),
+          orderlastAmtAfterDiscount: model["orderlastAmtAfterDiscount"].toString(),
+          orderdiscountAmt: model["orderdiscountAmt"].toString(),
+          orderdiscountPercent: model["orderdiscountPercent"].toString(),
           orderNodeIdInUsers: model["orderNodeIdInUsers"],
         );
         print(cartList.length);

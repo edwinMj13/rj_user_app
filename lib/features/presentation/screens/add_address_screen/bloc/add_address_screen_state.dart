@@ -11,3 +11,4 @@ class FetchAddressState extends AddAddressScreenState {
   FetchAddressState({required this.addressList});
 
 }
+class FetchAddressScreenNullState extends AddAddressScreenState{}

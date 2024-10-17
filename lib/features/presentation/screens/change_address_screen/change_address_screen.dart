@@ -4,6 +4,7 @@ import 'package:rj/features/data/models/address_model.dart';
 import 'package:rj/features/data/models/user_profile_model.dart';
 import 'package:rj/features/presentation/screens/change_address_screen/bloc/change_address_bloc.dart';
 import 'package:rj/features/presentation/widgets/button_green.dart';
+import 'package:rj/features/presentation/widgets/empty_list_widget.dart';
 import 'package:rj/utils/styles.dart';
 
 class ChangeAddressScreen extends StatelessWidget {
@@ -69,8 +70,10 @@ class ChangeAddressScreen extends StatelessWidget {
                 separatorBuilder: (context, index) => const Divider(),
                 itemCount: state.addressList.length,
               );
+            }else if(state is FetchAddressNULLState){
+              return const EmptyListWidget();
             }
-            return SizedBox();
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),

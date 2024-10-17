@@ -12,17 +12,25 @@ import 'common_use_cases.dart';
 
 class OrderListCases {
   static navigateToOrderDetailsScreen(
-      BuildContext context, List<OrderCartPurchaseModel> purchaseCart,Map<String,dynamic> priceBreakup) {
+      BuildContext context, List<OrderCartPurchaseModel> purchaseCart,OrderModel orderModel,String invNo) {
+    final priceBreakupMap = {
+      "cartTotal": double.parse(orderModel.cartOrderTotal),
+      "discountPercent": int.parse(orderModel.orderdiscountPercent),
+      "lastPriceAfterDiscount":double.parse(orderModel.orderlastAmtAfterDiscount),
+      "discountAmt": double.parse(orderModel.orderdiscountAmt),
+      "tag": "ol",
+    };
     Map<String,dynamic> map = {
-      "priceBreakup":priceBreakup,
+      "priceBreakup":priceBreakupMap,
       "purchaseCart":purchaseCart,
+      "invNo": invNo,
     };
     Navigator.pushNamed(context, RouteNames.orderDetailsScreen,
         arguments: map);
   }
 
   static addOrderDetails(List<CartModel> cartList, UserProfileModel user,
-      Map<String, dynamic> priceBreakup, BuildContext context) async {
+      Map<String, dynamic> priceBreakup, BuildContext context, String paymentId) async {
     List<OrderCartPurchaseModel> purchasedCartList= [];
     for(var item in cartList) {
       final itemDiscountAmt = CartUseCase.discountAmt(double.parse(item.sellingPrize), priceBreakup["discountPercent"]);
@@ -52,10 +60,13 @@ class OrderListCases {
       orderNodeId: "",
       purchasedCartList: purchasedCartList,
       shippingAddress: user.shippingAddress!,
+      invoiceNo: "",
+      paymentId: paymentId,
       orderDate: CommonUseCases.getCurrentDate(),
       customerName: user.name,
       orderTime: CommonUseCases.getCurrentTime(),
-      orderStatus: "order_placed",
+      orderStatus: "Order Placed",
+      orderNodeIdInUsers: "",
       orderPaymentMethod: "By Cash",
       cartOrderTotal: priceBreakup["cartTotal"],
       orderlastAmtAfterDiscount: priceBreakup["lastPriceAfterDiscount"]!,

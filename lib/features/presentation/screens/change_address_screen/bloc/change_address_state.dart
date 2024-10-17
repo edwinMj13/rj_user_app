@@ -11,3 +11,6 @@ class FetchAddressChangeState extends ChangeAddressState{
   FetchAddressChangeState({required this.addressList,required this.selectedValue});
 
 }
+class FetchAddressNULLState extends ChangeAddressState {
+
+}

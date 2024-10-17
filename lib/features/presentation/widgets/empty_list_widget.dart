@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../../utils/styles.dart';
-import '../../../widgets/nothing_text_widget.dart';
+import '../../../utils/styles.dart';
+import 'nothing_text_widget.dart';
 
-class EmptyOrderListWidget extends StatelessWidget {
-  const EmptyOrderListWidget({
+class EmptyListWidget extends StatelessWidget {
+  const EmptyListWidget({
     super.key,
   });
 
@@ -19,7 +19,7 @@ class EmptyOrderListWidget extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(100),
             child: Container(
-              child: Icon(
+              child: const Icon(
                 CupertinoIcons.layers,
                 color: Colors.grey,
                 size: 100,

@@ -36,7 +36,7 @@ class _SuccessScreenState extends State<SuccessScreen>
   @override
   void initState() {
     super.initState();
-    OrderListCases.addOrderDetails(widget.cartList, widget.userModel, widget.priceBreakup,context);
+    OrderListCases.addOrderDetails(widget.cartList, widget.userModel, widget.priceBreakup,context,widget.paymentId);
     _controllerCenter =
         ConfettiController(duration: const Duration(seconds: 10));
     _controllerCenter.play();

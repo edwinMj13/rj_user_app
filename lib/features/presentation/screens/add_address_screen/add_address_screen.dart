@@ -4,6 +4,7 @@ import 'package:rj/features/data/models/address_model.dart';
 import 'package:rj/features/domain/use_cases/add_address_cases.dart';
 import 'package:rj/features/domain/use_cases/add_details_use_cases.dart';
 import 'package:rj/features/presentation/screens/add_address_screen/bloc/add_address_screen_bloc.dart';
+import 'package:rj/features/presentation/widgets/empty_list_widget.dart';
 import 'package:rj/features/presentation/widgets/text_field_detail_widget.dart';
 import 'package:rj/features/presentation/widgets/textfield_address_details_widget.dart';
 import 'package:rj/utils/constants.dart';
@@ -64,8 +65,10 @@ class AddAddressScreen extends StatelessWidget {
               height: 0.1,
             ),
           );
+        }else if(state is FetchAddressScreenNullState){
+          return const EmptyListWidget();
         }
-        return SizedBox();
+        return Center(child: const CircularProgressIndicator());
       },
     );
   }

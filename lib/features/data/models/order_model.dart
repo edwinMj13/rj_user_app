@@ -8,12 +8,14 @@ class OrderModel {
   final String customerName;
   final String orderTime;
   final String orderDate;
+  final String paymentId;
   final String orderStatus;
   final String orderPaymentMethod;
-  final double cartOrderTotal;
-  final double orderlastAmtAfterDiscount;
-  final double orderdiscountAmt;
-  final int orderdiscountPercent;
+  final String cartOrderTotal;
+  final String orderlastAmtAfterDiscount;
+  final String invoiceNo;
+  final String orderdiscountAmt;
+  final String orderdiscountPercent;
   String? orderNodeIdInUsers;
   final List<OrderCartPurchaseModel> purchasedCartList;
 
@@ -22,8 +24,10 @@ class OrderModel {
     required this.orderNodeId,
     required this.purchasedCartList,
     required this.shippingAddress,
+    required this.paymentId,
     required this.orderDate,
     required this.customerName,
+    required this.invoiceNo,
     required this.orderTime,
     required this.orderStatus,
     required this.orderPaymentMethod,
@@ -40,7 +44,9 @@ class OrderModel {
       "orderNodeId": orderNodeId,
       "shippingAddress": shippingAddress,
       "customerName": customerName,
+      "paymentId": paymentId,
       "orderTime": orderTime,
+      "invoiceNo": invoiceNo,
       "orderStatus": orderStatus,
       "orderPaymentMethod": orderPaymentMethod,
       "cartOrderTotal": cartOrderTotal,

@@ -20,7 +20,6 @@ class OrderDetailsCartItemsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("slodfigkjfkm ${purchaseModel}");
     return ListView.separated(
       shrinkWrap: true,
       separatorBuilder: (context, index) => const Divider(
@@ -31,25 +30,6 @@ class OrderDetailsCartItemsWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            /*final model = ProductsModel(
-              itemName: purchaseModel[index].itemName,
-              category: purchaseModel[index].itemCategory,
-              itemMrp: purchaseModel[index].itemMrp,
-              firebaseNodeId: purchaseModel[index].firebaseNodeId,
-              productId: purchaseModel[index].productId,
-              status: purchaseModel[index].status,
-              imagesList: purchaseModel[index].imagesList,
-              description: purchaseModel[index].description,
-              itemBrand: purchaseModel[index].itemBrand,
-              mainImage: purchaseModel[index].mainImage,
-              sellingPrize: purchaseModel[index].sellingPrize,
-              totalMrp: purchaseModel[index].totalMrp,
-              subCategory: purchaseModel[index].subCategory,
-              price: purchaseModel[index].price,
-              stock: purchaseModel[index].stock,
-            );
-            ProductDetailsScreen(productModel: model);
-            placeOrderCases.navigateToProdDetails(context,cartList[index]);*/
           },
           child: Container(
             padding: const EdgeInsets.all(10.0),
