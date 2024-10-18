@@ -44,13 +44,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     Timer(const Duration(milliseconds: 150),
         () => _animationController.forward());
+    context.read<ProductDetailsBloc>().add(CheckInWishListOrCartEvent(
+        productNodeId: widget.productModel.productId));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    context.read<ProductDetailsBloc>().add(CheckInWishListOrCartEvent(
-        productNodeId: widget.productModel.productId));
+
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -161,7 +162,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
               ],
             )),
         TextPriceSectionLineWidget(
-          price: productModel.price!,
+          price: productModel.itemMrp,
           offerPrice: productModel.sellingPrize,
         )
       ],

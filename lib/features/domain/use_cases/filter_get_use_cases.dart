@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/data/models/category_model.dart';
 import 'package:rj/features/data/repository/get_firebase_repo.dart';
+import 'package:rj/features/presentation/screens/brand_details_screen/bloc/brand_details_bloc.dart';
+import 'package:rj/features/presentation/screens/search_screen/bloc/search_bloc.dart';
 
 import '../../../utils/common.dart';
 import '../../../utils/dependencyLocation.dart';
@@ -91,9 +93,27 @@ class FilterGetDataUseCase {
     if(bran!="Select" && cate!="Select" && sub!="Select") {
       updateHasError(false);
       print(
-          "bran - $bran   sub - $sub   cate - $cate   slidStart - $sliderStart   sliderEnd - $sliderEnd");
-      if (tag == "ExP") {
+          "bran - $bran   cate - $cate   sub - $sub   slidStart - $sliderStart   sliderEnd - $sliderEnd");
+      if (tag == "Explore") {
         context.read<ExploreBloc>().add(ProductsFetchFilterEvent(
+          brand: bran,
+          category: cate,
+          subCategory: sub,
+          sliderStart: sliderStart!,
+          context: context,
+          sliderEnd: sliderEnd!,
+        ));
+      }else if(tag == "Brand"){
+        context.read<BrandDetailsBloc>().add(BrandFetchFilterEvent(
+          brand: bran,
+          category: cate,
+          subCategory: sub,
+          sliderStart: sliderStart!,
+          context: context,
+          sliderEnd: sliderEnd!,
+        ));
+      }else if(tag == "Search"){
+        context.read<SearchBloc>().add(SearchFetchFilterEvent(
           brand: bran,
           category: cate,
           subCategory: sub,

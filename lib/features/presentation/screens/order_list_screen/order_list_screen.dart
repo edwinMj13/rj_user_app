@@ -32,7 +32,7 @@ class OrderListScreen extends StatelessWidget {
                   return InkWell(
                     onTap: () {
                       OrderListCases.navigateToOrderDetailsScreen(
-                          context, state.orderList[index]!.purchasedCartList,state.orderList[index],state.orderList[index]!.invoiceNo,);
+                          context, state.orderList[index]!.purchasedCartList,state.orderList[index]!,state.orderList[index]!.invoiceNo,);
                     },
                     child: orderListItems(state.orderList[index]!),
                   );

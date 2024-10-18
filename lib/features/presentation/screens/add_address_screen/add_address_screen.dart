@@ -24,7 +24,7 @@ class AddAddressScreen extends StatelessWidget {
         title: const Text("Add Address"),
         actions: [
           IconButton(
-              onPressed: () => _openPopup(context, "add", null),
+              onPressed: () => addDetailsUseCases.navigateToAddressWithMapScreen(context)/*_openPopup(context, "add", null),*/,
               icon: const Icon(Icons.add))
         ],
       ),

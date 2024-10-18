@@ -14,4 +14,7 @@ class RouteNames{
   static const paymentSuccessScreen= "payment_success_screen";
   static const orderListScreen= "order_list_screen";
   static const orderDetailsScreen= "order_details_screen";
+  static const brandDetailsScreen= "brand_details_screen";
+  static const searchScreen= "search_screen";
+  static const addAddressWithMapScreen= "add_address_with_map_screen";
 }

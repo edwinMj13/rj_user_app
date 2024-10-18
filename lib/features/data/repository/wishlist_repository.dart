@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rj/features/data/models/products_model.dart';
+import 'package:rj/features/data/models/to_model_class.dart';
 
 class WishListRepo {
   final firebase = FirebaseFirestore.instance;
@@ -17,7 +18,10 @@ class WishListRepo {
         category: model.category,
         firebaseNodeId: node.id,
         productId: model.productId,
-        totalMrp: model.totalMrp,
+        //totalMrp: model.totalMrp,
+        subCategory: model.subCategory,
+        stock: model.stock,
+        price: model.price,
         status: model.status,
         imagesList: model.imagesList,
         description: model.description,
@@ -41,24 +45,9 @@ class WishListRepo {
         .collection("wishlist")
         .get();
     final dataMap = data.docs;
+
     final wishList = dataMap
-        .map((e) => ProductsModel(
-      itemName: e["itemName"],
-      category: e["category"],
-      itemMrp: e["itemMrp"],
-      firebaseNodeId: e["firebaseNodeId"],
-      productId: e["productId"],
-      status: e["status"],
-      stock: e["stock"],
-      price: e["price"],
-      subCategory: e["subCategory"],
-      totalMrp: e["totalMrp"],
-      imagesList: e["imagesList"],
-      description: e["description"],
-      itemBrand: e["itemBrand"],
-      mainImage: e["mainImage"],
-      sellingPrize: e["sellingPrize"],
-            ))
+        .map((e) => ToModelClass.toProductModel(e))
         .toList();
     return wishList;
   }

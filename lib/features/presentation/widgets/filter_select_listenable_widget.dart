@@ -12,10 +12,14 @@ class FilterSelectListenableWidget extends StatelessWidget {
     super.key,
     this.list,
     required this.label,
+    this.tagName,
+    this.fromScreen,
     required this.valueListenable,
   });
 
   final String label;
+  final String? tagName;
+  final String? fromScreen;
   final ValueListenable<String> valueListenable;
   final List<String>? list;
   List<String> listTwo = [];
@@ -23,12 +27,15 @@ class FilterSelectListenableWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("From Screen $fromScreen\n"
+        "From Type $tagName");
+    setTheFields();
+
     return ValueListenableBuilder<String>(
         valueListenable: valueListenable,
         builder: (context, snap, _) {
           final selectedValue = snap ?? "Select";
           print("snap $selectedValue");
-
           return InkWell(
             onTap: () async {
               if (label == "Category") {
@@ -36,21 +43,17 @@ class FilterSelectListenableWidget extends StatelessWidget {
               } else if (label == "Brand") {
                 listTwo = await filterGetDataUseCase.getBrands();
               }
-              print("LISTTTT $list");
-              if(label=="Sub-Category" && list!.isEmpty){
-
-              }else {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return PopupDialogSelectList(
-                        list: _getListToPopup(),
-                        callBack: (selectedValue) {
-                          FilterGetDataUseCase.selectFromPopupDialog(
-                              selectedValue, context, label);
-                        },
-                      );
-                    });
+              //print("LISTTTT $list");
+              if (label == "Sub-Category" && list!.isEmpty) {
+              } else {
+                if (fromScreen == "Category" && label == "Category") {
+                  print("Clicked  ---  Category");
+                } else if (fromScreen == "Brand" && label == "Brand") {
+                  print("Clicked  |||  Brand");
+                } else {
+                  print("Not  ---  ANY");
+                  _showPopupForListt(context);
+                }
               }
             },
             child: Column(
@@ -79,6 +82,33 @@ class FilterSelectListenableWidget extends StatelessWidget {
             ),
           );
         });
+  }
+
+  void _showPopupForListt(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return PopupDialogSelectList(
+            list: _getListToPopup(),
+            callBack: (selectedValue) {
+              FilterGetDataUseCase.selectFromPopupDialog(
+                  selectedValue, context, label);
+            },
+          );
+        });
+  }
+
+  setTheFields() async {
+    if (fromScreen == "Category") {
+      FilterGetDataUseCase.updateCategory(tagName!);
+      final subCategories =
+      await FilterGetDataUseCase.getSubCategories(
+          tagName!);
+      FilterGetDataUseCase.getSubCategoryList(
+          subCategories);
+    } else if (fromScreen == "Brand") {
+      FilterGetDataUseCase.updateBrand(tagName!);
+    }
   }
 
   List<String> _getListToPopup() => label == "Sub-Category" ? list! : listTwo;

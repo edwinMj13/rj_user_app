@@ -11,3 +11,5 @@ final class FetchCategoryDetailsState extends CategoryDetailsState {
   FetchCategoryDetailsState({required this.productList});
 
 }
+
+class FetchCategoryDetailsNULLState extends CategoryDetailsState{}

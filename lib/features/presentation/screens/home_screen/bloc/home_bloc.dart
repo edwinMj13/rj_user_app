@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:rj/features/data/models/brand_model.dart';
 import 'package:rj/features/data/models/category_model.dart';
 import 'package:rj/features/data/repository/get_firebase_repo.dart';
 
@@ -18,7 +19,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> fetchDataHomeEvent(
       FetchDataHomeEvent event, Emitter<HomeState> emit) async {
-    final data = await locator<GetFromFirebaseRepository>().getCategories();
-    emit(FetchDataHomeSuccessState(categoryList: data));
+    final categoryList = await locator<GetFromFirebaseRepository>().getCategories();
+    final brandsList = await locator<GetFromFirebaseRepository>().getBrands();
+    emit(FetchDataHomeSuccessState(categoryList: categoryList,brandList: brandsList));
   }
 }

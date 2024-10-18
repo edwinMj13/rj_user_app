@@ -13,6 +13,7 @@ import 'package:rj/features/data/repository/wishlist_repository.dart';
 import '../features/data/repository/add_address_repository.dart';
 import '../features/data/repository/auth_repository.dart';
 import '../features/data/repository/filter_repository.dart';
+import '../features/data/repository/search_repository.dart';
 
 
 final locator =GetIt.instance;
@@ -32,4 +33,5 @@ Future<void> initializeDependencies()async {
   locator.registerLazySingleton(()=> WishListRepo());
   locator.registerLazySingleton(()=> OrderListRepo());
   locator.registerLazySingleton(()=> OrderDetailsRepo());
+  locator.registerLazySingleton(()=> SearchRepository());
 }

@@ -6,6 +6,7 @@ import 'package:rj/config/routes/routes.dart';
 import 'package:rj/features/data/repository/auth_repository.dart';
 import 'package:rj/features/presentation/screens/account_screen/bloc/account_bloc.dart';
 import 'package:rj/features/presentation/screens/add_address_screen/bloc/add_address_screen_bloc.dart';
+import 'package:rj/features/presentation/screens/brand_details_screen/bloc/brand_details_bloc.dart';
 import 'package:rj/features/presentation/screens/cart_screen/bloc/cart_bloc.dart';
 import 'package:rj/features/presentation/screens/change_address_screen/bloc/change_address_bloc.dart';
 import 'package:rj/features/presentation/screens/explore_screen/bloc/explore_bloc.dart';
@@ -15,6 +16,7 @@ import 'package:rj/features/presentation/screens/order_details_screen/bloc/order
 import 'package:rj/features/presentation/screens/order_list_screen/bloc/order_list_bloc.dart';
 import 'package:rj/features/presentation/screens/place_order_screen/address_bloc/address_bloc.dart';
 import 'package:rj/features/presentation/screens/product_details/bloc/product_details_bloc.dart';
+import 'package:rj/features/presentation/screens/search_screen/bloc/search_bloc.dart';
 import 'package:rj/utils/dependencyLocation.dart';
 
 import 'features/presentation/screens/add_details_screen/bloc/add_details_bloc.dart';
@@ -27,9 +29,7 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp();
   await initializeDependencies();
   runApp(const MyApp());
 }
@@ -59,6 +59,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AddressBloc()),
         BlocProvider(create: (context) => OrderListBloc()),
         BlocProvider(create: (context) => OrderDetailsBloc()),
+        BlocProvider(create: (context) => BrandDetailsBloc()),
+        BlocProvider(create: (context) => SearchBloc()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

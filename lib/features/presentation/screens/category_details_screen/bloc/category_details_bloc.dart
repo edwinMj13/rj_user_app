@@ -32,8 +32,12 @@ class CategoryDetailsBloc extends Bloc<CategoryDetailsEvent, CategoryDetailsStat
     emit(CategoryDetailsInitial());
     await locator<FilterRepo>().getProductsFilter(
         event.brand, event.category, event.subCategory, event.sliderStart, event.sliderEnd).then((list){
-      FilterGetDataUseCase.closeBottomSheet(event.context);
-      emit(FetchCategoryDetailsState(productList: list));
+          if(list.isNotEmpty) {
+            emit(FetchCategoryDetailsState(productList: list));
+            FilterGetDataUseCase.clearFields(event.context);
+          }else{
+            emit(FetchCategoryDetailsNULLState());
+          }
     });
   }
 }

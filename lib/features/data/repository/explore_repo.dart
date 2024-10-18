@@ -17,7 +17,7 @@ class ExploreRepo {
           firebaseNodeId: model["firebaseNodeId"],
           itemMrp: model["itemMrp"],
           productId: model["firebaseNodeId"],
-          totalMrp: model["totalMrp"],
+         // totalMrp: model["totalMrp"],
           status: model["status"],
           imagesList: model["imagesList"],
           description: model["description"],

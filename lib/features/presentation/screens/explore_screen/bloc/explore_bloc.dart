@@ -35,7 +35,11 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     await locator<FilterRepo>().getProductsFilter(
         event.brand, event.category, event.subCategory, event.sliderStart, event.sliderEnd).then((list){
       FilterGetDataUseCase.clearFields(event.context);
-      emit(ProductsSuccessExploreState(productList: list));
+      if(list.isNotEmpty) {
+        emit(ProductsSuccessExploreState(productList: list));
+      }else{
+        emit(ProductsSuccessNULLExploreState());
+      }
     });
   }
 

@@ -44,7 +44,7 @@ class CartRepository {
   }
 
   Future<void> addToCart(ProductsModel model, String userNodeId) async {
-    print("${model.itemMrp}        ${model.totalMrp}");
+    //print("${model.itemMrp}        ${model.totalMrp}");
     try {
       await firebase
           .collection("Users")
@@ -60,7 +60,7 @@ class CartRepository {
           productId: model.firebaseNodeId,
           itemMrp: model.itemMrp,
           firebaseNodeId: node.id,
-          totalMrp: model.totalMrp,
+          totalMrp: "",
           status: model.status,
           imagesList: model.imagesList,
           description: model.description,

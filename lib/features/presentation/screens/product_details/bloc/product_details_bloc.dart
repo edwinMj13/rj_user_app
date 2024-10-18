@@ -40,6 +40,8 @@ class ProductDetailsBloc
         event.productNodeId, userData.nodeID);
     final isInWIshlist = await ProductDetailsUseCase.checkIfProductInWishList(
         event.productNodeId, userData.nodeID);
+    print("event.productNodeId ${event.productNodeId} ,   userData.nodeID  ${userData.nodeID}");
+    print("in Cart $isInCart ,   isinWishList  $isInWIshlist");
     emit(CheckInWishListOrCartState(
         // userProfileModel: userData,
         // productModal: productDetails,
@@ -50,7 +52,7 @@ class ProductDetailsBloc
 
   Future<void> addToCartEventPrDtEvent(
       AddToCartEventPrDtEvent event, Emitter<ProductDetailsState> emit) async {
-    locator<CartRepository>()
+    await locator<CartRepository>()
         .addToCart(event.model, event.userNodeId)
         .then((_) {
       event.context.read<ProductDetailsBloc>().add(
@@ -60,9 +62,9 @@ class ProductDetailsBloc
     });
   }
 
-  FutureOr<void> addToWishListEventPrDtEvent(
-      AddToWishListEventPrDtEvent event, Emitter<ProductDetailsState> emit) {
-    locator<WishListRepo>()
+  Future<void> addToWishListEventPrDtEvent(
+      AddToWishListEventPrDtEvent event, Emitter<ProductDetailsState> emit) async {
+    await locator<WishListRepo>()
         .addToWishList(event.userNodeId, event.model)
         .then((_) {
       event.context.read<ProductDetailsBloc>().add(

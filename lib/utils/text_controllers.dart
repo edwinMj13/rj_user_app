@@ -13,6 +13,10 @@ final addAddressNameController = TextEditingController();
 final addAddressAddressController = TextEditingController();
 final addAddressPincodeController = TextEditingController();
 
+final addMapAddressNameController = TextEditingController();
+final addMapAddressAddressController = TextEditingController();
+final addMapAddressPincodeController = TextEditingController();
+
 final addExtraQuantityController = TextEditingController();
 final cartQuantityController = TextEditingController();
 

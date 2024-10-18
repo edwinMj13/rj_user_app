@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:rj/features/data/models/brand_model.dart';
 import 'package:rj/features/data/models/cart_model.dart';
 import 'package:rj/features/data/models/order_cart_purchase_model.dart';
 import 'package:rj/features/data/models/order_model.dart';
 import 'package:rj/features/data/models/products_model.dart';
 import 'package:rj/features/data/models/user_profile_model.dart';
+import 'package:rj/features/presentation/screens/add_address_with_map_screen/add_address_with_map_screen.dart';
+import 'package:rj/features/presentation/screens/brand_details_screen/brand_details_screen.dart';
 import 'package:rj/features/presentation/screens/category_details_screen/category_details_screen.dart';
 import 'package:rj/features/presentation/screens/change_address_screen/change_address_screen.dart';
 import 'package:rj/features/presentation/screens/edit_profile_screen/edit_profile_screen.dart';
@@ -12,6 +15,7 @@ import 'package:rj/features/presentation/screens/order_details_screen/order_deta
 import 'package:rj/features/presentation/screens/order_list_screen/order_list_screen.dart';
 import 'package:rj/features/presentation/screens/place_order_screen/place_order_screen.dart';
 import 'package:rj/features/presentation/screens/product_details/product_details_screen.dart';
+import 'package:rj/features/presentation/screens/search_screen/search_screen.dart';
 import 'package:rj/features/presentation/screens/success_screen/success_screen.dart';
 import 'package:rj/features/presentation/screens/wish_list_screen/wish_list_screen.dart';
 
@@ -49,6 +53,12 @@ class Routes {
             settings: settings);
       case "add_address_screen":
         return MaterialPageRoute(builder: (context) => AddAddressScreen());
+      case "brand_details_screen":
+        return MaterialPageRoute(builder: (context) => BrandDetailsScreen(brandModel: settings.arguments as BrandModel));
+      case "search_screen":
+        return MaterialPageRoute(builder: (context) => SearchScreen());
+      case "add_address_with_map_screen":
+        return MaterialPageRoute(builder: (context) => AddAddressWithMapScreen());
       case "edit_profile_screen":
         return MaterialPageRoute(
             builder: (context) => const EditProfileScreen());

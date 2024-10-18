@@ -21,6 +21,7 @@ class WishListScreen extends StatelessWidget {
           if (state is FetchWishListSuccessState) {
             return ListView.builder(
               itemBuilder: (context, index) {
+                print("Sub ${state.productsModel[index].itemName}");
                 return ProductLayout(productsModel: state.productsModel[index]);
               },
               itemCount: state.productsModel.length,

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/presentation/screens/category_details_screen/bloc/category_details_bloc.dart';
+import 'package:rj/features/presentation/widgets/empty_list_widget.dart';
 import 'package:rj/features/presentation/widgets/product_layout.dart';
 
 import '../../widgets/appbar_common.dart';
 import '../../widgets/blocs/bottom_sheet/category_brand_bottomsheet_bloc/bottom_sheet_bloc.dart';
 import '../../widgets/filter_bottom_sheet_content.dart';
+import '../../widgets/filter_icon_widget.dart';
+import '../explore_screen/explore_screen.dart';
 
 class CategoryDetailsScreen extends StatefulWidget {
   final String categoryName;
@@ -50,14 +53,17 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
         const SizedBox(),
         IconButton(
             onPressed: () {
-              context.read<BottomSheetBloc>().add(CategoryBrandEvent());
+              //context.read<BottomSheetBloc>().add(CategoryBrandEvent());
               showModalBottomSheet(
                   context: context,
                   enableDrag: true,
-                  isDismissible: true,
-                  builder: (context) => FilterBottomSheetContent(tag:"CatD",));
+                  isDismissible: false,
+                  builder: (context) =>   FilterBottomSheetContent(
+                    tag: "Category",
+                    tagName: widget.categoryName,
+                  ));
             },
-            icon: const Icon(Icons.filter_alt_outlined))
+            icon: const Icon(Icons.filter_alt_outlined)),
       ],
     );
   }
@@ -89,6 +95,8 @@ class ProductListWidget extends StatelessWidget {
               },
               itemCount: stateData.productList.length,
             );
+          case FetchCategoryDetailsNULLState:
+            return EmptyListWidget();
           default:
             return const Center(child: CircularProgressIndicator());
         }

@@ -35,6 +35,7 @@ class OrderListCases {
     for(var item in cartList) {
       final itemDiscountAmt = CartUseCase.discountAmt(double.parse(item.sellingPrize), priceBreakup["discountPercent"]);
       final amtAfterDiscount = CartUseCase.getLastTotalAmount(double.parse(item.sellingPrize), itemDiscountAmt);
+      final itemCartedLastAmt = item.cartedQuantity*amtAfterDiscount;
       purchasedCartList.add(OrderCartPurchaseModel(
         itemName: item.itemName,
         itemCategory: item.category,
@@ -46,7 +47,7 @@ class OrderListCases {
         itemCartedQuantity: item.cartedQuantity.toString(),
         itemPrice: item.price,
         itemSubCategory: item.subCategory,
-        itemCartedLastAmt: amtAfterDiscount.toStringAsFixed(2),
+        itemCartedLastAmt: itemCartedLastAmt.toStringAsFixed(2),
         itemDiscountAmt: itemDiscountAmt.toStringAsFixed(2),
         itemDiscountPercent: priceBreakup["discountPercent"]!.toString(),
         itemDescription: item.description,
@@ -68,10 +69,10 @@ class OrderListCases {
       orderStatus: "Order Placed",
       orderNodeIdInUsers: "",
       orderPaymentMethod: "By Cash",
-      cartOrderTotal: priceBreakup["cartTotal"],
-      orderlastAmtAfterDiscount: priceBreakup["lastPriceAfterDiscount"]!,
-      orderdiscountAmt: priceBreakup["discountAmt"]!,
-      orderdiscountPercent: priceBreakup["discountPercent"]!,
+      cartOrderTotal: priceBreakup["cartTotal"].toString(),
+      orderlastAmtAfterDiscount: priceBreakup["lastPriceAfterDiscount"]!.toString(),
+      orderdiscountAmt: priceBreakup["discountAmt"]!.toString(),
+      orderdiscountPercent: priceBreakup["discountPercent"]!.toString(),
     );
     await locator<OrderListRepo>().addOrderDetails(orderModel, context);
   }

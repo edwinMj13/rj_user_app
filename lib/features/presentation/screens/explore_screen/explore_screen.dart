@@ -113,9 +113,10 @@ class _ExploreScreenState extends State<ExploreScreen>
                 showModalBottomSheet(
                     context: context,
                     enableDrag: true,
-                    isDismissible: true,
-                    builder: (context) => FilterBottomSheetContent(
-                          tag: "ExP",
+                    isDismissible: false,
+                    builder: (context) => const FilterBottomSheetContent(
+                          tag: "Explore",
+                      tagName: "Explore",
                         ));
               },
               icon: const Icon(Icons.filter_alt_outlined)),
