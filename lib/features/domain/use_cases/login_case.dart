@@ -9,7 +9,7 @@ class LoginCase {
   static passDataNavigateToAddress(AuthSuccessState stateData, BuildContext context) async {
     final userData = UserProfileModel(
       nodeID: "",
-      uid: stateData.user.uid,
+      uid: stateData.user.uid.toString(),
       name: stateData.user.displayName!,
       phoneNumber: stateData.user.phoneNumber ?? "",
       email: stateData.user.email!,

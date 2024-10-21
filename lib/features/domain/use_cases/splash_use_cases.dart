@@ -5,15 +5,19 @@ import 'package:rj/features/data/repository/cart_repository.dart';
 
 import '../../../config/routes/route_names.dart';
 import '../../../utils/dependencyLocation.dart';
+import '../../data/models/cart_model.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../presentation/screens/home_screen/bloc/home_bloc.dart';
 import '../../presentation/screens/main_screen/bloc/main_bloc.dart';
 
 class SplashUseCases {
   static ifLoggedIn(BuildContext context)async{
+    List<CartModel> cartLength=[];
     final isLogged = await locator<AuthRepository>().isLoggedIn();
     final user = await CachedData.getUserDetails();
-    final cartLength = await locator<CartRepository>().getCarts(user.nodeID);
+    if(user.nodeID.isNotEmpty) {
+       cartLength = await locator<CartRepository>().getCarts(user.nodeID);
+    }
     print("delay $isLogged");
     Future.delayed(const Duration(seconds: 2)).then((_){
       if( isLogged){

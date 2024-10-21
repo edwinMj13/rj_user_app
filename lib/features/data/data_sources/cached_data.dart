@@ -71,11 +71,11 @@ class CachedData {
   static Future<UserProfileModel> getUserDetails() async {
     final sharedPref = await SharedPreferences.getInstance();
     final user = UserProfileModel(
-      name: sharedPref.getString("name")!,
-      phoneNumber: sharedPref.getString("phoneNumber")!,
-      email: sharedPref.getString("email")!,
+      name: sharedPref.getString("name") ?? "",
+      phoneNumber: sharedPref.getString("phoneNumber") ?? "",
+      email: sharedPref.getString("email") ?? "",
       nodeID: sharedPref.getString("nodeId") ?? "",
-      uid: sharedPref.getString("uid")!,
+      uid: sharedPref.getString("uid") ?? "",
       shippingAddress: sharedPref.getString("shippingAddress") ?? "",
       billingAddress: sharedPref.getString("billingAddress") ?? "",
     );

@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SearchBloc()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'RJ Online',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
