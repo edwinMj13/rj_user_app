@@ -35,7 +35,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
   final ShowLoadingCase showLoadingCase = ShowLoadingCase();
   late AnimationController _animationController;
   final ShowLoadingWithOutCase showLoadingWithOutCase =
-      ShowLoadingWithOutCase();
+  ShowLoadingWithOutCase();
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     Timer(const Duration(milliseconds: 150),
-        () => _animationController.forward());
+            () => _animationController.forward());
     context.read<ProductDetailsBloc>().add(CheckInWishListOrCartEvent(
         productNodeId: widget.productModel.productId));
     super.initState();
@@ -91,13 +91,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
   Widget _cartTextIfAddedOrNot(BuildContext context) {
     return BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
         builder: (context, state) {
-      if (state is CheckInWishListOrCartState) {
-        return state.isInCart == "true"
-            ? _alreadyAddedToCartSection(context, widget.productModel)
-            : _productNotInCartSection(context, widget.productModel);
-      }
-      return _productNotInCartSection(context, widget.productModel);
-    });
+          if (state is CheckInWishListOrCartState) {
+            return state.isInCart == "true"
+                ? _alreadyAddedToCartSection(context, widget.productModel)
+                : _productNotInCartSection(context, widget.productModel);
+          }
+          return _productNotInCartSection(context, widget.productModel);
+        });
   }
 
   Row _productNotInCartSection(

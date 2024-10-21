@@ -1,14 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../utils/dependencyLocation.dart';
 import '../data_sources/cached_data.dart';
+import '../models/address_model.dart';
 import '../models/user_profile_model.dart';
+import 'add_address_repository.dart';
 
 class AddScreenRepo {
   final firebase = FirebaseFirestore.instance;
 
   Future<void> addUser(UserProfileModel userProfile) async {
     CollectionReference users = firebase.collection('Users');
-    await users.add(userProfile.toMap()).then((value) {
+    await users.add(userProfile.toMap()).then((value) async {
       final model = UserProfileModel(
         nodeID: value.id,
         name: userProfile.name,
@@ -16,10 +20,13 @@ class AddScreenRepo {
         email: userProfile.email,
         uid: userProfile.uid,
         shippingAddress: userProfile.shippingAddress,
-        billingAddress: userProfile.billingAddress,
+        pincode: userProfile.pincode,
       );
+      final address =AddressModel(addressNodeId: "", address: userProfile.shippingAddress!, addressName: userProfile.name, addressPinCode: userProfile.pincode);
+      await locator<AddAddressRepo>().uploadAddress(address, value.id);
+
       CachedData.saveUserNode(
-          value.id, userProfile.shippingAddress!, userProfile.billingAddress!,
+          value.id, userProfile.shippingAddress!, userProfile.pincode,
           userProfile.phoneNumber);
       firebase.collection("Users").doc(value.id).update(model.toMap());
       //print("User Added Success - ${value}");
@@ -28,9 +35,18 @@ class AddScreenRepo {
     });
   }
 
-  Future<void> update(String userNodeId, UserProfileModel model) async {
-    print("user IDD $userNodeId");
-    await firebase.collection("Users").doc(userNodeId).update(model.toMap());
+  Future<void> update(String userNodeId, UserProfileModel userProfile) async {
+    print("user IDD $userNodeId\n"
+        "USER shippingAddress  ${userProfile.shippingAddress}");
+    await firebase.collection("Users").doc(userNodeId).update(userProfile.toMap());
+    final sharedPref = await SharedPreferences.getInstance();
+    await sharedPref.setString('name',userProfile.name);
+    await sharedPref.setString('email', userProfile.email);
+    await sharedPref.setString(
+        'phoneNumber', userProfile.phoneNumber);
+    CachedData.saveUserNode(
+        userNodeId, userProfile.shippingAddress!, userProfile.pincode,
+        userProfile.phoneNumber);
   }
 
 
@@ -42,7 +58,7 @@ class AddScreenRepo {
       email: mapData["email"],
       nodeID: mapData["nodeID"],
       uid: mapData["uid"],
-    billingAddress: mapData["billingAddress"],
+      pincode: mapData["pincode"],
     shippingAddress: mapData["shippingAddress"],);
     print("MapData $mapData");
     return model;

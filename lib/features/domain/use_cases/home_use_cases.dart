@@ -2,9 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/config/routes/route_names.dart';
 import 'package:rj/features/data/models/brand_model.dart';
+import 'package:rj/features/data/repository/explore_repo.dart';
+import 'package:rj/features/data/repository/home_repository.dart';
 import 'package:rj/features/presentation/screens/brand_details_screen/bloc/brand_details_bloc.dart';
 import 'package:rj/features/presentation/screens/category_details_screen/bloc/category_details_bloc.dart';
 import 'package:rj/features/presentation/screens/product_details/bloc/product_details_bloc.dart';
+import 'package:rj/utils/dependencyLocation.dart';
+
+import '../../data/models/products_model.dart';
 
 class HomeUseCases{
   static navigateToCategoryDetailsScreen(BuildContext context,String categoryTitle){
@@ -15,4 +20,6 @@ class HomeUseCases{
     context.read<BrandDetailsBloc>().add(FetchBrandDetailsEvent(brand: brandModel.name));
     Navigator.pushNamed(context, RouteNames.brandDetailsScreen,arguments: brandModel);
   }
+ static double getDiscountPercent(ProductsModel model) => (double.parse(model.itemMrp) - double.parse(model.offerAmount))/double.parse(model.itemMrp)*100;
+
 }

@@ -33,9 +33,8 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: AppbarCommon(),
+      appBar: AppBar(
+        title: Text(widget.categoryName),
       ),
       body: Column(
         children: [

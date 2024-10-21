@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rj/features/data/models/address_model.dart';
+import 'package:rj/features/presentation/screens/add_address_with_map_screen/bloc/add_address_with_map_bloc.dart';
 
 import '../../../../utils/constants.dart';
 import '../../../../utils/styles.dart';
@@ -9,7 +12,9 @@ import '../../widgets/textfield_address_details_widget.dart';
 
 class AddAddressWithMapScreen extends StatelessWidget {
   AddAddressWithMapScreen({super.key});
-  AddAddressCases addDetailsUseCases = AddAddressCases();
+
+  final AddAddressCases addDetailsUseCases = AddAddressCases();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,12 +41,28 @@ class AddAddressWithMapScreen extends StatelessWidget {
                       inputType: TextInputType.name),
                   sizedH20,
                   TextFormFieldAddressDetailsWidget(
-                      controller: addMapAddressAddressController, label: "Address"),
+                      controller: addMapAddressAddressController,
+                      label: "Address"),
                   sizedH20,
                   TextFormDetailsWidget(
                       controller: addMapAddressPincodeController,
                       label: "Pin Code",
                       inputType: TextInputType.name),
+                  sizedH20,
+                  ElevatedButton(
+                      onPressed: () {
+                        context.read<AddAddressWithMapBloc>().add(
+                            AddAddressUploadMapEvent(
+                                addressModel: AddressModel(
+                                    addressNodeId: "",
+                                    address:
+                                        addMapAddressAddressController.text,
+                                    addressName:
+                                        addMapAddressNameController.text,
+                                    addressPinCode:
+                                        addMapAddressPincodeController.text),context: context));
+                      },
+                      child: const Text("Add"))
                 ],
               ),
             ),

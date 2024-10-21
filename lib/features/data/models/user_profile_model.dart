@@ -2,7 +2,7 @@ class UserProfileModel {
   String name;
   String email;
   String phoneNumber;
-  String? billingAddress;
+  String pincode;
   String? shippingAddress;
   String uid;
   String nodeID;
@@ -11,7 +11,7 @@ class UserProfileModel {
       {required this.name,
       required this.phoneNumber,
       required this.email,
-      this.billingAddress,
+      required this.pincode,
       this.shippingAddress,
         required this.nodeID,
       required this.uid,});
@@ -20,7 +20,7 @@ class UserProfileModel {
       "name": name,
       "email": email,
       "phoneNumber": phoneNumber,
-      "billingAddress": billingAddress,
+      "pincode": pincode,
       "shippingAddress": shippingAddress,
       "uid": uid,
       "nodeID": nodeID,

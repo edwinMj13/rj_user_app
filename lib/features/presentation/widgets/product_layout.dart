@@ -31,7 +31,7 @@ class ProductLayout extends StatelessWidget {
           children: [
             Center(
                 child: Image.network(
-              productsModel.mainImage,
+              productsModel.mainImage!,
               height: 120,
               fit: BoxFit.cover,
               loadingBuilder: (context, child, loadingProgress) =>

@@ -70,12 +70,15 @@ class PlaceOrderCases{
     status: cartList.status,
     imagesList: cartList.imagesList,
     description: cartList.description,
+    offerAmount: "",
+    offerPercent: "",
+    itemAddedDate: "",
     itemBrand: cartList.itemBrand,
     mainImage: cartList.mainImage,
     sellingPrize: cartList.sellingPrize,
     subCategory: cartList.subCategory!,
-    price: cartList.price,
-    stock: cartList.stock,
+    price: cartList.price!,
+    stock: cartList.stock!,
    );
    Navigator.pushNamed(context, RouteNames.productDetailsScreen,arguments: model);
   }

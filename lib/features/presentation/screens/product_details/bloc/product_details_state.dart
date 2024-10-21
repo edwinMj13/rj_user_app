@@ -22,6 +22,7 @@ final class CheckInWishListOrCartState extends ProductDetailsState {
   });
 }
 
+
 final class AddToCartPrdDetLoadingState extends ProductDetailsState {}
 
 final class AddToCartPrdDetSuccessState extends ProductDetailsState {}

@@ -40,7 +40,7 @@ class ChangeAddressBloc extends Bloc<ChangeAddressEvent, ChangeAddressState> {
       phoneNumber: user.phoneNumber,
       email: user.email,
       nodeID: user.nodeID,
-      billingAddress:user.billingAddress,
+      pincode:user.pincode,
       shippingAddress:event.address,
       uid: user.uid,);
     await locator<AddScreenRepo>().update(user.nodeID,userModel).then((_){

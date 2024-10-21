@@ -10,7 +10,7 @@ class CachedData {
   String? _nodeId;
   String? _uid;
   String? _shippingAddress;
-  String? _billingAddress;
+  String? _pincode;
 
   String? get name => _name;
 
@@ -24,7 +24,7 @@ class CachedData {
 
   String? get shippingAddress => _shippingAddress;
 
-  String? get billingAddress => _billingAddress;
+  String? get pincode => _pincode;
   static addProfileData(AuthSuccessState authSuccessSTate) async {
     final sharedPref = await SharedPreferences.getInstance();
 
@@ -43,12 +43,12 @@ class CachedData {
         "emailVerified : ${sharedPref.getBool("emailVerified")}\n");
   }
 
-  static saveUserNode(String nodeId,String shipping,String billing,String phoneNumber) async {
+  static saveUserNode(String nodeId,String shipping,String pincode,String phoneNumber) async {
     final sharedPref = await SharedPreferences.getInstance();
     await sharedPref.setString('nodeId', nodeId);
     await sharedPref.setString('shippingAddress', shipping);
     await sharedPref.setString('phoneNumber', phoneNumber);
-    await sharedPref.setString('billingAddress', billing);
+    await sharedPref.setString('pincode', pincode);
   }
 
   static dynamic getDataFromSharedPref(String tag) async {
@@ -77,7 +77,7 @@ class CachedData {
       nodeID: sharedPref.getString("nodeId") ?? "",
       uid: sharedPref.getString("uid") ?? "",
       shippingAddress: sharedPref.getString("shippingAddress") ?? "",
-      billingAddress: sharedPref.getString("billingAddress") ?? "",
+      pincode: sharedPref.getString("pincode") ?? "",
     );
     return user;
   }
@@ -90,7 +90,7 @@ class CachedData {
     _nodeId = sharedPref.getString("nodeId")!;
     _uid = sharedPref.getString("uid")!;
     _shippingAddress = sharedPref.getString("shippingAddress")!;
-    _billingAddress = sharedPref.getString("billingAddress")!;
+    _pincode = sharedPref.getString("pincode")!;
     //print(_billingAddress);
   }
 }

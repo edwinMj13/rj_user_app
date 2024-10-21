@@ -126,7 +126,7 @@ Container _recentlyViewdItemList(List<ProductsModel> listRecent, int index) {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Image.network(
-          listRecent[index].mainImage,
+          listRecent[index].mainImage!,
           fit: BoxFit.cover,
           width: 130,
           height: 110,

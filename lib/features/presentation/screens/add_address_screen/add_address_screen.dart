@@ -96,7 +96,7 @@ class AddAddressScreen extends StatelessWidget {
               InkWell(
                 onTap: () =>
                     showPopupItemAction(context, state.addressList[index]),
-                child: Icon(Icons.more_vert),
+                child: const Icon(Icons.more_vert),
               ),
             ],
           ),
@@ -108,11 +108,9 @@ class AddAddressScreen extends StatelessWidget {
   }
 
   _openPopup(BuildContext context, String tag, AddressModel? addModel) {
-    if (tag == "update") {
       addAddressAddressController.text = addModel!.address;
       addAddressNameController.text = addModel.addressName;
       addAddressPincodeController.text = addModel.addressPinCode;
-    }
     showDialog(
         context: context,
         builder: (context) {
@@ -173,7 +171,7 @@ class AddAddressScreen extends StatelessWidget {
                               context: context));
                     }
                   },
-                  child: Text(tag == "update" ? "Update" : "Add"))
+                  child: Text("update"))
             ],
           );
         });

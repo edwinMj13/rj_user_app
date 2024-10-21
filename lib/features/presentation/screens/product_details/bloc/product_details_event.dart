@@ -8,6 +8,8 @@ class CheckInWishListOrCartEvent extends ProductDetailsEvent{
   CheckInWishListOrCartEvent({required this.productNodeId});
 }
 
+
+
 class AddToCartEventPrDtEvent extends ProductDetailsEvent{
   final ProductsModel model;
   final String userNodeId;

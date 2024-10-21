@@ -13,7 +13,7 @@ class LoginCase {
       name: stateData.user.displayName!,
       phoneNumber: stateData.user.phoneNumber ?? "",
       email: stateData.user.email!,
-      billingAddress: "",
+      pincode: "",
       shippingAddress: "",
     );
     await CachedData.addProfileData(stateData);

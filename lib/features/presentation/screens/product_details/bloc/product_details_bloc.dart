@@ -52,6 +52,7 @@ class ProductDetailsBloc
 
   Future<void> addToCartEventPrDtEvent(
       AddToCartEventPrDtEvent event, Emitter<ProductDetailsState> emit) async {
+    print("ADDTO CART  ${event.model.toMap()}");
     await locator<CartRepository>()
         .addToCart(event.model, event.userNodeId)
         .then((_) {

@@ -86,7 +86,7 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
               name: nameAddAddressController.text,
               phoneNumber: phoneAddAddressController.text,
               email: emailAddAddressController.text,
-              billingAddress: billingAddAddressController.text,
+              pincode: pinCodeAddAddressController.text,
               shippingAddress: shippingAddAddressController.text,
             );
             addDetailsUseCases.addAddress(context, userModel);
@@ -118,13 +118,14 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
         ),
         sizedH40,
         TextFormFieldAddressDetailsWidget(
-          controller: billingAddAddressController,
-          label: "Billing Address",
-        ),
-        sizedH40,
-        TextFormFieldAddressDetailsWidget(
           controller: shippingAddAddressController,
           label: "Shipping Address",
+        ),
+        sizedH40,
+        TextFormDetailsWidget(
+          controller: pinCodeAddAddressController,
+          label: "Pin Code",
+          inputType: TextInputType.number,
         ),
       ],
     );

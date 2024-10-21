@@ -61,7 +61,7 @@ class Routes {
         return MaterialPageRoute(builder: (context) => AddAddressWithMapScreen());
       case "edit_profile_screen":
         return MaterialPageRoute(
-            builder: (context) => const EditProfileScreen());
+            builder: (context) =>  EditProfileScreen(user: settings.arguments as UserProfileModel,));
       case "wish_list_screen":
         return MaterialPageRoute(builder: (context) => const WishListScreen());
       case "payment_success_screen":

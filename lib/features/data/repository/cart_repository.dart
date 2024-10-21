@@ -65,7 +65,7 @@ class CartRepository {
           imagesList: model.imagesList,
           description: model.description,
           itemBrand: model.itemBrand,
-          mainImage: model.mainImage,
+          mainImage: model.mainImage!,
           sellingPrize: model.sellingPrize,
           stock: model.stock,
           price: model.price,

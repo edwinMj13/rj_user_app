@@ -16,6 +16,10 @@ class CommonUseCases {
     if(loadingProgress == null) return child;
     return const Icon(Icons.category);
   }
+  static Widget checkIfImageLoadingBANNERPlaceholder(ImageChunkEvent? loadingProgress, Widget child) {
+    if(loadingProgress == null) return child;
+    return Center(child: const Text("Loading ..."));
+  }
   static Widget checkIfImageLoadingPRODUCTPlaceholder(ImageChunkEvent? loadingProgress, Widget child, double size) {
     if(loadingProgress == null) return child;
     return Icon(CupertinoIcons.cube,size: size,color: Colors.grey,);

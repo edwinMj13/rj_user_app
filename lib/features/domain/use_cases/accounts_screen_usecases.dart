@@ -14,7 +14,9 @@ class AccountScreenUsecases{
     callback();
     Navigator.pushNamed(contextMain, RouteNames.loginScreen);
   }
-  static navigateToEditProfileScreen(BuildContext context){
+  static navigateToEditProfileScreen(BuildContext context) async {
+    final user = await CachedData.getUserDetails();
+    Navigator.pushNamed(context, RouteNames.editProfileScreen,arguments: user);
   }
   static navigateToAddAddressScreen(BuildContext context){
     print("object");

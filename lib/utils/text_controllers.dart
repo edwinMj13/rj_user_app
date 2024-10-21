@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 final nameAddAddressController = TextEditingController();
 final emailAddAddressController = TextEditingController();
 final phoneAddAddressController = TextEditingController();
-final billingAddAddressController = TextEditingController();
 final shippingAddAddressController = TextEditingController();
+final pinCodeAddAddressController = TextEditingController();
 
 
 final searchAppBarController = TextEditingController();
@@ -21,3 +21,6 @@ final addExtraQuantityController = TextEditingController();
 final cartQuantityController = TextEditingController();
 
 
+final  TextEditingController nameEditProfileController = TextEditingController();
+final TextEditingController emailEditProfileController= TextEditingController();
+final TextEditingController phoneEditProfileController= TextEditingController();
