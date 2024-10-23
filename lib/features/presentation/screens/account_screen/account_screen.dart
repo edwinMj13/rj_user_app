@@ -58,11 +58,22 @@ class AccountScreen extends StatelessWidget {
             ),
             sizedH20,
             _logoutButtonSection(contextMain),
+            sizedH40,
+            _deleteButtonSection(contextMain),
           ],
         ),
       ),
     );
   }
+}
+
+ButtonGreen _deleteButtonSection(BuildContext context) {
+  return ButtonGreen(
+    label: "Delete Account",
+    callback: () => deleteAccount(context),
+    color: Colors.red,
+    backgroundColor: Colors.red[50],
+  );
 }
 
 ButtonGreen _logoutButtonSection(BuildContext context) {
@@ -131,7 +142,11 @@ Container _recentlyViewdItemList(List<ProductsModel> listRecent, int index) {
           width: 130,
           height: 110,
         ),
-        Text(listRecent[index].itemName,maxLines: 2,overflow: TextOverflow.ellipsis,),
+        Text(
+          listRecent[index].itemName,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
       ],
     ),
   );
@@ -181,14 +196,44 @@ Container _accountsCardSection(BuildContext context) {
               iconData: Icons.call_rounded,
               label: "Contact Us",
               color: accentListColors[3],
-              openScreenCallback: () =>
-                  AccountScreenUsecases.navigateToOrdersScreen(context),
+              openScreenCallback: () {
+                AccountScreenUsecases.navigateToContactUsScreen(context);
+              },
             ),
           ],
         ),
       ],
     ),
   );
+}
+
+deleteAccount(BuildContext contextMain) {
+  showDialog(
+      context: contextMain,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            "Alert...!",
+            style: TextStyle(color: Colors.red),
+          ),
+          content: const Text("Are You Sure, Want to Delete..."),
+          actions: [
+            TextButton(
+              child: const Text("No"),
+              onPressed: () => Navigator.pop(context),
+            ),
+            TextButton(
+                child: const Text("Yes"),
+                onPressed: () {
+                  Navigator.pop(context);
+                  contextMain.read<AccountBloc>().add(DeleteAccountEvent(
+                    context: contextMain,
+                  ));
+                }),
+          ],
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+        );
+      });
 }
 
 void showDialogToSignOut(BuildContext contextMain) {

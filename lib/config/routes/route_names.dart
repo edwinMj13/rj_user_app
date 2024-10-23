@@ -17,4 +17,5 @@ class RouteNames{
   static const brandDetailsScreen= "brand_details_screen";
   static const searchScreen= "search_screen";
   static const addAddressWithMapScreen= "add_address_with_map_screen";
+  static const contactUsScreen= "contact_us_screen";
 }

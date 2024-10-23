@@ -6,10 +6,14 @@ import 'package:rj/features/data/data_sources/cached_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/constants.dart';
+import '../../../../utils/dependencyLocation.dart';
 import '../../../../utils/styles.dart';
+import '../../../data/models/cart_model.dart';
 import '../../../data/models/user_profile_model.dart';
+import '../../../data/repository/cart_repository.dart';
 import '../../widgets/big_text.dart';
 import '../../widgets/right_arrow_ios.dart';
+import '../home_screen/bloc/home_bloc.dart';
 import 'bloc/auth_bloc.dart';
 
 class LoginVerifyScreen extends StatelessWidget {
@@ -23,6 +27,8 @@ class LoginVerifyScreen extends StatelessWidget {
           listener: (context, state) async {
             if (state is AuthSuccessState) {
               LoginCase.passDataNavigateToAddress(state, context);
+            } else if (state is AuthUserInDatabaseState) {
+              LoginCase.alreadHaveAccount(context,state.user);
             }
           },
           child: Container(

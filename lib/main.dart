@@ -4,12 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/config/routes/route_names.dart';
 import 'package:rj/config/routes/routes.dart';
 import 'package:rj/features/data/repository/auth_repository.dart';
+import 'package:rj/features/data/repository/contact_us_repository.dart';
 import 'package:rj/features/presentation/screens/account_screen/bloc/account_bloc.dart';
 import 'package:rj/features/presentation/screens/add_address_screen/bloc/add_address_screen_bloc.dart';
 import 'package:rj/features/presentation/screens/add_address_with_map_screen/bloc/add_address_with_map_bloc.dart';
 import 'package:rj/features/presentation/screens/brand_details_screen/bloc/brand_details_bloc.dart';
 import 'package:rj/features/presentation/screens/cart_screen/bloc/cart_bloc.dart';
 import 'package:rj/features/presentation/screens/change_address_screen/bloc/change_address_bloc.dart';
+import 'package:rj/features/presentation/screens/contact_us%20_screen/bloc/contact_us_bloc.dart';
 import 'package:rj/features/presentation/screens/explore_screen/bloc/explore_bloc.dart';
 import 'package:rj/features/presentation/screens/home_screen/bloc/home_bloc.dart';
 import 'package:rj/features/presentation/screens/main_screen/bloc/main_bloc.dart';
@@ -65,6 +67,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SearchBloc()),
         BlocProvider(create: (context) => AddAddressWithMapBloc()),
         BlocProvider(create: (context) => EditProfileBloc()),
+        BlocProvider(create: (context) => ContactUsBloc()),
       ],
       child: MaterialApp(
         title: 'RJ Online',

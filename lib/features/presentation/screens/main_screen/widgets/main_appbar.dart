@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/features/presentation/screens/main_screen/widgets/home_screen_appbar.dart';
 import 'package:rj/features/presentation/screens/main_screen/widgets/explore_screen_appbar.dart';
 
 import '../../../../../utils/common.dart';
 import '../../../../../utils/styles.dart';
+import '../../account_screen/bloc/account_bloc.dart';
 
 class MainAppBar extends StatelessWidget {
   final int currentNavIndex;
   final String username;
+
   const MainAppBar({
     super.key,
     required this.currentNavIndex,
@@ -19,7 +22,7 @@ class MainAppBar extends StatelessWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       title: _selectContent(),
-     /* actions: [
+      /* actions: [
         PopupMenuButton(
           menuPadding: EdgeInsets.zero,
           itemBuilder: (context) => [
@@ -37,8 +40,9 @@ class MainAppBar extends StatelessWidget {
       ],*/
     );
   }
+
   _selectContent() {
-    switch(currentNavIndex){
+    switch (currentNavIndex) {
       case 0:
         return const HomeScreenAppbar();
       case 1:
@@ -50,6 +54,7 @@ class MainAppBar extends StatelessWidget {
     }
     return currentNavIndex == 2 ? _greetings() : const Text("RJ");
   }
+
   Widget _greetings() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,11 +74,8 @@ class MainAppBar extends StatelessWidget {
                     )),
               ]),
         ),
-        const SizedBox(),
       ],
     );
   }
-
-
 
 }

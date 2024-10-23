@@ -22,6 +22,10 @@ class AccountScreenUsecases{
     print("object");
     Navigator.pushNamed(context, RouteNames.addAddressScreen);
   }
+  static navigateToContactUsScreen(BuildContext context){
+    print("object");
+    Navigator.pushNamed(context, RouteNames.contactUsScreen);
+  }
 
   static navigateToOrdersScreen(BuildContext context){
     print("object");
@@ -32,11 +36,6 @@ class AccountScreenUsecases{
   static navigateToWishListScreen(BuildContext context){
     context.read<WishListBloc>().add(FetchWishListedItems());
     Navigator.pushNamed(context, RouteNames.wishListScreen);
-  }
-
-  static navigateToContactUsScreen(BuildContext context){
-    print("object");
-   // Navigator.pushNamed(context, RouteNames.addAddressScreen);
   }
 
   static navigateToCouponsScreen(BuildContext context){

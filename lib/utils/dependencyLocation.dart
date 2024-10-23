@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rj/features/data/repository/cart_repository.dart';
+import 'package:rj/features/data/repository/contact_us_repository.dart';
 import 'package:rj/features/data/repository/explore_repo.dart';
 import 'package:rj/features/data/repository/add_screen_repository.dart';
 import 'package:rj/features/data/repository/get_firebase_repo.dart';
@@ -36,5 +37,6 @@ Future<void> initializeDependencies()async {
   locator.registerLazySingleton(()=> OrderDetailsRepo());
   locator.registerLazySingleton(()=> SearchRepository());
   locator.registerLazySingleton(()=> HomeRepo());
+  locator.registerLazySingleton(()=> ContactUsRepo());
 }
 

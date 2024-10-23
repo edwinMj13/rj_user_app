@@ -24,3 +24,9 @@ final cartQuantityController = TextEditingController();
 final  TextEditingController nameEditProfileController = TextEditingController();
 final TextEditingController emailEditProfileController= TextEditingController();
 final TextEditingController phoneEditProfileController= TextEditingController();
+
+final FocusNode subjectFocusNode = FocusNode();
+final FocusNode detailsFocusNode = FocusNode();
+
+final subjectController = TextEditingController();
+final detailsController = TextEditingController();

@@ -21,6 +21,7 @@ import 'package:rj/features/presentation/screens/wish_list_screen/wish_list_scre
 
 import '../../features/presentation/screens/add_address_screen/add_address_screen.dart';
 import '../../features/presentation/screens/add_details_screen/add_details_screen.dart';
+import '../../features/presentation/screens/contact_us _screen/contact_us_screen.dart';
 import '../../features/presentation/screens/login_screen/login_verify_screen.dart';
 import '../../features/presentation/screens/splash_screen/splash_screen.dart';
 
@@ -59,6 +60,8 @@ class Routes {
         return MaterialPageRoute(builder: (context) => SearchScreen());
       case "add_address_with_map_screen":
         return MaterialPageRoute(builder: (context) => AddAddressWithMapScreen());
+      case "contact_us_screen":
+        return MaterialPageRoute(builder: (context) => ContactUsScreen());
       case "edit_profile_screen":
         return MaterialPageRoute(
             builder: (context) =>  EditProfileScreen(user: settings.arguments as UserProfileModel,));

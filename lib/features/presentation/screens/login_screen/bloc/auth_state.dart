@@ -9,6 +9,13 @@ class AuthPendingState extends AuthState{}
 
 class AuthErrorState extends AuthState{}
 
+class AuthUserInDatabaseState extends AuthState{
+  final UserProfileModel user;
+
+  AuthUserInDatabaseState({required this.user});
+
+}
+
 class AuthSuccessState extends AuthState{
   final User user;
 

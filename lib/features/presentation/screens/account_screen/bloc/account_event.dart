@@ -8,6 +8,10 @@ sealed class AccountEvent {}
   SignOutEvent( {required this.context});
 }
 
-class RecentViewedEvent extends AccountEvent{
+class RecentViewedEvent extends AccountEvent{}
 
+class DeleteAccountEvent extends AccountEvent{
+ final BuildContext context;
+
+  DeleteAccountEvent({required this.context});
 }

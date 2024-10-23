@@ -16,6 +16,5 @@ class EditProfileCases{
   }
 
   static editProfile(UserProfileModel user) async {
-     await locator<AddScreenRepo>().update(user.nodeID, user);
   }
 }

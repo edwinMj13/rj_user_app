@@ -20,8 +20,21 @@ import 'package:stroke_text/stroke_text.dart';
 import '../../../domain/use_cases/common_use_cases.dart';
 import 'bloc/home_bloc.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<HomeBloc>().add(FetchDataHomeEvent());
+  }
 
   @override
   Widget build(BuildContext context) {

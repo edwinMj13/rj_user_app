@@ -4,3 +4,5 @@ part of 'edit_profile_bloc.dart';
 sealed class EditProfileState {}
 
 final class EditProfileInitial extends EditProfileState {}
+
+final class EditProfileEditedState extends EditProfileState {}
