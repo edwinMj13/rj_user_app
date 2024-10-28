@@ -28,18 +28,18 @@ class CachedData {
   static addProfileData(AuthSuccessState authSuccessSTate) async {
     final sharedPref = await SharedPreferences.getInstance();
 
-    await sharedPref.setString('name', authSuccessSTate.user.displayName!);
-    await sharedPref.setString('email', authSuccessSTate.user.email!);
+    await sharedPref.setString('name', authSuccessSTate.user.displayName?? "");
+    await sharedPref.setString('email', authSuccessSTate.user.email?? "");
     await sharedPref.setString(
         'phoneNumber', authSuccessSTate.user.phoneNumber ?? "");
     await sharedPref.setString('uid', authSuccessSTate.user.uid);
     await sharedPref.setBool(
         'emailVerified', authSuccessSTate.user.emailVerified);
     await sharedPref.setBool('isLogged', true);
-    print("displayName : ${sharedPref.getString("name")!}\n"
-        "email : ${sharedPref.getString("email")!}\n"
-        "phoneNumber : ${sharedPref.getString("phoneNumber")!}\n"
-        "uid : ${sharedPref.getString("uid")!}\n"
+    print("displayName : ${sharedPref.getString("name")?? ""}\n"
+        "email : ${sharedPref.getString("email")?? ""}\n"
+        "phoneNumber : ${sharedPref.getString("phoneNumber")?? ""}\n"
+        "uid : ${sharedPref.getString("uid")?? ""}\n"
         "emailVerified : ${sharedPref.getBool("emailVerified")}\n");
   }
 
@@ -92,5 +92,15 @@ class CachedData {
     _shippingAddress = sharedPref.getString("shippingAddress")!;
     _pincode = sharedPref.getString("pincode")!;
     //print(_billingAddress);
+  }
+
+  static setLoggedIn(bool isLoggedIn) async {
+    final sharedPref = await SharedPreferences.getInstance();
+    sharedPref.setBool("isLoggedIn", isLoggedIn);
+  }
+  static Future<bool> getLoggedIn() async {
+    final sharedPref = await SharedPreferences.getInstance();
+    final status = sharedPref.getBool("isLoggedIn")?? false;
+    return status;
   }
 }

@@ -8,8 +8,8 @@ import '../../data/models/storage_image_model.dart';
 import '../../domain/use_cases/explore_page_usecase.dart';
 import '../screens/explore_screen/bloc/explore_bloc.dart';
 
-class ProductLayout extends StatelessWidget {
-  ProductLayout({
+class WishListItemsWidget extends StatelessWidget {
+  WishListItemsWidget({
     super.key,
     required this.productsModel,
   });
@@ -18,8 +18,6 @@ class ProductLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    final height = size.height*0.13;
     return InkWell(
       onTap: () => ExplorePageUseCase.navigateToDetails(context, productsModel),
       child: Container(
@@ -28,18 +26,18 @@ class ProductLayout extends StatelessWidget {
           borderRadius: BorderRadius.circular(5.0),
           border: Border.all(width: 0.5, color: Colors.grey),
         ),
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
                 child: Image.network(
-              productsModel.mainImage!,
-              height: height,
-              fit: BoxFit.cover,
-              loadingBuilder: (context, child, loadingProgress) =>
-                  CommonUseCases.checkIfImageLoadingPRODUCTPlaceholder(
-                      loadingProgress, child,120),
-            )),
+                  productsModel.mainImage!,
+                  height: 120,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) =>
+                      CommonUseCases.checkIfImageLoadingPRODUCTPlaceholder(
+                          loadingProgress, child,120),
+                )),
             Text(
               productsModel.itemName,
               maxLines: 1,

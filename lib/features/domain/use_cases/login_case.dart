@@ -17,7 +17,7 @@ class LoginCase {
     final userData = UserProfileModel(
       nodeID: "",
       uid: stateData.user.uid.toString(),
-      name: stateData.user.displayName!,
+      name: stateData.user.displayName?? "",
       phoneNumber: stateData.user.phoneNumber ?? "",
       email: stateData.user.email!,
       pincode: "",

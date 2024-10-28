@@ -18,4 +18,6 @@ class RouteNames{
   static const searchScreen= "search_screen";
   static const addAddressWithMapScreen= "add_address_with_map_screen";
   static const contactUsScreen= "contact_us_screen";
+  static const signUpScreen= "sign_up_screen";
+  static const forgotPasswordScreen= "forgot_password_screen";
 }

@@ -10,8 +10,6 @@
         android:label="rj"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <profileable android:shell="true"
-            tools:targetApi="q" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

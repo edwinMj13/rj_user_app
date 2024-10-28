@@ -13,14 +13,15 @@ import '../../presentation/screens/main_screen/bloc/main_bloc.dart';
 class SplashUseCases {
   static ifLoggedIn(BuildContext context)async{
     List<CartModel> cartLength=[];
-    final isLogged = await locator<AuthRepository>().isLoggedIn();
+    final isLogged = await CachedData.getLoggedIn();
     final user = await CachedData.getUserDetails();
     if(user.nodeID.isNotEmpty) {
        cartLength = await locator<CartRepository>().getCarts(user.nodeID);
     }
-    print("delay $isLogged");
+    print("isLogged Status - $isLogged");
     Future.delayed(const Duration(seconds: 2)).then((_){
-      if( isLogged){
+
+      if(  isLogged){
         context.read<HomeBloc>().add(FetchDataHomeEvent());
         Navigator.pushNamedAndRemoveUntil(context, RouteNames.mainScreen,arguments:cartLength.length, (route)=>false);
       }else{

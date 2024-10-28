@@ -41,9 +41,10 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+final size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
+        preferredSize:  Size.fromHeight(size.height*0.07),
         child: PopScope(
           canPop: false,
           child: BlocBuilder<MainBloc, MainState>(

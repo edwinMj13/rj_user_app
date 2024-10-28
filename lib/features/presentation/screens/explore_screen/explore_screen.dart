@@ -66,13 +66,16 @@ class _ExploreScreenState extends State<ExploreScreen>
             return GridView.builder(
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, crossAxisSpacing: 5, mainAxisSpacing: 5),
+                crossAxisCount: 2,
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 5,
+              ),
               itemBuilder: (context, index) {
                 return _exploreItemsContent(context, state, index);
               },
               itemCount: state.productList.length,
             );
-          }else if(state is ProductsSuccessNULLExploreState){
+          } else if (state is ProductsSuccessNULLExploreState) {
             return const EmptyExploreWidget();
           }
           return const Center(child: CircularProgressIndicator());
@@ -116,7 +119,7 @@ class _ExploreScreenState extends State<ExploreScreen>
                     isDismissible: false,
                     builder: (context) => const FilterBottomSheetContent(
                           tag: "Explore",
-                      tagName: "Explore",
+                          tagName: "Explore",
                         ));
               },
               icon: const Icon(Icons.filter_alt_outlined)),

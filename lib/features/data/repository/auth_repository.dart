@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -6,10 +8,94 @@ import 'package:rj/utils/common.dart';
 
 class AuthRepository {
   final firebaseAuth = FirebaseAuth.instance;
-  final google = GoogleSignIn();
+
+  Future<dynamic> createUserWithEmailAndPassword(String email,String password)async {
+    try {
+      final cred = await firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      return cred.user!;
+    }on FirebaseException catch(e){
+      print("Create User With Email And Password  COMMON    $e");
+      if (e.code == 'weak-password'){
+        print("weak-password $e");
+        return "Please Use Strong Password";
+      } else if (e.code == 'email-already-in-use'){
+        print("email-already-in-use $e");
+        return "Email Has Already Registered";
+      }else if (e.code == 'invalid-email'){
+        print("invalid-email $e");
+        return "Please Format the Email";
+      }
+    }
+      //print("createUserWithEmailAndPassword $e");
+
+    return "";
+  }
+
+  Future<dynamic> signInUserWithEmailAndPassword(String email,String password)async {
+    try {
+      final cred = await firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      print("signInUserWithEmailAndPassword\n"
+          "\n"
+          "\n"
+          "\n"
+          "${cred.user!}");
+      return cred.user!;
+    }on FirebaseAuthException catch(e){
+      print("signInUserWithEmailAndPassword COMMON  $e");
+      if (e.code == 'user-not-found') {
+        print("signInUserWithEmailAndPassword $e");
+        return "Usr Not Found, Please Sign-Up";
+      } else if (e.code == "wrong-password") {
+        print("signInUserWithEmailAndPassword $e");
+        return "Please Check The Password";
+      }
+      else if (e.code == 'invalid-credential') {
+      print("signInUserWithEmailAndPassword $e");
+      return "Please Check The Credentials";
+      }
+    }
+    return "";
+  }
+
+   Future<void> signOut()async {
+    try {
+      await firebaseAuth.signOut();
+    }catch(e){
+      print("signout $e");
+    }
+  }
+
+   resetPassword(String email) async {
+      try {
+        await firebaseAuth.sendPasswordResetEmail(email: email);
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(
+        //     content: Text('Password reset email sent. Check your inbox.'),
+        //   ),
+        // );
+      } on FirebaseAuthException catch (e) {
+        String errorMessage;
+        print("resetPassword $e");
+        switch (e.code) {
+          case 'user-not-found':
+            errorMessage = 'No user found with this email.';
+            break;
+          case 'invalid-email':
+            errorMessage = 'The email address is badly formatted.';
+            break;
+          default:
+            errorMessage = 'An error occurred. Please try again.';
+        }
+
+      }
+  }
+
+  //final google = GoogleSignIn();
 
   //registration Method
-  Future<User?> createUserWithUserNamePassword(
+  /*Future<User?> createUserWithUserNamePassword(
       {required String email, required String password}) async {
     try {
       final creds = await firebaseAuth.createUserWithEmailAndPassword(
@@ -82,6 +168,6 @@ class AuthRepository {
     return isSignedIn;
   }
 
-
+*/
 
 }

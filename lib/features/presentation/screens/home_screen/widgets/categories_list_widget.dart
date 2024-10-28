@@ -18,6 +18,8 @@ class CategoryItemsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final height = size.height*0.1;
     return InkWell(
       onTap: () => HomeUseCases.navigateToCategoryDetailsScreen(
           context, categoryList.categoryName),
@@ -25,10 +27,11 @@ class CategoryItemsWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 70,
-              width: 70,
+              height: height,
+              width: height,
               padding: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                 color: colorsNormalCategoryList[index][200],
@@ -44,7 +47,7 @@ class CategoryItemsWidget extends StatelessWidget {
             Text(
               categoryList.categoryName,
               style: style(
-                  fontSize: 13, color: Colors.black, weight: FontWeight.normal),
+                  fontSize: 12, color: Colors.black, weight: FontWeight.normal),
             ),
           ],
         ),

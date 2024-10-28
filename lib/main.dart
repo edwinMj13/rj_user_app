@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/config/routes/route_names.dart';
@@ -20,6 +23,7 @@ import 'package:rj/features/presentation/screens/order_list_screen/bloc/order_li
 import 'package:rj/features/presentation/screens/place_order_screen/address_bloc/address_bloc.dart';
 import 'package:rj/features/presentation/screens/product_details/bloc/product_details_bloc.dart';
 import 'package:rj/features/presentation/screens/search_screen/bloc/search_bloc.dart';
+import 'package:rj/features/presentation/screens/signup_screen/bloc/signup_bloc.dart';
 import 'package:rj/utils/dependencyLocation.dart';
 
 import 'features/presentation/screens/add_details_screen/bloc/add_details_bloc.dart';
@@ -35,6 +39,16 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await initializeDependencies();
+
+  // errors inside Flutter framework or widgetTree will be caught  with Flutter error
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // errors outside flutter or uncaught errors like platform error , error happens in background, isolates that are platfrom dependent will be caught using PlatformDispatcher
+  PlatformDispatcher.instance.onError = (error,stack){
+    FirebaseCrashlytics.instance.recordError(error, stack,fatal: true);
+    return true;
+  };
   runApp(const MyApp());
 }
 
@@ -46,7 +60,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AuthBloc(authRepository: locator<AuthRepository>())),
+        BlocProvider(
+            create: (context) =>
+                AuthBloc(authRepository: locator<AuthRepository>())),
         BlocProvider(create: (context) => MainBloc()),
         BlocProvider(create: (context) => AccountBloc()),
         BlocProvider(create: (context) => AddDetailsBloc()),
@@ -68,6 +84,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AddAddressWithMapBloc()),
         BlocProvider(create: (context) => EditProfileBloc()),
         BlocProvider(create: (context) => ContactUsBloc()),
+        BlocProvider(create: (context) => SignupBloc()),
       ],
       child: MaterialApp(
         title: 'RJ Online',

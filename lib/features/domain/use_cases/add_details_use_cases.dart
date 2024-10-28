@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rj/config/routes/route_names.dart';
+import 'package:rj/features/data/data_sources/cached_data.dart';
 
 import '../../../utils/text_controllers.dart';
 import '../../data/models/user_profile_model.dart';
@@ -38,8 +39,8 @@ class AddDetailsUseCases{
   }
 
   navigateToNext(BuildContext context) {
+    CachedData.setLoggedIn(true);
     context.read<HomeBloc>().add(FetchDataHomeEvent());
-
     Navigator.pushNamed(context, RouteNames.mainScreen);
   }
 

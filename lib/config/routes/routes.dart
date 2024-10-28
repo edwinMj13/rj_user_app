@@ -10,12 +10,14 @@ import 'package:rj/features/presentation/screens/brand_details_screen/brand_deta
 import 'package:rj/features/presentation/screens/category_details_screen/category_details_screen.dart';
 import 'package:rj/features/presentation/screens/change_address_screen/change_address_screen.dart';
 import 'package:rj/features/presentation/screens/edit_profile_screen/edit_profile_screen.dart';
+import 'package:rj/features/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:rj/features/presentation/screens/main_screen/main_screen.dart';
 import 'package:rj/features/presentation/screens/order_details_screen/order_details_screen.dart';
 import 'package:rj/features/presentation/screens/order_list_screen/order_list_screen.dart';
 import 'package:rj/features/presentation/screens/place_order_screen/place_order_screen.dart';
 import 'package:rj/features/presentation/screens/product_details/product_details_screen.dart';
 import 'package:rj/features/presentation/screens/search_screen/search_screen.dart';
+import 'package:rj/features/presentation/screens/signup_screen/signup_screen.dart';
 import 'package:rj/features/presentation/screens/success_screen/success_screen.dart';
 import 'package:rj/features/presentation/screens/wish_list_screen/wish_list_screen.dart';
 
@@ -34,9 +36,15 @@ class Routes {
       case "main_screen":
         return MaterialPageRoute(
             builder: (context) => const MainScreen(), settings: settings);
+      case "forgot_password_screen":
+        return MaterialPageRoute(
+            builder: (context) =>  ForgotPasswordScreen());
       case "login_screen":
         return MaterialPageRoute(
-            builder: (context) => const LoginVerifyScreen());
+            builder: (context) =>  LoginVerifyScreen());
+      case "sign_up_screen":
+        return MaterialPageRoute(
+            builder: (context) =>  SignupScreen());
       case "add_details_screen":
         return MaterialPageRoute(
             builder: (context) => AddDetailsScreen(), settings: settings);

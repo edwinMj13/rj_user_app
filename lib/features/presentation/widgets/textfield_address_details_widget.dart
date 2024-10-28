@@ -6,16 +6,19 @@ class TextFormDetailsWidget extends StatelessWidget {
     required this.controller,
     required this.label,
     required this.inputType,
+    this.enabled=true,
   });
 
   final TextEditingController controller;
   final String label;
   final TextInputType inputType;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       keyboardType: inputType,
+      enabled: enabled,
       decoration:  InputDecoration(
         border: const OutlineInputBorder(),
         labelText: label,

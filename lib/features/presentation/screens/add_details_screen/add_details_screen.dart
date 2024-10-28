@@ -39,32 +39,24 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: true,
-      onPopInvokedWithResult: (val, e) async {
-        //if user clicks backbutton on addaddress screen just after login screen the user needs to signout
-        await locator<AuthRepository>().googleSignOut();
-        //print("VAL - $val - Object - ${e}");
-      },
-      child: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Form(
-                key: addDetailsUseCases.formKeyAddDetails,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    sizedH40,
-                    const BigTextLogin(text: "My Details"),
-                    sizedH40,
-                    _textfieldSection(),
-                    sizedH30,
-                    _actionButton(context)
-                  ],
-                ),
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Form(
+              key: addDetailsUseCases.formKeyAddDetails,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  sizedH40,
+                  const BigTextLogin(text: "My Details"),
+                  sizedH40,
+                  _textfieldSection(),
+                  sizedH30,
+                  _actionButton(context)
+                ],
               ),
             ),
           ),
@@ -109,6 +101,7 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
           controller: emailAddAddressController,
           label: "E-mail Id",
           inputType: TextInputType.text,
+          enabled: false,
         ),
         sizedH40,
         TextFormDetailsWidget(

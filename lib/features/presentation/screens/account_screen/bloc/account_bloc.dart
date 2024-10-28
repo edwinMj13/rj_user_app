@@ -30,8 +30,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   Future<void> signOutEvent(SignOutEvent event, Emitter<AccountState> emit) async {
     showLoadingCase.showLoading(event.context,"Logging Out...");
-    await locator<AuthRepository>().googleSignOut();
+    //await locator<AuthRepository>().googleSignOut();
+    await locator<AuthRepository>().signOut();
     accountScreenUsecases.signOutToLoginScreen(event.context,()=>showLoadingCase.cancelLoading());
+    CachedData.setLoggedIn(false);
     emit(SignOutSuccessState());
   }
 
@@ -44,8 +46,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     showLoadingCase.showLoading(event.context,"Deleting Account...");
     final user = await CachedData.getUserDetails();
     await locator<AddScreenRepo>().deleteUser(user.nodeID).then((_) async {
-      await locator<AuthRepository>().googleSignOut().then((_){
+      // await locator<AuthRepository>().googleSignOut().then((_){
+      //   accountScreenUsecases.signOutToLoginScreen(event.context,()=>showLoadingCase.cancelLoading());
+      //   emit(DeleteAccountSuccessState());
+      // });
+      await locator<AuthRepository>().signOut().then((_){
         accountScreenUsecases.signOutToLoginScreen(event.context,()=>showLoadingCase.cancelLoading());
+        CachedData.setLoggedIn(false);
         emit(DeleteAccountSuccessState());
       });
     });

@@ -7,7 +7,10 @@ final class AuthInitial extends AuthState {}
 
 class AuthPendingState extends AuthState{}
 
-class AuthErrorState extends AuthState{}
+class AuthErrorState extends AuthState{
+  final String message;
+  AuthErrorState({required this.message});
+}
 
 class AuthUserInDatabaseState extends AuthState{
   final UserProfileModel user;

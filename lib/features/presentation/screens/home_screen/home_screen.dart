@@ -38,16 +38,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    debugPrint("MAIN WIDGET\n"
+        "HEIGHT ${size.height}\n"
+        "WIDTH ${size.width}\n");
     return Padding(
       padding: const EdgeInsets.all(0.0),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _topChips(),
-            sizedH10,
+            _topMarquee(),
+            SizedBox(height: 3,),
             _banner(),
-            sizedH10,
             _category(),
             _topBrand(),
             sizedH20,
@@ -126,8 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _topChips() {
-    print("Explore Screen");
+  Widget _topMarquee() {
     return  Container(
       height: 40,
       width: double.infinity,
@@ -160,8 +162,13 @@ class HomeCategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 120,
+    final size = MediaQuery.sizeOf(context);
+    print("HomeCategoryWidget\n"
+        "HEIGHT ${size.height}\n"
+        "WIDTH ${size.width}\n");
+    return Container(
+      height: size.height*0.18,
+      alignment: Alignment.center,
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         shrinkWrap: true,
