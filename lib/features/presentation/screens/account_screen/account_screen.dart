@@ -8,6 +8,7 @@ import 'package:rj/features/presentation/screens/account_screen/widgets/icon_tex
 import 'package:rj/features/data/data_sources/cached_data.dart';
 import 'package:rj/utils/constants.dart';
 import 'package:rj/utils/styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../config/colors.dart';
 import '../../../../config/routes/route_names.dart';
@@ -45,6 +46,11 @@ class AccountScreen extends StatelessWidget {
               callBack: () =>
                   AccountScreenUsecases.navigateToAddAddressScreen(contextMain),
             ),
+            IconTextIconWidgets(
+              iconStart: Icons.policy,
+              label: "Privacy Policy",
+              callBack: () => _launchURL(),
+            ),
             sizedH20,
             BlocBuilder<AccountBloc, AccountState>(
               builder: (context, state) {
@@ -66,6 +72,16 @@ class AccountScreen extends StatelessWidget {
     );
   }
 }
+
+  _launchURL() async {
+    const url = "https://sites.google.com/view/rjpolicy/home";
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
 
 ButtonGreen _deleteButtonSection(BuildContext context) {
   return ButtonGreen(

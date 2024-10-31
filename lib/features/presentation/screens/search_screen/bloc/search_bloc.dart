@@ -13,11 +13,11 @@ import '../../../../domain/use_cases/filter_get_use_cases.dart';
 
 part 'search_event.dart';
 part 'search_state.dart';
-
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc() : super(SearchInitial()) {
     on<FetchSearchResultEvent>(fetchSearchResultEvent);
     on<SearchFetchFilterEvent>(fearchFetchFilterEvent);
+    on<MicSearchEvent>(micSearchEvent);
   }
 
   Future<void> fetchSearchResultEvent(FetchSearchResultEvent event, Emitter<SearchState> emit) async {
@@ -41,5 +41,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         emit(FetchSearchItemsNULLState());
       }
     });
+  }
+
+  FutureOr<void> micSearchEvent(MicSearchEvent event, Emitter<SearchState> emit) {
+    final searchCase = SearchCase();
+    SearchCase.speechToText.isNotListening ?searchCase.startListening():searchCase.stopListening();
+    emit(MicListeningState(isNotListening: SearchCase.speechToText.isNotListening));
   }
 }

@@ -19,3 +19,7 @@ class SearchFetchFilterEvent extends SearchEvent{
   SearchFetchFilterEvent({required this.context,required this.brand, required this.category, required this.subCategory, required this.sliderStart, required this.sliderEnd});
 
 }
+
+class MicSearchEvent extends SearchEvent {
+
+}

@@ -5,6 +5,8 @@ import 'package:rj/features/presentation/widgets/appbar_common.dart';
 import 'package:rj/features/presentation/widgets/product_layout.dart';
 import 'package:rj/utils/styles.dart';
 
+import '../../widgets/wish_list_items_widget.dart';
+
 class WishListScreen extends StatelessWidget {
   const WishListScreen({super.key});
 
@@ -22,7 +24,7 @@ class WishListScreen extends StatelessWidget {
             return ListView.builder(
               itemBuilder: (context, index) {
                 print("Sub ${state.productsModel[index].itemName}");
-                return ProductLayout(productsModel: state.productsModel[index]);
+                return WishListItemsWidget(productsModel: state.productsModel[index]);
               },
               itemCount: state.productsModel.length,
             );

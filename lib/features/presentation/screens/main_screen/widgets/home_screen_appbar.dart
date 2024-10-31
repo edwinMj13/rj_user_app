@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:rj/features/domain/use_cases/main_screen_use_cases.dart';
+import 'package:rj/utils/common.dart';
 import 'package:rj/utils/constants.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../../../utils/text_controllers.dart';
 
-class HomeScreenAppbar extends StatelessWidget {
-  const HomeScreenAppbar({super.key});
+class HomeScreenAppbar extends StatefulWidget {
+   HomeScreenAppbar({super.key});
+
+  @override
+  State<HomeScreenAppbar> createState() => _HomeScreenAppbarState();
+}
+
+class _HomeScreenAppbarState extends State<HomeScreenAppbar> {
 
   @override
   Widget build(BuildContext context) {
@@ -28,18 +37,14 @@ class HomeScreenAppbar extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                  const Row(
+                   Row(
                     children: [
                       Icon(Icons.search,),
                       sizedW10,
                       Text(search,style: TextStyle(color: Colors.grey,fontSize: 16),),
                     ],
                   ),
-                  IconButton(
-                      onPressed: () {
-
-                      },
-                      icon:  const Icon(Icons.mic,)),
+                  Icon(Icons.mic,),
                 ],),
                 /*TextField(
                   controller: searchAppBarController,
@@ -62,4 +67,7 @@ class HomeScreenAppbar extends StatelessWidget {
       ),
     );
   }
+
+
+
 }

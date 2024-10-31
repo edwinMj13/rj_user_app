@@ -44,7 +44,7 @@ class MainAppBar extends StatelessWidget {
   _selectContent() {
     switch (currentNavIndex) {
       case 0:
-        return const HomeScreenAppbar();
+        return  HomeScreenAppbar();
       case 1:
         return const ExploreScreenAppBar();
       case 2:

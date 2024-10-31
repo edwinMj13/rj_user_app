@@ -96,6 +96,7 @@ class ProductDetailsContentWidget extends StatelessWidget {
       ],
     );
   }
+
   CarouselSlider _imagesSection() {
     List<StorageImageModel> images =
     getImageList(productModel.imagesList);

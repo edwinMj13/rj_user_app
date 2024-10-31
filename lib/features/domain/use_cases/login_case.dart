@@ -30,6 +30,7 @@ class LoginCase {
 
   static alreadHaveAccount(
       BuildContext context, UserProfileModel userProfile) async {
+    CachedData.setLoggedIn(true);
     List<CartModel> cartLength =
         await locator<CartRepository>().getCarts(userProfile.nodeID);
     context.read<HomeBloc>().add(FetchDataHomeEvent());

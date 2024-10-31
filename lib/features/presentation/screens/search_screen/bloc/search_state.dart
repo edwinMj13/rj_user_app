@@ -15,3 +15,9 @@ class FetchSearchItemsSuccessState extends SearchState {
 }
 
 class FetchSearchItemsNULLState extends SearchState {}
+
+class MicListeningState extends SearchState {
+  final bool isNotListening;
+
+  MicListeningState({required this.isNotListening});
+}

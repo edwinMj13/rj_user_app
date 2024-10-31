@@ -42,7 +42,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                   print("USER ${user.emailVerified}");
           print("USER DETAILS $user");
           print("userInDatabase $userInDatabase");
-          print("userProfileModel $userProfileModel");
+          print("userProfileModel name ${userProfileModel!.name}"
+              "userProfileModel nodeID ${userProfileModel!.nodeID}\n"
+              "userProfileModel email ${userProfileModel!.email}\n"
+              "userProfileModel shippingAddress ${userProfileModel!.shippingAddress}\n"
+              "userProfileModel uid ${userProfileModel!.uid}\n"
+              "userProfileModel pincode ${userProfileModel!.pincode}\n");
 
 
           if (userInDatabase == true) {
