@@ -60,6 +60,7 @@ class OrderListScreen extends StatelessWidget {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CircleImagesInOrderList(
                 purchaseList: orderModel.purchasedCartList,

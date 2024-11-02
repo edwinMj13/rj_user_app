@@ -16,7 +16,7 @@ part 'add_address_screen_state.dart';
 class AddAddressScreenBloc extends Bloc<AddAddressScreenEvent, AddAddressScreenState> {
   AddAddressScreenBloc() : super(AddAddressScreenInitial()) {
     on<FetchAddressScreenEvent>(fetchAddressScreenEvent);
-    on<AddUpdloadAddressScreenEvent>(addUpdloadAddressScreenEvent);
+   // on<AddUpdloadAddressScreenEvent>(addUpdloadAddressScreenEvent);
     on<AddAddressScreenUpdateEvent>(addAddressScreenUpdateEvent);
     on<AddAddressScreenDeleteEvent>(addAddressScreenDeleteEvent);
   }
@@ -31,7 +31,7 @@ AddAddressCases addAddressCases = AddAddressCases();
     }
   }
 
-  FutureOr<void> addUpdloadAddressScreenEvent(AddUpdloadAddressScreenEvent event, Emitter<AddAddressScreenState> emit) async {
+  /*FutureOr<void> addUpdloadAddressScreenEvent(AddUpdloadAddressScreenEvent event, Emitter<AddAddressScreenState> emit) async {
     final user = await CachedData.getUserDetails();
     final model = AddressModel(
         addressNodeId: "",
@@ -39,7 +39,7 @@ AddAddressCases addAddressCases = AddAddressCases();
         addressName: addAddressNameController.text,
         addressPinCode: addAddressPincodeController.text);
     locator<AddAddressRepo>().uploadAddress(model, user.nodeID);
-  }
+  }*/
 
   Future<void> addAddressScreenUpdateEvent(AddAddressScreenUpdateEvent event, Emitter<AddAddressScreenState> emit) async {
     final user = await CachedData.getUserDetails();

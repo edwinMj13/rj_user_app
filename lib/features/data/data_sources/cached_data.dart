@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rj/features/data/models/user_profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,16 +26,16 @@ class CachedData {
   String? get shippingAddress => _shippingAddress;
 
   String? get pincode => _pincode;
-  static addProfileData(AuthSuccessState authSuccessSTate) async {
+  static addProfileData(User user) async {
     final sharedPref = await SharedPreferences.getInstance();
 
-    await sharedPref.setString('name', authSuccessSTate.user.displayName?? "");
-    await sharedPref.setString('email', authSuccessSTate.user.email?? "");
+    await sharedPref.setString('name', user.displayName?? "");
+    await sharedPref.setString('email', user.email?? "");
     await sharedPref.setString(
-        'phoneNumber', authSuccessSTate.user.phoneNumber ?? "");
-    await sharedPref.setString('uid', authSuccessSTate.user.uid);
+        'phoneNumber', user.phoneNumber ?? "");
+    await sharedPref.setString('uid', user.uid);
     await sharedPref.setBool(
-        'emailVerified', authSuccessSTate.user.emailVerified);
+        'emailVerified', user.emailVerified);
     await sharedPref.setBool('isLogged', true);
     print("displayName : ${sharedPref.getString("name")?? ""}\n"
         "email : ${sharedPref.getString("email")?? ""}\n"
@@ -51,9 +52,9 @@ class CachedData {
     await sharedPref.setString('pincode', pincode);
   }
 
-  static dynamic getDataFromSharedPref(String tag) async {
+  static Future<String> getDataFromSharedPref(String tag) async {
     final sharedPref = await SharedPreferences.getInstance();
-    return sharedPref.get(tag);
+    return sharedPref.getString(tag)!;
   }
 
   static clearSharedPrefData() async {
@@ -102,5 +103,10 @@ class CachedData {
     final sharedPref = await SharedPreferences.getInstance();
     final status = sharedPref.getBool("isLoggedIn")?? false;
     return status;
+  }
+
+  static deleteUserDetails() async {
+    final sharedPref = await SharedPreferences.getInstance();
+    sharedPref.clear();
   }
 }

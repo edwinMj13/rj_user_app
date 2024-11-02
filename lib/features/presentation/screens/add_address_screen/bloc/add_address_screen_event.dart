@@ -5,9 +5,6 @@ sealed class AddAddressScreenEvent {}
 
 class FetchAddressScreenEvent extends AddAddressScreenEvent{}
 
-class AddUpdloadAddressScreenEvent extends AddAddressScreenEvent{
-
-}
 
 class AddAddressScreenUpdateEvent extends AddAddressScreenEvent{
 final String addressNodeId;

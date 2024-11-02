@@ -43,7 +43,7 @@ class CommonUseCases {
   static Widget getStatus(OrderModel orderModel){
     if(orderModel.orderStatus =="Order Placed"){
       return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text("Order Placed",style: style(fontSize: 15, color: Colors.blue, weight: FontWeight.w700),),
           Text("Delivery on ${orderModel.orderDate}",style: style(fontSize: 12, color: Colors.grey, weight: FontWeight.normal),),

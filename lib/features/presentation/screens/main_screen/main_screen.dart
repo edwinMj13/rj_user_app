@@ -52,11 +52,18 @@ final size = MediaQuery.sizeOf(context);
               return FutureBuilder(
                 future: CachedData.getUserName(),
                 builder: (context, snapshot) {
+                  String userName = "";
                   if (snapshot.data != null) {
                     //final stateData = MainScreenIndexBadgeState;
+                    if(snapshot.data!.split(' ').length==1){
+                      userName = snapshot.data!;
+                    }else {
+                      userName = snapshot.data!.split(' ').first;
+                    }
+                    print("userName Account AppBar Name - $userName");
                     return MainAppBar(
                         currentNavIndex: state.index,
-                        username: snapshot.data!.split(' ').first);
+                        username: userName);
                   } else {
                     return const SizedBox();
                   }

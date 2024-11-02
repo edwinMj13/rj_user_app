@@ -23,7 +23,7 @@ class LoginCase {
       pincode: "",
       shippingAddress: "",
     );
-    await CachedData.addProfileData(stateData);
+    await CachedData.addProfileData(stateData.user);
     Navigator.pushNamed(context, RouteNames.addDetailsScreen,
         arguments: userData);
   }

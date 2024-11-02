@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
       color: Colors.black,
       child: Center(
         child: Marquee(
-          text: "Best Products | Popular Brands | Best Offers | Faster Delivery | Responsible Customer Care | ",
+          text: "Best Products   ○   Popular Brands   ○   Best Offers   ○   Faster Delivery   ○   Responsible Customer Care   ○   ",
           style: const TextStyle(
 
             backgroundColor: Colors.black,

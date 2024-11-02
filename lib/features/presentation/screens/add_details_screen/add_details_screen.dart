@@ -71,9 +71,9 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
       children: [
         const SizedBox(),
         RightArrowIOS(
-          pressFunction: () {
+          pressFunction: () async {
             final userModel = UserProfileModel(
-              uid: CachedData.getDataFromSharedPref("uid").toString(),
+              uid: await CachedData.getDataFromSharedPref("uid"),
               nodeID: "",
               name: nameAddAddressController.text,
               phoneNumber: phoneAddAddressController.text,

@@ -107,12 +107,12 @@ class AddAddressScreen extends StatelessWidget {
     );
   }
 
-  _openPopup(BuildContext context, String tag, AddressModel? addModel) {
+  _openPopup(BuildContext contextMain, AddressModel? addModel) {
       addAddressAddressController.text = addModel!.address;
       addAddressNameController.text = addModel.addressName;
       addAddressPincodeController.text = addModel.addressPinCode;
     showDialog(
-        context: context,
+        context: contextMain,
         builder: (context) {
           return AlertDialog(
             contentPadding: EdgeInsets.all(10),
@@ -154,22 +154,16 @@ class AddAddressScreen extends StatelessWidget {
                   child: const Text("Cancel")),
               TextButton(
                   onPressed: () {
-                    if (tag == "add") {
-                      context
-                          .read<AddAddressScreenBloc>()
-                          .add(AddUpdloadAddressScreenEvent());
-                    } else {
                       final model = AddressModel(
-                          addressNodeId: addModel!.addressNodeId,
+                          addressNodeId: addModel.addressNodeId,
                           address: addAddressAddressController.text,
                           addressName: addAddressNameController.text,
                           addressPinCode: addAddressPincodeController.text);
-                      context.read<AddAddressScreenBloc>().add(
+                      contextMain.read<AddAddressScreenBloc>().add(
                           AddAddressScreenUpdateEvent(
                               addressNodeId: addModel.addressNodeId,
                               addressModel: model,
                               context: context));
-                    }
                   },
                   child: Text("update"))
             ],
@@ -188,7 +182,7 @@ class AddAddressScreen extends StatelessWidget {
                 TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
-                      _openPopup(context, "update", addressList);
+                      _openPopup(context, addressList);
                     },
                     child: const Text("Edit")),
                 Container(

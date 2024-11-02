@@ -15,6 +15,13 @@ class SplashUseCases {
     List<CartModel> cartLength=[];
     final isLogged = await CachedData.getLoggedIn();
     final user = await CachedData.getUserDetails();
+    print("name: ${user.name} "
+    "phoneNumber: ${user.phoneNumber} "
+    "email: ${user.email} "
+    "nodeID: ${user.nodeID} "
+    "uid: ${user.uid} "
+    "shippingAddress: ${user.shippingAddress} "
+    "pincode: ${user.pincode} ");
     if(user.nodeID.isNotEmpty) {
        cartLength = await locator<CartRepository>().getCarts(user.nodeID);
     }
